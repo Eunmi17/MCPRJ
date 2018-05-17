@@ -115,78 +115,95 @@
             <!-- End Navbar -->
 			<script src="bootstrap/assets/js/Chart.js"></script>
             <script>
-            var ctx = document.getElementById("myChart");
-            $.ajax({
-            	url:"genderData.do",
-            	method:"POST",
-            	success:function(data){
-    				var num1 = Array();
-    				var num2 = Array();
-            		$.each(data, function(key, value){
-            			console.log(value);
-            			if(value != null) {
-            				num1.push(value.gender)
-            				num2.push(value.data);
-            			}
-            			console.log(num1);
-            			console.log(num2);
-            		});
-            		var chartdata = {
-            				labels:num1,
-            				datasets:[{
-            					label:"성별",
-            					backgroundColor: [,
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255, 99, 132, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255,99,132,1)'
-                                ],
-                                borderWidth: 1,
-                                data:num2
-            				}]
-            		};
-            		options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                }
-                            }]
+           	$(document).ready(function(){
+           		
+           		
+           		var ctx = document.getElementById("myChart");
+                
+                $.ajax({
+                	url:"genderData.do",
+                	method:"POST",
+                	success:function(data){
+                		var num1 = [];
+            			var num2 = [];
+                		$.each(data, function(key, value){
+                			console.log(value);
+                			if(value != null) {
+                				num1.push(value.gender)
+                				num2.push(value.data);
+                			}
+                			console.log(num1);
+                			console.log(num2);
+                		});
+                		var chartdata = {
+                				labels:num1,
+                				datasets:[{
+                					label:"성별",
+                					backgroundColor: [,
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255, 99, 132, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255,99,132,1)'
+                                    ],
+                                    borderWidth: 1,
+                                    data:num2
+                				}]
+                		};
+                		options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true,
+                                        top:5,
+                                        left:0,
+                                        bottom:0,
+                                        right: 0
+                                    }
+                                }]
+                            }
                         }
-                    }
-            		myChart = new Chart(ctx, {
-            			type: 'bar',
-            			data: chartdata
-            		});
-            	},
-            	error: function(data){
-            		console.log(data);
-            	}
-            });
+                		myChart = new Chart(ctx, {
+                			type: 'bar',
+                			data: chartdata
+                		});
+                	},
+                	error: function(data){
+                		console.log(data);
+                	}
+                });
+           		
+           		
+           		
+           		
+           		
+           		
+           	});
+           	
+            
             </script>
-            
-            <!-- adsfajsfoasdijfklasjfoadsifjlkdsaf -->
-            <!-- <div style="width: 70%;">
-            		<canvas id="myChart"></canvas>
-            	</div> -->
-            <!-- adsfajsfoasdijfklasjfoadsifjlkdsaf -->
-            
-            <div class="content">
+
+			<!-- <div style="width: 70%;">
+				<canvas id="myChart"></canvas>
+			</div> -->
+
+			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-md-4">
 							<div class="card card-chart">
 								<div class="card-header card-header-success">
-									<div class="ct-chart" id="dailySalesChart"></div>
+									<div class="ct-chart">
+										<canvas id="myChart"></canvas>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>            	
-            </div>
-            <footer class="footer ">
+				</div>
+			</div>
+			<footer class="footer ">
                 <div class="container-fluid">
                     <nav class="pull-left">
 						<p class="text-muted small mb-0">문의 : 관리자 (dldmsal1123@gmail.com)</p>
