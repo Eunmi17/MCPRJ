@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.emlee.persistence.mapper.UserMapper">
+
+	<!-- 아이디 중복확인 -->
+	<select parameterType="userDTO" resultType="int" id="getUserid">
+		SELECT COUNT(*) FROM USER_INFO WHERE USER_ID = #{user_id}
+	</select>
+
+	<!-- 회원 가입 -->
+	<insert id="insertJoin" parameterType="userDTO">
+		INSERT INTO
+		USER_INFO (USER_NO, USER_ID, PASSWORD, USER_NAME, EMAIL, DAY, GENDER, POST,
+		ADDR1, ADDR2, REG_NO, REG_DT)
+		VALUES(
+		(SELECT IFNULL(MAX(UI.USER_NO), 0)+1 FROM USER_INFO UI),
+		#{user_id}, #{password}, #{user_name}, #{email}, #{day}, #{gender},
+		#{post}, #{addr1}, #{addr2},
+		(SELECT IFNULL(MAX(UI.USER_NO), 0)+1 FROM USER_INFO UI), NOW())
+	</insert>
+	
+	<!-- 인증키 생성 -->
+	<insert id="insertKey" parameterType="keyDTO">
+		INSERT INTO
+		EMAIL_KEY (EMAIL, KEYNUM)
+		VALUES(#{email}, #{keynum})
+	</insert>
+
+	<!-- 로그인 -->
+	<select id="getUserInfo" parameterType="userDTO" resultType="userDTO">
+		SELECT * FROM USER_INFO WHERE USER_ID = #{user_id} AND PASSWORD = #{password}
+	</select>
+
+	<!-- 이메일 인증 -->
+	<select parameterType="keyDTO" resultType="keyDTO" id="getEmailKey">
+		SELECT * FROM EMAIL_KEY WHERE EMAIL = #{email} AND KEYNUM = #{keynum}
+	</select>
+	
+	<!-- 아이디 찾기 -->
+	<select id="getIdSearch" parameterType="userDTO" resultType="userDTO">
+		SELECT USER_ID FROM USER_INFO WHERE USER_NAME = #{user_name} AND EMAIL = #{email}
+	</select>
+	
+	<!-- 비밀번호 정보 확인 -->
+	<select parameterType="userDTO" id="getPassword" resultType="userDTO">
+		SELECT USER_ID, EMAIL FROM USER_INFO
+		WHERE USER_ID = #{user_id} AND EMAIL = #{email}
+		</select>
+		
+	<!-- 비밀번호 변경 -->
+	<update id="updatePassword" parameterType="userDTO">
+		UPDATE USER_INFO SET PASSWORD = #{password}
+		WHERE USER_ID = #{user_id}
+	</update>
+	
+	<!-- 회원 리스트 -->
+	<select id="getUserList" resultType="userDTO">
+		SELECT * FROM USER_INFO
+		WHERE NOT AUTH = "AA"
+		ORDER BY USER_NO ASC
+	</select>
+	
+	<!-- 회원 상세 -->
+	<select id="getUserDetail" parameterType="userDTO" resultType="userDTO">
+		SELECT * FROM USER_INFO
+		WHERE USER_NO = #{user_no}
+	</select>
+	
+	<!-- 회원 삭제 -->
+	<delete id="deleteUser" parameterType="userDTO">
+		DELETE FROM USER_INFO
+		WHERE USER_NO = #{user_no}
+	</delete>
+	
+	<!-- 회원 수정 -->
+	<update id="updateUser" parameterType="userDTO">
+		UPDATE USER_INFO
+		SET DAY = #{day}, GENDER = #{gender}, POST = #{post},
+			ADDR1 = #{addr1}, ADDR2 = #{addr2}, CHG_NO = #{user_no}, CHG_DT = NOW()
+		WHERE USER_NO = #{user_no}
+	</update>
+	
+	<!-- 작성글 확인 -->
+	<select id="getRegList" parameterType="String" resultType="boardDTO">
+		SELECT * FROM BOARD_INFO
+		WHERE REG_NO = #{user_no}
+		ORDER BY NOTICE_CHECK DESC, BOARD_NO DESC
+	</select>
+	
+	<!-- 작성글 검색 -->
+	<select id="getRegSearch" parameterType="boardDTO" resultType="boardDTO">
+		SELECT * FROM BOARD_INFO
+		WHERE REG_NO = #{reg_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
+		ORDER BY NOTICE_CHECK DESC, BOARD_NO DESC
+	</select>
+	
+	<!-- 회원 검색 -->
+	<select id="getUserSearch" resultType="userDTO">
+		SELECT * FROM USER_INFO
+		WHERE NOT AUTH = "AA" AND (USER_NAME LIKE #{search} OR USER_ID LIKE #{search})
+		ORDER BY USER_NO ASC
+	</select>
+	
+	<!-- 성별 분석 -->
+	<select id="getGenderData" resultType="userDTO">
+		SELECT GENDER, COUNT(GENDER) AS DATA FROM USER_INFO
+		GROUP BY GENDER;
+	</select>
+</mapper>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.emlee.persistence.mapper.BoardMapper">
+
+	<!-- 글 리스트 -->
+	<select id="getBoardList" parameterType="String" resultType="boardDTO">
+		SELECT * FROM BOARD_INFO
+		WHERE TEAM_NO = #{team_no}
+		ORDER BY NOTICE_CHECK DESC, BOARD_NO DESC
+	</select>
+	<!-- 글 등록 -->
+	<insert id="insertBoard" parameterType="boardDTO">
+		INSERT INTO BOARD_INFO ( BOARD_NO, TEAM_NO, REG_NAME, TITLE, CONTENT, CNT,
+			NOTICE_CHECK, FILE_CHECK, REG_NO, REG_DT)
+		VALUES( (SELECT IFNULL(MAX(BI.BOARD_NO), 0)+1 FROM BOARD_INFO BI),
+			#{team_no}, #{reg_name}, #{title}, #{content}, 0, #{notice_check},
+			#{file_check}, #{reg_no}, NOW())
+	</insert>
+	<!-- 글 번호 -->
+	<select id="getBoardNo" parameterType="boardDTO" resultType="boardDTO">
+		SELECT BOARD_NO FROM BOARD_INFO
+		WHERE TITLE = #{title} AND CONTENT = #{content} AND REG_NO = #{reg_no}
+	</select>
+	<!-- 파일 업로드 -->
+	<insert id="insertFile" parameterType="fileDTO">
+		INSERT INTO FILE_INFO ( FILE_NO, BOARD_NO, ORI_NAME, FILE_NAME, FILE_TYPE,
+			FILE_RENAME, FILE_PATH, FILE_SIZE, SAVE_PATH, REG_NO, REG_DT )
+		VALUES( (SELECT IFNULL(MAX(FI.FILE_NO), 0)+1 FROM FILE_INFO FI), #{board_no},
+			#{ori_name}, #{file_name}, #{file_type},
+			#{file_rename}, #{file_path}, #{file_size}, #{save_path}, #{reg_no}, NOW() )
+	</insert>
+	<!-- 글 상세 -->
+	<select id="getBoard" parameterType="boardDTO" resultType="boardDTO">
+		SELECT * FROM BOARD_INFO
+		WHERE BOARD_NO = #{board_no}
+	</select>
+	<!-- 조회수 증가 -->
+	<update id="updateCnt" parameterType="boardDTO">
+		UPDATE BOARD_INFO
+		SET CNT = CNT + 1
+		WHERE BOARD_NO = #{board_no}
+	</update>
+	<!-- 파일 상세 -->
+	<select id="getFile" parameterType="fileDTO" resultType="fileDTO">
+		SELECT FILE_NO, BOARD_NO, ORI_NAME, FILE_PATH, FILE_RENAME,
+			ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
+		FROM FILE_INFO
+		WHERE BOARD_NO = #{board_no}
+	</select>
+	<!-- 글 삭제 -->
+	<delete id="deleteBoard" parameterType="boardDTO">
+		DELETE FROM BOARD_INFO
+		WHERE BOARD_NO = #{board_no}
+	</delete>
+	<!-- 파일 삭제 -->
+	<delete id="deleteFile" parameterType="fileDTO">
+		DELETE FROM FILE_INFO
+		WHERE BOARD_NO = #{board_no}
+	</delete>
+	<!-- 글 수정 -->
+	<update id="updateBoard" parameterType="boardDTO">
+		UPDATE BOARD_INFO
+		SET TITLE = #{title}, CONTENT = #{content}, NOTICE_CHECK = #{notice_check},
+			FILE_CHECK = #{file_check}, CHG_NO = #{chg_no}, CHG_DT = NOW()
+		WHERE BOARD_NO = #{board_no}
+	</update>
+	<!-- 팀 리스트 -->
+	<select id="getTeamList" resultType="manageDTO">
+		SELECT * FROM BOARD_MANAGE
+		ORDER BY TEAM_NO ASC
+	</select>
+	<!-- 팀 정보 -->
+	<select id="getTeam" resultType="manageDTO" parameterType="manageDTO">
+		SELECT * FROM BOARD_MANAGE WHERE TEAM_NO = #{team_no}
+	</select>
+	<!-- 팀이름 중복체크 -->
+	<select id="getTeamName" resultType="int" parameterType="manageDTO">
+		SELECT COUNT(*) FROM BOARD_MANAGE WHERE TEAM_NAME = #{team_name}
+	</select>
+	<!-- 팀 개설 -->
+	<insert id="insertTeam" parameterType="manageDTO">
+		INSERT INTO
+		BOARD_MANAGE (TEAM_NO, LEADER_NO, TEAM_NAME, JOIN_FORM, TEAM_MEMO, REG_NO, REG_DT, NUM)
+		VALUES(
+		(SELECT IFNULL(MAX(BM.TEAM_NO), 0)+1 FROM BOARD_MANAGE BM),
+		#{leader_no}, #{team_name}, #{join_form}, #{team_memo}, #{reg_no}, NOW(), 1)
+	</insert>
+	<!-- 회원 권한, 팀번호 수정 -->
+	<update id="updateUserTeam" parameterType="userDTO">
+		UPDATE USER_INFO
+		SET AUTH = #{auth}, TEAM_NO = #{team_no}, CHG_NO = #{user_no}, CHG_DT = NOW()
+		WHERE USER_NO = #{user_no}
+	</update>
+	<!-- 팀번호 가져오기 -->
+	<select id="getTeamNo" parameterType="manageDTO" resultType="manageDTO">
+		SELECT TEAM_NO FROM BOARD_MANAGE
+		WHERE LEADER_NO = #{leader_no}
+	</select>
+	<!-- 팀 가입 -->
+	<insert id="insertJoin" parameterType="joinDTO">
+		INSERT INTO
+		JOIN_INFO (JOIN_NO, TEAM_NO, USER_NO, JOIN_MEMO, JOIN_CHECK, REG_NO, REG_DT)
+		VALUES (
+		(SELECT IFNULL(MAX(JI.JOIN_NO), 0)+1 FROM JOIN_INFO JI),
+		#{team_no}, #{user_no}, #{join_memo}, #{join_check}, #{user_no}, NOW())
+	</insert>
+	<!-- 가입 취소 -->
+	<delete id="deleteJoin" parameterType="joinDTO">
+		DELETE FROM JOIN_INFO
+		WHERE USER_NO = #{user_no}
+	</delete>
+	<!-- 팀 수정 -->
+	<update id="updateTeam" parameterType="manageDTO">
+		UPDATE BOARD_MANAGE
+		SET JOIN_FORM = #{join_form}, TEAM_MEMO = #{team_memo}, CHG_NO = #{chg_no}, CHG_DT = NOW()
+		WHERE TEAM_NO = #{team_no}
+	</update>
+	<!-- 팀 삭제 -->
+	<delete id="deleteTeamDrop" parameterType="String">
+		DELETE FROM BOARD_MANAGE
+		WHERE TEAM_NO = #{team_no}
+	</delete>
+	<!-- 팀삭제로 인한 회원 수정 -->
+	<update id="updateTeamDrop" parameterType="userDTO">
+		UPDATE USER_INFO
+		SET AUTH = #{auth}, TEAM_NO = 0
+		WHERE TEAM_NO = #{team_no}
+	</update>
+	<!-- 팀삭제로 인한 글 삭제 -->
+	<delete id="deleteTeamBoard" parameterType="String">
+		DELETE FROM BOARD_INFO
+		WHERE TEAM_NO = #{team_no}
+	</delete>
+	<!-- 팀삭제로 인한 파일 삭제 -->
+	<delete id="deleteTeamFile" parameterType="String">
+		DELETE FROM FILE_INFO
+		WHERE TEAM_NO = #{team_no}
+	</delete>
+	<!-- 리더 정보 -->
+	<select id="getUser" parameterType="String" resultType="userDTO">
+		SELECT * FROM USER_INFO
+		WHERE TEAM_NO = #{team_no} AND AUTH = "UA"
+	</select>
+	<!-- 팀원 리스트 -->
+	<select id="getUserList" parameterType="String" resultType="userDTO">
+		SELECT * FROM USER_INFO
+		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA"
+		ORDER BY AUTH ASC, USER_NO ASC
+	</select>
+	<!-- 가입신청서 정보 -->
+	<select id="getJoinUser" parameterType="String" resultType="userDTO">
+		SELECT * FROM USER_INFO
+		WHERE USER_NO = #{user_no}
+	</select>
+	<!-- 가입신청 메모 -->
+	<select id="getJoin" parameterType="String" resultType="joinDTO">
+		SELECT * FROM JOIN_INFO
+		WHERE USER_NO = #{user_no}
+	</select>
+	<!-- 권한 수정 (UU로 수정)-->
+	<update id="updateAuth" parameterType="String">
+		UPDATE USER_INFO
+		SET AUTH = "UU"
+		WHERE USER_NO = #{user_no}
+	</update>
+	<!-- 가입 확인 수정 (O로 수정)-->
+	<update id="updateJoinCheck" parameterType="String">
+		UPDATE JOIN_INFO
+		SET JOIN_CHECK = "O"
+		WHERE USER_NO = #{user_no}
+	</update>
+	<!-- 팀원 수 +1 -->
+	<update id="updateTeamUp" parameterType="String">
+		UPDATE BOARD_MANAGE
+		SET NUM = NUM+1
+		WHERE TEAM_NO = #{team_no}
+	</update>
+	<!-- 팀원 수 -1 -->
+	<update id="updateTeamDwon" parameterType="String">
+		UPDATE BOARD_MANAGE
+		SET NUM = NUM-1
+		WHERE TEAM_NO = #{team_no}
+	</update>
+	<!-- 팀 검색 -->
+	<select id="getTeamSearch" parameterType="manageDTO" resultType="manageDTO">
+		SELECT * FROM BOARD_MANAGE
+		WHERE TEAM_NAME LIKE #{search} OR LEADER_NAME LIKE #{search}
+		ORDER BY TEAM_NO ASC
+	</select>
+	<!-- 팀원 검색 -->
+	<select id="getTeamUserSearch" parameterType="userDTO" resultType="userDTO">
+		SELECT * FROM USER_INFO
+		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA" AND (USER_NAME LIKE #{search} OR USER_ID LIKE #{search})
+		ORDER BY AUTH ASC, USER_NO ASC
+	</select>
+	<!-- 글 검색 -->
+	<select id="getboardSearch" parameterType="boardDTO" resultType="boardDTO">
+		SELECT * FROM BOARD_INFO
+		WHERE TEAM_NO = #{team_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
+		ORDER BY NOTICE_CHECK DESC, BOARD_NO DESC
+	</select>
+</mapper>

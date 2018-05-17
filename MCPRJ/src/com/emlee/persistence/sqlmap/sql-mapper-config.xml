@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <typeAliases>
+    	<!-- 사용할 DTO 등록  -->
+    	<!-- <typeAlias type="poly.dto.BoardDTO" alias="BoardDTO" /> -->
+    	<typeAlias type="com.emlee.DTO.userDTO" alias="userDTO" />
+    	<typeAlias type="com.emlee.DTO.boardDTO" alias="boardDTO" />
+    	<typeAlias type="com.emlee.DTO.manageDTO" alias="manageDTO" />
+    	<typeAlias type="com.emlee.DTO.fileDTO" alias="fileDTO" />
+    	<typeAlias type="com.emlee.DTO.joinDTO" alias="joinDTO" />
+    	<typeAlias type="com.emlee.DTO.keyDTO" alias="keyDTO"/>
+    </typeAliases>
+</configuration>
