@@ -560,4 +560,44 @@ public class UserController {
 		log.info(getClass() + "genderData end!!!");
 		return gList;
 	}
+	
+	@RequestMapping(value="teamData", method=RequestMethod.POST)
+	public @ResponseBody List<userDTO> teamData() throws Exception {
+		log.info(getClass() + "teamData start!!!");
+		
+		List<userDTO> tList = userService.getTeamData();
+		
+		log.info(getClass() + "teamData end!!!");
+		return tList;
+	}
+	
+	@RequestMapping(value="GTData", method=RequestMethod.POST)
+	public @ResponseBody List<userDTO> GTData() throws Exception {
+		log.info(getClass() + "GTData start!!!");
+		
+		List<userDTO> gtList = userService.getGTData();
+		
+		log.info(getClass() + "GTData end!!!");
+		return gtList;
+	}
+	
+	@RequestMapping(value="ageData", method=RequestMethod.POST)
+	public @ResponseBody List<userDTO> ageData() throws Exception {
+		log.info(getClass() + "ageData start!!!");
+		
+		List<userDTO> aList = userService.getAgeData();
+		
+		log.info(getClass() + "ageData end!!!");
+		return aList;
+	}
+	
+	@RequestMapping(value="addrData", method=RequestMethod.POST)
+	public @ResponseBody List<userDTO> addrData() throws Exception {
+		log.info(getClass() + "addrData start!!!");
+		
+		List<userDTO> aList = userService.getAddrData();
+		
+		log.info(getClass() + "addrData end!!!");
+		return aList;
+	}
 }

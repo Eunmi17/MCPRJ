@@ -102,5 +102,25 @@ public class UserService implements IUserService {
 	public List<userDTO> getGenderData() throws Exception {
 		return userMapper.getGenderData();
 	}
+
+	@Override
+	public List<userDTO> getTeamData() throws Exception {
+		return userMapper.getTeamData();
+	}
+
+	@Override
+	public List<userDTO> getGTData() throws Exception {
+		return userMapper.getGTData();
+	}
+
+	@Override
+	public List<userDTO> getAgeData() throws Exception {
+		return userMapper.getAgeData();
+	}
+
+	@Override
+	public List<userDTO> getAddrData() throws Exception {
+		return userMapper.getAddrData();
+	}
 		
 }

@@ -107,4 +107,30 @@
 		SELECT GENDER, COUNT(GENDER) AS DATA FROM USER_INFO
 		GROUP BY GENDER;
 	</select>
+	
+	<!-- 동호회여부 분석 -->
+	<select id="getTeamData" resultType="userDTO">
+		SELECT COUNT(IF(AUTH='UU'||AUTH='UA', 1, null)) AS data, COUNT(IF(AUTH='UU'||AUTH='UA', null, 1)) AS data1
+		FROM USER_INFO;
+	</select>
+	
+	<!-- 성별별 동호회여부 분석 -->
+	<select id="getGTData" resultType="userDTO">
+		SELECT GENDER, COUNT(IF(AUTH='UU'||AUTH='UA', 1, null)) AS data, COUNT(IF(AUTH='UU'||AUTH='UA', null, 1)) AS data1
+		FROM USER_INFO GROUP BY GENDER;
+	</select>
+	
+	<!-- 나이 분석 -->
+	<select id="getAgeData" resultType="userDTO">
+		SELECT TRUNCATE((TO_DAYS(NOW())-(TO_DAYS(DAY)))/365, -1) AS DATA, COUNT(DAY) AS DATA1
+		FROM USER_INFO
+		GROUP BY DATA;
+	</select>
+	
+	<!-- 지역 분석 -->
+	<select id="getAddrData" resultType="userDTO">
+		SELECT SUBSTRING_INDEX(ADDR1, ' ', 2) AS DATA, COUNT(ADDR1) DATA1
+		FROM USER_INFO
+		GROUP BY DATA;
+	</select>
 </mapper>

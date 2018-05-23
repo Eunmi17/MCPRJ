@@ -44,5 +44,13 @@ public interface UserMapper {
 	List<userDTO> getUserSearch(userDTO uDTO) throws Exception;
 
 	List<userDTO> getGenderData() throws Exception;
+
+	List<userDTO> getTeamData() throws Exception;
+
+	List<userDTO> getGTData() throws Exception;
+
+	List<userDTO> getAgeData() throws Exception;
+
+	List<userDTO> getAddrData() throws Exception;
 	
 }
