@@ -600,4 +600,24 @@ public class UserController {
 		log.info(getClass() + "addrData end!!!");
 		return aList;
 	}
+	
+	@RequestMapping(value="regData", method=RequestMethod.POST)
+	public @ResponseBody List<userDTO> regData() throws Exception {
+		log.info(getClass() + "regData start!!!");
+		
+		List<userDTO> rList = userService.getRegData();
+		
+		log.info(getClass() + "regData end!!!");
+		return rList;
+	}
+	
+	@RequestMapping(value="boardData", method=RequestMethod.POST)
+	public @ResponseBody List<boardDTO> boardData() throws Exception {
+		log.info(getClass() + "boardData start!!!");
+		
+		List<boardDTO> bList = userService.getBoardData();
+		
+		log.info(getClass() + "boardData end!!!");
+		return bList;
+	}
 }

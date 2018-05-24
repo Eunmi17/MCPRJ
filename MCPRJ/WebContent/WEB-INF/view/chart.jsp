@@ -144,18 +144,23 @@
 	                                    data:num2
 	                				}]
 	                		};
-	                		options: {
-	                            scales: {
-	                                yAxes: [{
-	                                    ticks: {
-	                                        beginAtZero:true
-	                                    }
-	                                }]
-	                            }
-	                        }
 	                		gender = new Chart(ctx, {
 	                			type: 'bar',
-	                			data: chartdata
+	                			data: chartdata,
+		                		options: {
+		        					tooltips: {
+		        						mode: 'index',
+		        						intersect: false
+		        					},
+		        					responsive: true,
+		                            scales: {
+		                                yAxes: [{
+		                                    ticks: {
+		                                        beginAtZero:true
+		                                    }
+		                                }]
+		                            }
+		                        }
 	                		});
 	                	},
 	                	error: function(data){
@@ -201,10 +206,6 @@
 	                			type: 'bar',
 	                			data: chartdata,
 		                		options: {
-		        					title: {
-		        						display: true,
-		        						text:'성별별 동호회 가입 여부'
-		        					},
 		        					tooltips: {
 		        						mode: 'index',
 		        						intersect: false
@@ -261,18 +262,23 @@
 	                                    data:num2
 	                				}]
 	                		};
-	                		options: {
-	                            scales: {
-	                                yAxes: [{
-	                                    ticks: {
-	                                        beginAtZero:true
-	                                    }
-	                                }]
-	                            }
-	                        }
 	                		team = new Chart(tctx, {
 	                			type: 'bar',
-	                			data: chartdata
+	                			data: chartdata,
+		                		options: {
+		        					tooltips: {
+		        						mode: 'index',
+		        						intersect: false
+		        					},
+		        					responsive: true,
+		                            scales: {
+		                                yAxes: [{
+		                                    ticks: {
+		                                        beginAtZero:true
+		                                    }
+		                                }]
+		                            }
+		                        }
 	                		});
 	                	},
 	                	error: function(data){
@@ -310,7 +316,7 @@
 			            					'rgba(0, 255, 255, 1)'
 			                        	],
 			                		}],
-			                		labels: num1
+			                		labels: ['10대 미만', '10대', '20대', '30대', '40대', '50대', '60대 이상']
 			                	},
 			                	options: {
 			                		responsive: true
@@ -319,69 +325,197 @@
 		                    var agechart = document.getElementById('age').getContext('2d');
 		                    age = new Chart(agechart, config);
 		               },
-	               error: function(data){
-	           		console.log(data);
-	               }
-	           	});
-	                
-	           	
-	                
-	            $.ajax({
-	            	url:"addrData.do",
-	                method:"POST",
-	                success:function(data){
-	                	var num1 = [];
-	            		var num2 = [];
-	                	$.each(data, function(key, value){
-	                		console.log(value);
-	                		if(value != null) {
-	                			num1.push(value.data)
-	                			num2.push(value.data1);
-	                		}
-	                		console.log(num1);
-	                		console.log(num2);
-	                	});
-			            var config = {
-			                type: 'doughnut',
-			                data: {
-			                	datasets: [{
-			                		data: num2,
-			                   		backgroundColor: [
-			                   			'rgba(255, 0, 0, 1)',
-			                       		'rgba(0, 0, 255, 1)',
-			            				'rgba(0, 255, 0, 1)',
-			            				'rgba(255, 255, 0, 1)',
-			            				'rgba(255, 0, 255, 1)',
-			            				'rgba(0, 255, 255, 1)'
-			                		],
-			             		}],
-			                	labels: num1
-			                },
-			                options: {
-			                	responsive: true,
-			    				legend: {
-			    					position: 'top',
+		               error: function(data){
+		           		console.log(data);
+		               }
+		           	});
+		                
+		           	
+		                
+		            $.ajax({
+		            	url:"addrData.do",
+		                method:"POST",
+		                success:function(data){
+		                	var num1 = [];
+		            		var num2 = [];
+		                	$.each(data, function(key, value){
+		                		console.log(value);
+		                		if(value != null) {
+		                			num1.push(value.data)
+		                			num2.push(value.data1);
+		                		}
+		                		console.log(num1);
+		                		console.log(num2);
+		                	});
+				            var config = {
+				                type: 'doughnut',
+				                data: {
+				                	datasets: [{
+				                		data: num2,
+				                   		backgroundColor: [
+				                   			'rgba(255, 0, 0, 1)',
+				                       		'rgba(0, 0, 255, 1)',
+				            				'rgba(0, 255, 0, 1)',
+				            				'rgba(255, 255, 0, 1)',
+				            				'rgba(255, 0, 255, 1)',
+				            				'rgba(0, 255, 255, 1)'
+				                		],
+				             		}],
+				                	labels: num1
+				                },
+				                options: {
+				                	responsive: true,
+				    				legend: {
+				    					position: 'top',
+				    				},
+				    				animation: {
+				    					animateScale: true,
+				    					animateRotate: true
+				    				}
+				    			}
+				    		};
+			                var addrchart = document.getElementById('addr').getContext('2d');
+			                addr = new Chart(addrchart, config);
+			    		},
+		               	error: function(data){
+		           		console.log(data);
+		               }
+		           	});
+		            
+		            
+		            $.ajax({
+		            	url:"regData.do",
+		                method:"POST",
+		                success:function(data){
+		            		var num2 = [];
+		                	$.each(data, function(key, value){
+		                		console.log(value);
+		                		if(value != null) {
+		                			num2.push(value.data1);
+		                		}
+		                		console.log(num2);
+		                	});
+			            var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+			    		var configs = {
+			    			type: 'line',
+			    			data: {
+			    				labels: MONTHS,
+			    				datasets: [{
+			    					label: '가입자 수',
+			    					fill: false,
+			    					backgroundColor: 'rgba(0, 0, 255, 1)',
+			    					borderColor: 'rgba(0, 0, 255, 1)',
+			    					data: num2
+			    				}]
+			    			},
+			    			options: {
+			    				responsive: true,
+			    				tooltips: {
+			    					mode: 'index',
+			    					intersect: false,
 			    				},
-			    				animation: {
-			    					animateScale: true,
-			    					animateRotate: true
+			    				hover: {
+			    					mode: 'nearest',
+			    					intersect: true
+			    				},
+			    				scales: {
+			    					xAxes: [{
+			    						display: true,
+			    						scaleLabel: {
+			    							display: true
+			    						}
+			    					}],
+			    					yAxes: [{
+			    						ticks: {
+			    							min: 0
+			    						},
+			    						display: true,
+			    						scaleLabel: {
+			    							display: true
+			    						}
+			    					}]
 			    				}
 			    			}
 			    		};
-		                var addrchart = document.getElementById('addr').getContext('2d');
-		                addr = new Chart(addrchart, config);
-		    		},
+		                var regchart = document.getElementById('reg').getContext('2d');
+		                reg = new Chart(regchart, configs);
+		           	},
 	               	error: function(data){
 	           		console.log(data);
-	               }
-	           	});
+	               	}
+               });
+		            
+		            
+		            
+		            $.ajax({
+		            	url:"boardData.do",
+		                method:"POST",
+		                success:function(data){
+		            		var num2 = [];
+		                	$.each(data, function(key, value){
+		                		console.log(value);
+		                		if(value != null) {
+		                			num2.push(value.data1);
+		                		}
+		                		console.log(num2);
+		                	});
+			            var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+			    		var configss = {
+			    			type: 'line',
+			    			data: {
+			    				labels: MONTHS,
+			    				datasets: [{
+			    					label: '게시글 수',
+			    					fill: false,
+			    					backgroundColor: 'rgba(0, 0, 255, 1)',
+			    					borderColor: 'rgba(0, 0, 255, 1)',
+			    					data: num2
+			    				}]
+			    			},
+			    			options: {
+			    				responsive: true,
+			    				tooltips: {
+			    					mode: 'index',
+			    					intersect: false,
+			    				},
+			    				hover: {
+			    					mode: 'nearest',
+			    					intersect: true
+			    				},
+			    				scales: {
+			    					xAxes: [{
+			    						display: true,
+			    						scaleLabel: {
+			    							display: true
+			    						}
+			    					}],
+			    					yAxes: [{
+			    						ticks: {
+			    							min: 0
+			    						},
+			    						display: true,
+			    						scaleLabel: {
+			    							display: true
+			    						}
+			    					}]
+			    				}
+			    			}
+			    		};
+		                var boardchart = document.getElementById('board').getContext('2d');
+		                board = new Chart(boardchart, configss);
+		           	},
+	               	error: function(data){
+	           		console.log(data);
+	               	}
+               });
+		            
+		            
+		            
 	           	
 	        }); 
             </script>
 
-			<!-- <div style="width: 70%;">
-				<canvas id="myChart"></canvas>
-			</div> -->
+
 
 			<div class="content">
 				<div class="container-fluid">
@@ -393,13 +527,18 @@
 										<canvas id="gender"></canvas>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="card card-chart">
-								<div class="card-header card-header-success">
-									<div class="ct-chart">
-										<canvas id="gt"></canvas>
+								<div class="card-body">
+									<h4 class="card-title">Daily Sales</h4>
+									<p class="card-category">
+										<span class="text-success"><i
+											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
+										sales.
+									</p>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<i class="material-icons">access_time</i> updated 4 minutes
+										ago
 									</div>
 								</div>
 							</div>
@@ -409,6 +548,43 @@
 								<div class="card-header card-header-success">
 									<div class="ct-chart">
 										<canvas id="team"></canvas>
+									</div>
+								</div>
+								<div class="card-body">
+									<h4 class="card-title">Daily Sales</h4>
+									<p class="card-category">
+										<span class="text-success"><i
+											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
+										sales.
+									</p>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<i class="material-icons">access_time</i> updated 4 minutes
+										ago
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 ">
+							<div class="card card-chart">
+								<div class="card-header card-header-success">
+									<div class="ct-chart">
+										<canvas id="gt"></canvas>
+									</div>
+								</div>
+								<div class="card-body">
+									<h4 class="card-title">Daily Sales</h4>
+									<p class="card-category">
+										<span class="text-success"><i
+											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
+										sales.
+									</p>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<i class="material-icons">access_time</i> updated 4 minutes
+										ago
 									</div>
 								</div>
 							</div>
@@ -422,6 +598,20 @@
 										<canvas id="age"></canvas>
 									</div>
 								</div>
+								<div class="card-body">
+									<h4 class="card-title">Daily Sales</h4>
+									<p class="card-category">
+										<span class="text-success"><i
+											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
+										sales.
+									</p>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<i class="material-icons">access_time</i> updated 4 minutes
+										ago
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -429,6 +619,68 @@
 								<div class="card-header card-header-success">
 									<div class="ct-chart">
 										<canvas id="addr"></canvas>
+									</div>
+								</div>
+								<div class="card-body">
+									<h4 class="card-title">Daily Sales</h4>
+									<p class="card-category">
+										<span class="text-success"><i
+											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
+										sales.
+									</p>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<i class="material-icons">access_time</i> updated 4 minutes
+										ago
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="card card-chart">
+								<div class="card-header card-header-success">
+									<div class="ct-chart">
+										<canvas id="reg"></canvas>
+									</div>
+								</div>
+								<div class="card-body">
+									<h4 class="card-title">Daily Sales</h4>
+									<p class="card-category">
+										<span class="text-success"><i
+											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
+										sales.
+									</p>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<i class="material-icons">access_time</i> updated 4 minutes
+										ago
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="card card-chart">
+								<div class="card-header card-header-success">
+									<div class="ct-chart">
+										<canvas id="board"></canvas>
+									</div>
+								</div>
+								<div class="card-body">
+									<h4 class="card-title">Daily Sales</h4>
+									<p class="card-category">
+										<span class="text-success"><i
+											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
+										sales.
+									</p>
+								</div>
+								<div class="card-footer">
+									<div class="stats">
+										<i class="material-icons">access_time</i> updated 4 minutes
+										ago
 									</div>
 								</div>
 							</div>

@@ -50,4 +50,8 @@ public interface IUserService {
 
 	List<userDTO> getAddrData() throws Exception;
 
+	List<userDTO> getRegData() throws Exception;
+
+	List<boardDTO> getBoardData() throws Exception;
+
 }

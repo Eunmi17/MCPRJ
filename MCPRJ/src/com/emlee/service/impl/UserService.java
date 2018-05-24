@@ -122,5 +122,15 @@ public class UserService implements IUserService {
 	public List<userDTO> getAddrData() throws Exception {
 		return userMapper.getAddrData();
 	}
+
+	@Override
+	public List<userDTO> getRegData() throws Exception {
+		return userMapper.getRegData();
+	}
+
+	@Override
+	public List<boardDTO> getBoardData() throws Exception {
+		return userMapper.getBoardData();
+	}
 		
 }

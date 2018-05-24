@@ -13,7 +13,7 @@
 	<insert id="insertBoard" parameterType="boardDTO">
 		INSERT INTO BOARD_INFO ( BOARD_NO, TEAM_NO, REG_NAME, TITLE, CONTENT, CNT,
 			NOTICE_CHECK, FILE_CHECK, REG_NO, REG_DT)
-		VALUES( (SELECT IFNULL(MAX(BI.BOARD_NO), 0)+1 FROM BOARD_INFO BI),
+		VALUES( (SELECT IFNULL(MAX(CAST(BI.BOARD_NO AS UNSIGNED)), 0)+1 FROM BOARD_INFO BI),
 			#{team_no}, #{reg_name}, #{title}, #{content}, 0, #{notice_check},
 			#{file_check}, #{reg_no}, NOW())
 	</insert>
@@ -26,7 +26,7 @@
 	<insert id="insertFile" parameterType="fileDTO">
 		INSERT INTO FILE_INFO ( FILE_NO, BOARD_NO, ORI_NAME, FILE_NAME, FILE_TYPE,
 			FILE_RENAME, FILE_PATH, FILE_SIZE, SAVE_PATH, REG_NO, REG_DT )
-		VALUES( (SELECT IFNULL(MAX(FI.FILE_NO), 0)+1 FROM FILE_INFO FI), #{board_no},
+		VALUES( (SELECT IFNULL(MAX(CAST(FI.FILE_NO AS UNSIGNED)), 0)+1 FROM FILE_INFO FI), #{board_no},
 			#{ori_name}, #{file_name}, #{file_type},
 			#{file_rename}, #{file_path}, #{file_size}, #{save_path}, #{reg_no}, NOW() )
 	</insert>
@@ -83,7 +83,7 @@
 		INSERT INTO
 		BOARD_MANAGE (TEAM_NO, LEADER_NO, TEAM_NAME, JOIN_FORM, TEAM_MEMO, REG_NO, REG_DT, NUM)
 		VALUES(
-		(SELECT IFNULL(MAX(BM.TEAM_NO), 0)+1 FROM BOARD_MANAGE BM),
+		(SELECT IFNULL(MAX(CAST(BM.TEAM_NO AS UNSIGNED)), 0)+1 FROM BOARD_MANAGE BM),
 		#{leader_no}, #{team_name}, #{join_form}, #{team_memo}, #{reg_no}, NOW(), 1)
 	</insert>
 	<!-- 회원 권한, 팀번호 수정 -->

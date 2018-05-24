@@ -14,7 +14,7 @@
 		USER_INFO (USER_NO, USER_ID, PASSWORD, USER_NAME, EMAIL, DAY, GENDER, POST,
 		ADDR1, ADDR2, REG_NO, REG_DT)
 		VALUES(
-		(SELECT IFNULL(MAX(UI.USER_NO), 0)+1 FROM USER_INFO UI),
+		(SELECT IFNULL(MAX(CAST(UI.USER_NO AS UNSIGNED)), 0)+1 FROM USER_INFO UI),
 		#{user_id}, #{password}, #{user_name}, #{email}, #{day}, #{gender},
 		#{post}, #{addr1}, #{addr2},
 		(SELECT IFNULL(MAX(UI.USER_NO), 0)+1 FROM USER_INFO UI), NOW())
@@ -131,6 +131,20 @@
 	<select id="getAddrData" resultType="userDTO">
 		SELECT SUBSTRING_INDEX(ADDR1, ' ', 2) AS DATA, COUNT(ADDR1) DATA1
 		FROM USER_INFO
+		GROUP BY DATA;
+	</select>
+	
+	<!-- 가입달 분석 -->
+	<select id="getRegData" resultType="userDTO">
+		SELECT MONTH(REG_DT) DATA, COUNT(REG_DT) DATA1
+		FROM USER_INFO
+		GROUP BY DATA;
+	</select>
+	
+	<!-- 활동량 분석 -->
+	<select id="getBoardData" resultType="boardDTO">
+		SELECT MONTH(REG_DT) DATA, COUNT(REG_DT) DATA1
+		FROM BOARD_INFO
 		GROUP BY DATA;
 	</select>
 </mapper>

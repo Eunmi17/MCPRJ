@@ -52,5 +52,9 @@ public interface UserMapper {
 	List<userDTO> getAgeData() throws Exception;
 
 	List<userDTO> getAddrData() throws Exception;
+
+	List<userDTO> getRegData() throws Exception;
+
+	List<boardDTO> getBoardData() throws Exception;
 	
 }

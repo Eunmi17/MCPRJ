@@ -14,6 +14,20 @@ public class boardDTO {
 	String chg_no;
 	String chg_dt;
 	String search;
+	String data;
+	String data1;
+	public String getData() {
+		return data;
+	}
+	public void setData(String data) {
+		this.data = data;
+	}
+	public String getData1() {
+		return data1;
+	}
+	public void setData1(String data1) {
+		this.data1 = data1;
+	}
 	public String getSearch() {
 		return search;
 	}
