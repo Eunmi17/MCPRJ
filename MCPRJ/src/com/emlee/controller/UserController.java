@@ -620,4 +620,20 @@ public class UserController {
 		log.info(getClass() + "boardData end!!!");
 		return bList;
 	}
+	
+	@RequestMapping(value="api", method=RequestMethod.GET)
+	public String api(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+					Model model) throws Exception {
+		log.info(getClass() + "api start!!!");
+		log.info(getClass() + "api end!!!");
+		return "/api";
+	}
+	
+	@RequestMapping(value="apiMain", method=RequestMethod.GET)
+	public String apiMain(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+					Model model) throws Exception {
+		log.info(getClass() + "apiMain start!!!");
+		log.info(getClass() + "apiMain end!!!");
+		return "/apiMain";
+	}
 }
