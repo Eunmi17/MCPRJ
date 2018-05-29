@@ -636,4 +636,19 @@ public class UserController {
 		log.info(getClass() + "apiMain end!!!");
 		return "/apiMain";
 	}
+	
+	@RequestMapping(value="apiSearch", method=RequestMethod.GET)
+	public String apiSearch(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+					Model model) throws Exception {
+		log.info(getClass() + "apiSearch start!!!");
+		request.setCharacterEncoding("UTF-8");
+		String nm = CmmUtil.nvl(request.getParameter("nm"));
+		
+		log.info("nm : " + nm);
+		
+		model.addAttribute("nm", nm);
+		
+		log.info(getClass() + "apiSearch end!!!");
+		return "/apiSearch";
+	}
 }

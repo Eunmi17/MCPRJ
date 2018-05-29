@@ -41,12 +41,10 @@
 	String session_user_name = CmmUtil.nvl((String) session.getAttribute("session_user_name"));
 	String check = CmmUtil.nvl((String) session.getAttribute("check"));
 
-	String url = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?pageNo=";
-	String urls = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?mntnNm=";
-	String pageNo = "2";
-	String mntnNm = "";
+	String url = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?mntnNm=";
+	String mntnNm = CmmUtil.nvl((String) request.getParameter("nm"));
 	String servicekey = "&serviceKey=HNnmPvdDJDrKEsF3NjHy%2BNkeMnO3zSVJs9GbDxpnYAVpX7GeVtnWIiqpPIOugTK8gq0l9b7sVNBKHL%2FF39%2FClw%3D%3D";
-	String allurl = url + pageNo + servicekey;
+	String allurl = url + mntnNm + servicekey;
 	Document text = Jsoup.connect(allurl).get();
 
 	Elements mntnid = text.select("mntnid");
@@ -87,7 +85,7 @@
 			}else{
 				var nm = $('#search').val();
 				console.log("검색값 : " + nm);
-				location.href="/apiSearch.do?nm="+nm;
+				location.href="apiSearch.do?nm="+nm;
 			}
 		}
 	}
