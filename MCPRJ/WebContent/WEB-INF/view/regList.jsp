@@ -168,18 +168,18 @@
 						href="bootstrap/examples/user.html"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
-					<li class="nav-item active "><a class="nav-link" id="nav1"> <i
+					<li class="nav-item"><a class="nav-link" id="nav1"> <i
 							class="material-icons">person</i>
 							<p>마이페이지</p>
 					</a>
-						<ul class="nav-item" id="nav2" style="display: none">
+						<ul class="nav-item" id="nav2">
 							<li class="nav-item active " style="list-style-type: none"><a
 								class="nav-link" href="/regList.do"> <i
 									class="material-icons">assignment</i>
 									<p>작성글</p>
 							</a></li>
 						</ul>
-						<ul class="nav-item" id="nav3" style="display: none">
+						<ul class="nav-item" id="nav3">
 							<li class="nav-item" style="list-style-type: none"><a
 								class="nav-link"
 								href="/userDetail.do?user_no=<%=session_user_no%>"> <i
@@ -193,14 +193,6 @@
 					</a></li>
 					<li class="nav-item "><a class="nav-link" href="/teamL.do">
 							<i class="material-icons">favorite</i>
-							<p>동호회</p>
-					</a></li>
-					<li class="nav-item"><a class="nav-link" href="/boardL.do">
-							<i class="material-icons">list</i>
-							<p>자유게시판</p>
-					</a></li>
-					<li class="nav-item"><a class="nav-link"
-						href="/teamL.do"> <i class="material-icons">favorite</i>
 							<p>동호회</p>
 					</a></li>
 				</ul>

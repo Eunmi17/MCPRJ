@@ -40,11 +40,8 @@
 	String session_user_no = CmmUtil.nvl((String) session.getAttribute("session_user_no"));
 	String session_user_name = CmmUtil.nvl((String) session.getAttribute("session_user_name"));
 	String check = CmmUtil.nvl((String) session.getAttribute("check"));
-
 	String url = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?pageNo=";
-	String urls = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?mntnNm=";
-	String pageNo = "2";
-	String mntnNm = "";
+	String pageNo = (String)request.getAttribute("no");
 	String servicekey = "&serviceKey=HNnmPvdDJDrKEsF3NjHy%2BNkeMnO3zSVJs9GbDxpnYAVpX7GeVtnWIiqpPIOugTK8gq0l9b7sVNBKHL%2FF39%2FClw%3D%3D";
 	String allurl = url + pageNo + servicekey;
 	Document text = Jsoup.connect(allurl).get();
@@ -70,9 +67,33 @@
 	String[] name = mntnnm.text().split(" ");
 	String[] h = mntninfohght.text().split(" ");
 %>
+<%
+	int pages = Integer.parseInt(pageNo);
+	int countList = 10;
+	int countPage = 10;
+	int totalCount = 1592;
+	int totalPage = 160;
+	
+	int startPage = ((pages -1) / 10) * 10 + 1;
+	int endPage = startPage + countPage - 1;
+	
+	if (endPage > totalPage) {
+		endPage = totalPage;
+	}
+%>
 <script>
 
 	window.onload = function() {
+		<%if(!session_user_id.equals("admin")){%>
+			var nav1 = document.getElementById("nav1");
+			var nav2 = document.getElementById("nav2");
+			var nav3 = document.getElementById("nav3");
+			nav1.onclick = function() {
+				nav2.style.display = "";
+				nav3.style.display = "";
+			};
+		<%}%>
+		
 		var s = document.getElementById("search");
 		s.onclick = function(){
 			$('#search').val('');
@@ -90,7 +111,105 @@
 				location.href="/apiSearch.do?nm="+nm;
 			}
 		}
+		
+		
+		
+		<%if(startPage != 1){%>
+			var back = document.getElementById("back");
+			back.onclick = function() {
+				<%
+					startPage = ((pages -1) / 10) * 10 + 1;
+					endPage = startPage + countPage - 1;
+				
+					if (endPage > totalPage) {
+					endPage = totalPage;
+					}
+				%>
+				
+				var content = "";
+				
+				content = "<div id='paging'>";
+				content = "<nav aria-label='Page navigation example'>";
+				content = "<ul class='pagination justify-content-center'>";
+				<%if(startPage != 1) {%>
+					content = "<li class='page-item'>";
+					content = "<a class='page-link' id='back' aria-label='Previous'>";
+					content = "<span aria-hidden='true'>&laquo;</span>";
+					content = "<span class='sr-only'>Previous</span>";
+					content = "</a></li>";
+				<%} %>
+				<%for (int iCount = startPage; iCount <= endPage; iCount++) {
+					if(iCount == pages) {%>
+						content = "<li class='page-item'><a class='page-link'><b>(<%=iCount%>)</b></a></li>";
+					<%}else{ %>
+						content = "<li class='page-item'><a class='page-link' href='/apiMain.do?no=<%=iCount%>'><%=iCount%></a></li>";
+					<%} }%>
+					<%if(endPage != 160) {%>
+						content = "<li class='page-item'>";
+						content = "<a class='page-link' id='next' aria-label='Next'>";
+						content = "<span aria-hidden='true'>&raquo;</span>";
+						content = "<span class='sr-only'>Next</span></a></li>";
+					<%} %>
+				content = "</ul></nav></div>";
+				
+				$('#paging').html(content);
+			};
+		<%}%>
+		<%if(endPage != 160) {%>
+			var next = document.getElementById("next");
+			next.onclick = function() {
+				<%
+					startPage = ((pages -1) / 10) * 10 + 1;
+					endPage = startPage + countPage - 1;
+				
+					if (endPage > totalPage) {
+					endPage = totalPage;
+					}
+				%>
+				
+				var content = "";
+				
+				content = "<div id='paging'>";
+				content = "<nav aria-label='Page navigation example'>";
+				content = "<ul class='pagination justify-content-center'>";
+				<%if(startPage != 1) {%>
+					content = "<li class='page-item'>";
+					content = "<a class='page-link' id='back' aria-label='Previous'>";
+					content = "<span aria-hidden='true'>&laquo;</span>";
+					content = "<span class='sr-only'>Previous</span>";
+					content = "</a></li>";
+				<%} %>
+				<%for (int iCount = startPage; iCount <= endPage; iCount++) {
+					if(iCount == pages) {%>
+						content = "<li class='page-item'><a class='page-link'><b>(";
+						content = <%=iCount%>;
+						content = ")</b></a></li>";
+					<%}else{ %>
+						content = "<li class='page-item'><a class='page-link' href='/apiMain.do?no=";
+						content = <%=iCount%>;
+						content = "'>";
+						content = <%=iCount%>;
+						content = "</a></li>";
+					<%} }%>
+					<%if(endPage != 160) {%>
+						content = "<li class='page-item'>";
+						content = "<a class='page-link' id='next' aria-label='Next'>";
+						content = "<span aria-hidden='true'>&raquo;</span>";
+						content = "<span class='sr-only'>Next</span></a></li>";
+					<%} %>
+				content = "</ul></nav></div>";
+				
+				$('#paging').html(content);
+			};
+		<%}%>
 	}
+	
+	function doDetail(n, h){
+		var nm = n;
+		var hght = h
+		location.href="/api.do?nm="+nm+"&hght="+hght;
+	}
+	
 </script>
 <style>
 #m:link {
@@ -131,8 +250,8 @@
 							<i class="material-icons">home</i>
 							<p>메인</p>
 					</a></li>
-					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/user.html"> <i class="material-icons">filter_hdr</i>
+					<li class="nav-item active"><a class="nav-link"
+						href="/apiMain.do"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
 					<%
@@ -142,16 +261,17 @@
 							<i class="material-icons">person</i>
 							<p>회원 관리</p>
 					</a></li>
-					<li class="nav-item "><a class="nav-link" href="/teamL.do">
-							<i class="material-icons">dvr</i>
+					<li class="nav-item "><a class="nav-link"
+						href="/teamL.do"> <i
+							class="material-icons">dvr</i>
 							<p>게시판 관리</p>
 					</a></li>
-					<li class="nav-item active"><a class="nav-link"
+					<li class="nav-item"><a class="nav-link"
 						href="/boardL.do"> <i class="material-icons">list</i>
 							<p>자유게시판</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/icons.html"> <i
+						href="/chart.do"> <i
 							class="material-icons">assessment</i>
 							<p>분석</p>
 					</a></li>
@@ -177,31 +297,15 @@
 									<p>상세</p>
 							</a></li>
 						</ul></li>
-					<%
-						if (check.equals("F")) {
-					%>
-					<li class="nav-item active"><a class="nav-link"
-						href="/boardL.do"> <i class="material-icons">list</i>
-							<p>자유게시판</p>
-					</a></li>
-					<li class="nav-item "><a class="nav-link" href="/teamL.do">
-							<i class="material-icons">favorite</i>
-							<p>동호회</p>
-					</a></li>
-					<%
-						} else if (check.equals("T")) {
-					%>
-					<li class="nav-item"><a class="nav-link" href="/boardL.do">
-							<i class="material-icons">list</i>
-							<p>자유게시판</p>
-					</a></li>
-					<li class="nav-item active "><a class="nav-link"
-						href="/teamL.do"> <i class="material-icons">favorite</i>
-							<p>동호회</p>
-					</a></li>
-					<%
-						}
-					%>
+							<li class="nav-item"><a class="nav-link"
+								href="/boardL.do"> <i class="material-icons">list</i>
+									<p>자유게시판</p>
+							</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/teamL.do"> <i
+									class="material-icons">favorite</i>
+									<p>동호회</p>
+							</a></li>
 					<%
 						}
 					%>
@@ -241,7 +345,7 @@
 										<form class="navbar-form">
 											<div class="input-group no-border" style="width: 30%">
 												<input type="text" value="" class="form-control" id="search"
-													name="search" placeholder="name Search...">
+													name="search" placeholder="산명  Search...">
 												<button type="button"
 													class="btn btn-white btn-round btn-just-icon" id="sbtn">
 													<i class="material-icons">search</i>
@@ -257,20 +361,50 @@
 												<th><strong>산명</strong></th>
 												<th><strong>소재지</strong></th>
 												<th><strong>높이</strong></th>
+												<th></th>
 											</thead>
 											<tbody>
 												<%
 													for (int i = 0; i < id.length; i++) {
 												%>
 												<tr>
-													<td><%=TextUtil.exchangeEscapeNvl(id[i])%></td>
-													<td><%=TextUtil.exchangeEscapeNvl(name[i])%></td>
-													<td><%=TextUtil.exchangeEscapeNvl(addr[i])%></td>
-													<td><%=TextUtil.exchangeEscapeNvl(h[i])%></td>
+													<td><%=id[i]%></td>
+													<td><%=name[i]%></td>
+													<td><%=addr[i]%></td>
+													<td><%=h[i]%> M</td>
+													<td><img onclick="doDetail('<%=name[i]%>', '<%=h[i]%>');" src="bootstrap/assets/img/loupe.png"></td>
 												</tr>
 												<%}%>
 											</tbody>
 										</table>
+									</div>
+									<div id="paging">
+										<nav aria-label="Page navigation example">
+											<ul class="pagination justify-content-center">
+												<%if(startPage != 1) {%>
+												<li class="page-item">
+													<a class="page-link" id="back" aria-label="Previous">
+														<span aria-hidden="true">&laquo;</span>
+														<span class="sr-only">Previous</span>
+													</a>
+												</li>
+												<%} %>
+												<%for (int iCount = startPage; iCount <= endPage; iCount++) {
+													if(iCount == pages) {%>
+														<li class="page-item"><a class="page-link"><b>(<%=iCount%>)</b></a></li>
+													<%}else{ %>
+														<li class="page-item"><a class="page-link" href="/apiMain.do?no=<%=iCount%>"><%=iCount%></a></li>
+													<%} }%>
+												<%if(endPage != 160) {%>
+												<li class="page-item">
+													<a class="page-link" id="next" aria-label="Next">
+														<span aria-hidden="true">&raquo;</span>
+														<span class="sr-only">Next</span>
+													</a>
+												</li>
+												<%} %>
+											</ul>
+										</nav>
 									</div>
 								</div>
 							</div>

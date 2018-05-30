@@ -65,7 +65,7 @@
 							<p>메인</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/user.html"> <i class="material-icons">filter_hdr</i>
+						href="/apiMain.do"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link" href="/userList.do">
@@ -81,7 +81,7 @@
 							<p>자유게시판</p>
 					</a></li>
 					<li class="nav-item active "><a class="nav-link"
-						href="bootstrap/examples/icons.html"> <i
+						href="/chart.do"> <i
 							class="material-icons">assessment</i>
 							<p>분석</p>
 					</a></li>

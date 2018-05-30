@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.emlee.DTO.boardDTO;
 import com.emlee.DTO.keyDTO;
+import com.emlee.DTO.manageDTO;
 import com.emlee.DTO.userDTO;
 
 public interface IUserService {
@@ -53,5 +54,11 @@ public interface IUserService {
 	List<userDTO> getRegData() throws Exception;
 
 	List<boardDTO> getBoardData() throws Exception;
+
+	userDTO getUserNum() throws Exception;
+
+	manageDTO getManageNum() throws Exception;
+
+	boardDTO getBoardNum() throws Exception;
 
 }

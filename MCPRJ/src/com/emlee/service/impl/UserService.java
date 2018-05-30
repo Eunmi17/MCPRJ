@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.emlee.DTO.boardDTO;
 import com.emlee.DTO.keyDTO;
+import com.emlee.DTO.manageDTO;
 import com.emlee.DTO.userDTO;
 import com.emlee.persistence.mapper.UserMapper;
 import com.emlee.service.IUserService;
@@ -131,6 +132,21 @@ public class UserService implements IUserService {
 	@Override
 	public List<boardDTO> getBoardData() throws Exception {
 		return userMapper.getBoardData();
+	}
+
+	@Override
+	public userDTO getUserNum() throws Exception {
+		return userMapper.getUserNum();
+	}
+
+	@Override
+	public manageDTO getManageNum() throws Exception {
+		return userMapper.getManageNum();
+	}
+
+	@Override
+	public boardDTO getBoardNum() throws Exception {
+		return userMapper.getBoardNum();
 	}
 		
 }

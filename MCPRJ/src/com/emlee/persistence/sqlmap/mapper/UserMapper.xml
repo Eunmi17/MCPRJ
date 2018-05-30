@@ -147,4 +147,20 @@
 		FROM BOARD_INFO
 		GROUP BY DATA;
 	</select>
+	
+	<!-- 메인 회원 -->
+	<select id="getUserNum" resultType="userDTO">
+		SELECT COUNT(USER_NO) DATA
+		FROM USER_INFO
+	</select>
+	<!-- 메인 동호회-->
+	<select id="getManageNum" resultType="manageDTO">
+		SELECT COUNT(TEAM_NO) NUM
+		FROM BOARD_MANAGE
+	</select>
+	<!-- 메인 게시물 -->
+	<select id="getBoardNum" resultType="boardDTO">
+		SELECT COUNT(BOARD_NO) DATA
+		FROM BOARD_INFO
+	</select>
 </mapper>

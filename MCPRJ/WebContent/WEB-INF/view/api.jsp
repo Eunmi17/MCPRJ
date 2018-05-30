@@ -31,13 +31,16 @@
 <!-- iframe removal -->
 <%
 	String session_user_no = CmmUtil.nvl((String) session.getAttribute("session_user_no"));
+	String session_user_id = CmmUtil.nvl((String) session.getAttribute("session_user_id"));
 	System.out.print(session_user_no);
 	String session_user_name = CmmUtil.nvl((String) session.getAttribute("session_user_name"));
 	
 	String url = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?mntnNm=";
-	String mntnNm = "가리왕산";
+	String mntnNm = CmmUtil.nvl((String) request.getAttribute("nm"));
+	String mntnHght = CmmUtil.nvl((String) request.getAttribute("hght"));
+	String hght = "&mntnHght=";
 	String servicekey = "&serviceKey=HNnmPvdDJDrKEsF3NjHy%2BNkeMnO3zSVJs9GbDxpnYAVpX7GeVtnWIiqpPIOugTK8gq0l9b7sVNBKHL%2FF39%2FClw%3D%3D";
-	String allurl = url+mntnNm+servicekey;
+	String allurl = url+mntnNm+hght+mntnHght+servicekey;
 	Document text = Jsoup.connect(allurl).get();
 	
 	Elements mntnid = text.select("mntnid");
@@ -56,14 +59,20 @@
 <script>
 
 	window.onload = function() {
+		
+		var list = document.getElementById("list");
 		var nav1 = document.getElementById("nav1");
 		var nav2 = document.getElementById("nav2");
 		var nav3 = document.getElementById("nav3");
 		nav1.onclick = function() {
 			nav2.style.display = "";
 			nav3.style.display = "";
-		}
+		};
+		list.onclick = function() {
+			location.href = "/apiMain.do";
+		};
 	}
+		
 </script>
 <style>
 #m:link {
@@ -78,6 +87,19 @@
 	color: #6c757d;
 	text-decoration: underline;
 }
+
+.sam hr{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.sam{
+display: block;
+  width: 100%;
+  padding: 0.4375rem 0;
+  font-size: 1rem;
+}
+
 </style>
 </head>
 
@@ -95,17 +117,40 @@
 			</div>
 			<div class="sidebar-wrapper">
 				<ul class="nav">
-					<li class="nav-item active "><a class="nav-link"
-						href="/main.do"> <i
-							class="material-icons">home</i>
+					<li class="nav-item"><a class="nav-link" href="/main.do">
+							<i class="material-icons">home</i>
 							<p>메인</p>
 					</a></li>
-					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/user.html"> <i class="material-icons">filter_hdr</i>
+					<li class="nav-item active"><a class="nav-link"
+						href="/apiMain.do"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
-					<li class="nav-item "><a class="nav-link" id="nav1">
+					<%
+						if (session_user_id.equals("admin")) {
+					%>
+					<li class="nav-item"><a class="nav-link" href="/userList.do">
 							<i class="material-icons">person</i>
+							<p>회원 관리</p>
+					</a></li>
+					<li class="nav-item "><a class="nav-link"
+						href="/teamL.do"> <i
+							class="material-icons">dvr</i>
+							<p>게시판 관리</p>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/boardL.do"> <i class="material-icons">list</i>
+							<p>자유게시판</p>
+					</a></li>
+					<li class="nav-item "><a class="nav-link"
+						href="/chart.do"> <i
+							class="material-icons">assessment</i>
+							<p>분석</p>
+					</a></li>
+					<%
+						} else {
+					%>
+					<li class="nav-item "><a class="nav-link" id="nav1"> <i
+							class="material-icons">person</i>
 							<p>마이페이지</p>
 					</a>
 						<ul class="nav-item" id="nav2" style="display: none">
@@ -117,21 +162,24 @@
 						</ul>
 						<ul class="nav-item" id="nav3" style="display: none">
 							<li class="nav-item" style="list-style-type: none"><a
-								class="nav-link" href="/userDetail.do?user_no=<%=session_user_no%>"> <i
+								class="nav-link"
+								href="/userDetail.do?user_no=<%=session_user_no%>"> <i
 									class="material-icons">assignment_ind</i>
 									<p>상세</p>
 							</a></li>
 						</ul></li>
-					<li class="nav-item "><a class="nav-link"
-						href="/boardL.do"> <i
-							class="material-icons">list</i>
-							<p>자유게시판</p>
-					</a></li>
-					<li class="nav-item "><a class="nav-link"
-						href="/teamL.do"> <i
-							class="material-icons">favorite</i>
-							<p>동호회</p>
-					</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/boardL.do"> <i class="material-icons">list</i>
+									<p>자유게시판</p>
+							</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/teamL.do"> <i
+									class="material-icons">favorite</i>
+									<p>동호회</p>
+							</a></li>
+					<%
+						}
+					%>
 				</ul>
 			</div>
 		</div>
@@ -154,28 +202,107 @@
             <!-- End Navbar -->
 			<div class="content">
 				<div class="container-fluid">
-					<div id="api">
-						산코드 : <%=TextUtil.exchangeEscapeNvl(mntnid.text()) %>
-						<br>
-						산명 : <%=TextUtil.exchangeEscapeNvl(mntnnm.text()) %>
-						<br>
-						소재지 : <%=TextUtil.exchangeEscapeNvl(mntninfopoflc.text()) %>
-						<br>
-						높이 : <%=TextUtil.exchangeEscapeNvl(mntninfohght.text()) %>
-						<br>
-						개관 : <%=TextUtil.exchangeEscapeNvl(mntninfodscrt.text()) %>
-						<br>
-						상세 : <%=TextUtil.exchangeEscapeNvl(mntninfodtlinfocont.text()) %>
-						<br>
-						대중교통 : <%=TextUtil.exchangeEscapeNvl(pbtrninfodscrt.text()) %>
-						<br>
-						주변관광 : <%=TextUtil.exchangeEscapeNvl(crcmrsghtnginfodscrt.text()) %>
-						<br>
-						산행포인트 : <%=TextUtil.exchangeEscapeNvl(crcmrsghtnginfoetcdscrt.text()) %>
-						<br>
-						부재 : <%=TextUtil.exchangeEscapeNvl(mntnsbttlinfo.text()) %>
-						<br>
-						코스 : <%=TextUtil.exchangeEscapeNvl(crcmrsghtngetcimageseq.text()) %>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="card-header card-header-primary">
+									<h5 align="right">
+									산코드 : <%=mntnid.text() %>
+									</h5>
+									<h2 class="card-title ">
+										<b><%=mntnnm.text() %></b>
+									</h2>
+								</div>
+								<div class="card-body">
+									<form>
+										<%if(!mntnsbttlinfo.text().equals("")) {%>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="bmd-label-floating">부재</label>
+													<div class="sam"><%=mntnsbttlinfo.text() %><hr></div>
+												</div>
+											</div>
+										</div>
+										<%} %>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="bmd-label-floating">소재지</label>
+													<div class="sam"><%=mntninfopoflc.text() %><hr></div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="bmd-label-floating">높이</label>
+													<div class="sam"><%=mntninfohght.text() %> M<hr></div>
+												</div>
+											</div>
+										</div>
+										<%if(!mntninfodscrt.text().equals("&amp;nbsp;")) {%>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="bmd-label-floating">개관</label>
+													<div class="sam"><%=mntninfodscrt.text()%><hr></div>
+												</div>
+											</div>
+										</div>
+										<%} %>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="bmd-label-floating">상세</label>
+													<div class="sam"><%=mntninfodtlinfocont.text()%><hr></div>
+												</div>
+											</div>
+										</div>
+										<%if(!crcmrsghtnginfodscrt.text().equals("&amp;nbsp;")) {%>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="bmd-label-floating">주변관광</label>
+													<div class="sam"><%=crcmrsghtnginfodscrt.text()%><hr></div>
+												</div>
+											</div>
+										</div>
+										<%} %>
+										<%if(!pbtrninfodscrt.text().equals("&amp;nbsp;")) {%>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="bmd-label-floating">대중교통</label>
+													<div class="sam"><%=pbtrninfodscrt.text()%><hr></div>
+												</div>
+											</div>
+										</div>
+										<%} %>
+										<%if(!crcmrsghtnginfoetcdscrt.text().equals("&amp;nbsp;")) {%>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group">
+													<label class="bmd-label-floating">산행포인트</label>
+													<div class="sam"><%=crcmrsghtnginfoetcdscrt.text()%><hr></div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group">
+													<label class="bmd-label-floating">산행포인트 지도</label><br>
+													<a id="m" href="<%=crcmrsghtngetcimageseq.text()%>"><%=crcmrsghtngetcimageseq.text()%></a>
+													<p style="color:red;">링크를 클릭하시면 파일이 다운로드됩니다.</p>
+												</div>
+											</div>
+										</div>
+										<%} %>
+										<button type="button" id="list" class="btn btn-primary pull-right">리스트로 이동</button>
+										<div class="clearfix"></div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<footer class="footer ">

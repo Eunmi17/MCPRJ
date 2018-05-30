@@ -134,6 +134,13 @@ function doSubmit(f) { //전송시 유효성 체크
 	color: #6c757d;
 	text-decoration: underline;
 }
+.non{
+    background-size: 0, 100%, 100%, 100%;
+    border: 0;
+   	font-size: 16px;
+    background: no-repeat center bottom, center calc(100% - 1px);
+    width: 100%;   
+}
 </style>
 </head>
 
@@ -160,34 +167,31 @@ function doSubmit(f) { //전송시 유효성 체크
 						href="bootstrap/examples/user.html"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
-
-					<li class="nav-item "><a class="nav-link" id="nav1"> <i
+					<li class="nav-item"><a class="nav-link" id="nav1"> <i
 							class="material-icons">person</i>
 							<p>마이페이지</p>
 					</a>
-						<ul class="nav-item" id="nav2" style="display: none">
-							<li class="nav-item" style="list-style-type: none"><a
+						<ul class="nav-item" id="nav2">
+							<li class="nav-item " style="list-style-type: none"><a
 								class="nav-link" href="/regList.do"> <i
 									class="material-icons">assignment</i>
 									<p>작성글</p>
 							</a></li>
 						</ul>
-						<ul class="nav-item" id="nav3" style="display: none">
-							<li class="nav-item" style="list-style-type: none"><a
+						<ul class="nav-item active" id="nav3">
+							<li class="nav-item active " style="list-style-type: none"><a
 								class="nav-link"
 								href="/userDetail.do?user_no=<%=session_user_no%>"> <i
 									class="material-icons">assignment_ind</i>
 									<p>상세</p>
 							</a></li>
 						</ul></li>
-					<li class="nav-item "><a class="nav-link"
-						href="/boardL.do"> <i
-							class="material-icons">list</i>
+					<li class="nav-item"><a class="nav-link"
+						href="/boardL.do"> <i class="material-icons">list</i>
 							<p>자유게시판</p>
 					</a></li>
-					<li class="nav-item "><a class="nav-link"
-						href="/teamL.do"> <i
-							class="material-icons">favorite</i>
+					<li class="nav-item "><a class="nav-link" href="/teamL.do">
+							<i class="material-icons">favorite</i>
 							<p>동호회</p>
 					</a></li>
 				</ul>
@@ -316,7 +320,7 @@ function doSubmit(f) { //전송시 유효성 체크
 												</div>
 											</div>
 											<div class="col-md-12">
-													<input type="text" class="form-control" name="addr1" id="addr1"
+													<input type="text" class="non" name="addr1" id="addr1"
 														value="<%=CmmUtil.nvl(uDTO.getAddr1())%>" readonly>
 													<input type="text" class="form-control" name="addr2" id="addr2"
 														value="<%=CmmUtil.nvl(uDTO.getAddr2())%>">

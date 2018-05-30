@@ -42,7 +42,7 @@
 	String check = CmmUtil.nvl((String) session.getAttribute("check"));
 
 	String url = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?mntnNm=";
-	String mntnNm = CmmUtil.nvl((String) request.getParameter("nm"));
+	String mntnNm = CmmUtil.nvl((String) request.getAttribute("nm"));
 	String servicekey = "&serviceKey=HNnmPvdDJDrKEsF3NjHy%2BNkeMnO3zSVJs9GbDxpnYAVpX7GeVtnWIiqpPIOugTK8gq0l9b7sVNBKHL%2FF39%2FClw%3D%3D";
 	String allurl = url + mntnNm + servicekey;
 	Document text = Jsoup.connect(allurl).get();
@@ -71,6 +71,14 @@
 <script>
 
 	window.onload = function() {
+		var nav1 = document.getElementById("nav1");
+		var nav2 = document.getElementById("nav2");
+		var nav3 = document.getElementById("nav3");
+		nav1.onclick = function() {
+			nav2.style.display = "";
+			nav3.style.display = "";
+		};
+		
 		var s = document.getElementById("search");
 		s.onclick = function(){
 			$('#search').val('');
@@ -89,6 +97,13 @@
 			}
 		}
 	}
+	
+	function doDetail(n, h){
+		var nm = n;
+		var hght = h;
+		location.href="/api.do?nm="+nm+"&hght="+hght;
+	}
+	
 </script>
 <style>
 #m:link {
@@ -129,8 +144,8 @@
 							<i class="material-icons">home</i>
 							<p>메인</p>
 					</a></li>
-					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/user.html"> <i class="material-icons">filter_hdr</i>
+					<li class="nav-item active"><a class="nav-link"
+						href="/apiMain.do"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
 					<%
@@ -140,16 +155,17 @@
 							<i class="material-icons">person</i>
 							<p>회원 관리</p>
 					</a></li>
-					<li class="nav-item "><a class="nav-link" href="/teamL.do">
-							<i class="material-icons">dvr</i>
+					<li class="nav-item "><a class="nav-link"
+						href="/teamL.do"> <i
+							class="material-icons">dvr</i>
 							<p>게시판 관리</p>
 					</a></li>
-					<li class="nav-item active"><a class="nav-link"
+					<li class="nav-item"><a class="nav-link"
 						href="/boardL.do"> <i class="material-icons">list</i>
 							<p>자유게시판</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/icons.html"> <i
+						href="/chart.do"> <i
 							class="material-icons">assessment</i>
 							<p>분석</p>
 					</a></li>
@@ -175,31 +191,15 @@
 									<p>상세</p>
 							</a></li>
 						</ul></li>
-					<%
-						if (check.equals("F")) {
-					%>
-					<li class="nav-item active"><a class="nav-link"
-						href="/boardL.do"> <i class="material-icons">list</i>
-							<p>자유게시판</p>
-					</a></li>
-					<li class="nav-item "><a class="nav-link" href="/teamL.do">
-							<i class="material-icons">favorite</i>
-							<p>동호회</p>
-					</a></li>
-					<%
-						} else if (check.equals("T")) {
-					%>
-					<li class="nav-item"><a class="nav-link" href="/boardL.do">
-							<i class="material-icons">list</i>
-							<p>자유게시판</p>
-					</a></li>
-					<li class="nav-item active "><a class="nav-link"
-						href="/teamL.do"> <i class="material-icons">favorite</i>
-							<p>동호회</p>
-					</a></li>
-					<%
-						}
-					%>
+							<li class="nav-item"><a class="nav-link"
+								href="/boardL.do"> <i class="material-icons">list</i>
+									<p>자유게시판</p>
+							</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/teamL.do"> <i
+									class="material-icons">favorite</i>
+									<p>동호회</p>
+							</a></li>
 					<%
 						}
 					%>
@@ -248,6 +248,7 @@
 											</div>
 										</form>
 									</div>
+									<%if(id.length != 0) {%>
 									<div class="table-responsive" id="divTable">
 										<table class="table">
 											<thead class=" text-primary">
@@ -257,19 +258,21 @@
 												<th><strong>높이</strong></th>
 											</thead>
 											<tbody>
-												<%
-													for (int i = 0; i < id.length; i++) {
-												%>
+												<%for (int i = 0; i < id.length; i++) {%>
 												<tr>
-													<td><%=TextUtil.exchangeEscapeNvl(id[i])%></td>
-													<td><%=TextUtil.exchangeEscapeNvl(name[i])%></td>
-													<td><%=TextUtil.exchangeEscapeNvl(addr[i])%></td>
-													<td><%=TextUtil.exchangeEscapeNvl(h[i])%></td>
+													<td><%=id[i]%></td>
+													<td><%=name[i]%></td>
+													<td><%=addr[i]%></td>
+													<td><%=h[i]%> M</td>
+													<td><img onclick="doDetail('<%=name[i]%>', '<%=h[i]%>');" src="bootstrap/assets/img/loupe.png"></td>
 												</tr>
 												<%}%>
 											</tbody>
 										</table>
 									</div>
+									<%}else{ %>
+									<div align="center" style="color:red;">'<%=mntnNm %>' 에 해당하는 검색결과가 없습니다.</div>
+									<%} %>
 								</div>
 							</div>
 						</div>

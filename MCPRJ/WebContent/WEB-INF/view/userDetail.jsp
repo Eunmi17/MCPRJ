@@ -118,7 +118,7 @@
 							<p>메인</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/user.html"> <i class="material-icons">filter_hdr</i>
+						href="/apiMain.do"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
 					<%if(session_user_id.equals("admin")) {%>
@@ -137,7 +137,7 @@
 							<p>자유게시판</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/icons.html"> <i
+						href="/chart.do"> <i
 							class="material-icons">assessment</i>
 							<p>분석</p>
 					</a></li>
@@ -146,14 +146,14 @@
 							<i class="material-icons">person</i>
 							<p>마이페이지</p>
 					</a>
-						<ul class="nav-item" id="nav2" style="display: none">
+						<ul class="nav-item" id="nav2">
 							<li class="nav-item" style="list-style-type: none"><a
 								class="nav-link" href="/regList.do"> <i
 									class="material-icons">assignment</i>
 									<p>작성글</p>
 							</a></li>
 						</ul>
-						<ul class="nav-item" id="nav3" style="display: none">
+						<ul class="nav-item" id="nav3">
 							<li class="nav-item active" style="list-style-type: none"><a
 								class="nav-link" href="/userDetail.do?user_no=<%=session_user_no%>"> <i
 									class="material-icons">assignment_ind</i>

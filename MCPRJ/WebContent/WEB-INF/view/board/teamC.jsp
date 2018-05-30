@@ -133,7 +133,7 @@
 							<p>메인</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link"
-						href="bootstrap/examples/user.html"> <i class="material-icons">filter_hdr</i>
+						href="/apiMain.do"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link" id="nav1"> <i

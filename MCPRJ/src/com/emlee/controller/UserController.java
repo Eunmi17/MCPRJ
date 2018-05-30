@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.emlee.DTO.boardDTO;
 import com.emlee.DTO.keyDTO;
+import com.emlee.DTO.manageDTO;
 import com.emlee.DTO.userDTO;
 import com.emlee.service.IUserService;
 import com.emlee.util.CmmUtil;
@@ -48,8 +49,19 @@ public class UserController {
 		
 		log.info("log_user : " + log_user);
 		
+		userDTO u = userService.getUserNum();
+		manageDTO m = userService.getManageNum();
+		boardDTO b = userService.getBoardNum();
+		
+		log.info("u :" + u);
+		log.info("m :" + m);
+		log.info("b :" + b);
+		
 		if(log_user.equals("admin")){
 			log.info(this.getClass() + "admin_main end!!!");
+			model.addAttribute("u", u);
+			model.addAttribute("m", m);
+			model.addAttribute("b", b);
 			return "/amain";
 		}else if(log_user.equals("")){
 			model.addAttribute("msg", "회원만 볼 수 있는 페이지 입니다. 로그인 해주세요");
@@ -58,6 +70,9 @@ public class UserController {
 			return "/alert";
 		}else{
 			log.info(this.getClass() + "user_main end!!!");
+			model.addAttribute("u", u);
+			model.addAttribute("m", m);
+			model.addAttribute("b", b);
 			return "/umain";
 		}
 	}
@@ -625,6 +640,17 @@ public class UserController {
 	public String api(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 					Model model) throws Exception {
 		log.info(getClass() + "api start!!!");
+		
+		request.setCharacterEncoding("UTF-8");
+		String nm = CmmUtil.nvl(request.getParameter("nm"));
+		String hght = CmmUtil.nvl(request.getParameter("hght"));
+		
+		log.info("nm : " + nm);
+		log.info("hght : " + hght);
+		
+		model.addAttribute("nm", nm);
+		model.addAttribute("hght", hght);
+		
 		log.info(getClass() + "api end!!!");
 		return "/api";
 	}
@@ -633,6 +659,17 @@ public class UserController {
 	public String apiMain(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 					Model model) throws Exception {
 		log.info(getClass() + "apiMain start!!!");
+		
+		String no = CmmUtil.nvl(request.getParameter("no"));
+		
+		if(no.equals("")){
+			no = "1";
+		}
+		
+		log.info("no : " + no);
+		
+		model.addAttribute("no", no);
+		
 		log.info(getClass() + "apiMain end!!!");
 		return "/apiMain";
 	}
