@@ -7,7 +7,7 @@
 	<select id="getBoardList" parameterType="String" resultType="boardDTO">
 		SELECT * FROM BOARD_INFO
 		WHERE TEAM_NO = #{team_no}
-		ORDER BY NOTICE_CHECK DESC, BOARD_NO DESC
+		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC
 	</select>
 	<!-- 글 등록 -->
 	<insert id="insertBoard" parameterType="boardDTO">
@@ -25,10 +25,10 @@
 	<!-- 파일 업로드 -->
 	<insert id="insertFile" parameterType="fileDTO">
 		INSERT INTO FILE_INFO ( FILE_NO, BOARD_NO, ORI_NAME, FILE_NAME, FILE_TYPE,
-			FILE_RENAME, FILE_PATH, FILE_SIZE, SAVE_PATH, REG_NO, REG_DT )
+			FILE_RENAME, FILE_PATH, FILE_SIZE, SAVE_PATH, REG_NO, REG_DT, TEAM_NO )
 		VALUES( (SELECT IFNULL(MAX(CAST(FI.FILE_NO AS UNSIGNED)), 0)+1 FROM FILE_INFO FI), #{board_no},
 			#{ori_name}, #{file_name}, #{file_type},
-			#{file_rename}, #{file_path}, #{file_size}, #{save_path}, #{reg_no}, NOW() )
+			#{file_rename}, #{file_path}, #{file_size}, #{save_path}, #{reg_no}, NOW(), #{team_no} )
 	</insert>
 	<!-- 글 상세 -->
 	<select id="getBoard" parameterType="boardDTO" resultType="boardDTO">
@@ -68,7 +68,7 @@
 	<!-- 팀 리스트 -->
 	<select id="getTeamList" resultType="manageDTO">
 		SELECT * FROM BOARD_MANAGE
-		ORDER BY TEAM_NO ASC
+		ORDER BY CAST(TEAM_NO AS UNSIGNED) ASC
 	</select>
 	<!-- 팀 정보 -->
 	<select id="getTeam" resultType="manageDTO" parameterType="manageDTO">
@@ -146,7 +146,7 @@
 	<select id="getUserList" parameterType="String" resultType="userDTO">
 		SELECT * FROM USER_INFO
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA"
-		ORDER BY AUTH ASC, USER_NO ASC
+		ORDER BY AUTH ASC, CAST(USER_NO AS UNSIGNED) ASC
 	</select>
 	<!-- 가입신청서 정보 -->
 	<select id="getJoinUser" parameterType="String" resultType="userDTO">
@@ -186,18 +186,18 @@
 	<select id="getTeamSearch" parameterType="manageDTO" resultType="manageDTO">
 		SELECT * FROM BOARD_MANAGE
 		WHERE TEAM_NAME LIKE #{search} OR LEADER_NAME LIKE #{search}
-		ORDER BY TEAM_NO ASC
+		ORDER BY CAST(TEAM_NO AS UNSIGNED) ASC
 	</select>
 	<!-- 팀원 검색 -->
 	<select id="getTeamUserSearch" parameterType="userDTO" resultType="userDTO">
 		SELECT * FROM USER_INFO
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA" AND (USER_NAME LIKE #{search} OR USER_ID LIKE #{search})
-		ORDER BY AUTH ASC, USER_NO ASC
+		ORDER BY AUTH ASC, CAST(USER_NO AS UNSIGNED) ASC
 	</select>
 	<!-- 글 검색 -->
 	<select id="getboardSearch" parameterType="boardDTO" resultType="boardDTO">
 		SELECT * FROM BOARD_INFO
 		WHERE TEAM_NO = #{team_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
-		ORDER BY NOTICE_CHECK DESC, BOARD_NO DESC
+		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC
 	</select>
 </mapper>

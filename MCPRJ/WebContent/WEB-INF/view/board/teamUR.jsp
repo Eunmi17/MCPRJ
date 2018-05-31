@@ -217,10 +217,12 @@
 										</div>
 									</div>
 									<button type="button" class="btn btn-primary pull-right" id="reset">리스트로 이동</button>
-									<button type="button" onclick="dojoinD(<%=jDTO.getUser_no() %>);"
-										class="btn btn-primary pull-right" style="width: 100px">거 절</button>
-									<button class="btn btn-primary pull-right" onclick="doapprove(<%=jDTO.getUser_no() %>);"
-										style="width: 100px">승 인</button>
+									<%if(uDTO.getAuth().equals("UD")) {%>
+										<button type="button" onclick="dojoinD(<%=jDTO.getUser_no() %>);"
+											class="btn btn-primary pull-right" style="width: 100px">거 절</button>
+										<button class="btn btn-primary pull-right" onclick="doapprove(<%=jDTO.getUser_no() %>);"
+											style="width: 100px">승 인</button>
+									<%} %>
 									<div class="clearfix"></div>
 								</div>
 							</div>

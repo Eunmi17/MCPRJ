@@ -47,26 +47,34 @@
 	String allurl = url + mntnNm + servicekey;
 	Document text = Jsoup.connect(allurl).get();
 
-	Elements mntnid = text.select("mntnid");
-	Elements mntnnm = text.select("mntnnm");
 	Elements item = text.select("items > item");
-	Elements mntninfohght = text.select("mntninfohght");
-
+	Elements totalCount = text.select("totalCount");
+	int count = Integer.parseInt(totalCount.text());
+	
 	int s = 0;
-	String[] addr = new String[10];
+	String[] addr = new String[count];
+	String[] id = new String[count];
+	String[] name = new String[count];
+	String[] h = new String[count];
 
 	for (Element add : item) {
+		
 		Elements mntninfopoflc = add.getElementsByTag("mntninfopoflc");
+		Elements mntnid = add.getElementsByTag("mntnid");
+		Elements mntnnm = add.getElementsByTag("mntnnm");
+		Elements mntninfohght = add.getElementsByTag("mntninfohght");
+		
 		addr[s] = mntninfopoflc.get(0).text().trim();
+		id[s] = mntnid.get(0).text().trim();
+		name[s] = mntnnm.get(0).text().trim();
+		h[s] = mntninfohght.get(0).text().trim();
+		
 		s++;
 		if (s > 10) {
 			break;
 		}
 	}
-
-	String[] id = mntnid.text().split(" ");
-	String[] name = mntnnm.text().split(" ");
-	String[] h = mntninfohght.text().split(" ");
+	
 %>
 <script>
 
@@ -88,11 +96,13 @@
 		sbtn.onclick = function() {
 			console.log("검색 클릭");
 			
-			if(nm = ""){
+
+			var nm = $('#search').val();
+			console.log("검색값 : " + nm);
+			
+			if(nm == null){
 				location.href="/apiMain.do";
 			}else{
-				var nm = $('#search').val();
-				console.log("검색값 : " + nm);
 				location.href="apiSearch.do?nm="+nm;
 			}
 		}

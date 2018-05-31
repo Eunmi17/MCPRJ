@@ -231,6 +231,27 @@ public class UserController {
 		
 		log.info(this.getClass() + "ketCheck end!!!");
 	}
+    @RequestMapping(value="/NECheck", method=RequestMethod.POST)
+    public void NECheck(@RequestParam(value = "user_email") String email, @RequestParam(value = "user_name") String user_name,
+    		HttpServletResponse response) throws Exception{
+		log.info(this.getClass() + ".NECheck start");
+		
+		log.info("user_name : " + user_name);
+		log.info("email : " + email);
+		
+		userDTO uDTO = new userDTO();
+		
+		uDTO.setUser_name(user_name);
+		uDTO.setEmail(email);
+		
+		uDTO = userService.getIdSearch(uDTO);
+
+		response.getWriter().print(uDTO);
+		response.getWriter().flush();
+		response.getWriter().close();
+		
+		log.info(this.getClass() + "NECheck end!!!");
+	}
 	@RequestMapping(value = "/idCheck", method = RequestMethod.POST)
 	public void idCheck(@RequestParam(value = "user_id") String user_id, HttpServletResponse response) throws Exception {
 		log.info(this.getClass() + "idCheck start!!");
@@ -642,7 +663,7 @@ public class UserController {
 		log.info(getClass() + "api start!!!");
 		
 		request.setCharacterEncoding("UTF-8");
-		String nm = CmmUtil.nvl(request.getParameter("nm"));
+		String nm = TextUtil.exchangeEscapeNvl(CmmUtil.nvl(request.getParameter("nm")));
 		String hght = CmmUtil.nvl(request.getParameter("hght"));
 		
 		log.info("nm : " + nm);

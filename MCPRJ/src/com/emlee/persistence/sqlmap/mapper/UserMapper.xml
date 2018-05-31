@@ -58,7 +58,7 @@
 	<select id="getUserList" resultType="userDTO">
 		SELECT * FROM USER_INFO
 		WHERE NOT AUTH = "AA"
-		ORDER BY USER_NO ASC
+		ORDER BY CAST(USER_NO AS UNSIGNED) ASC
 	</select>
 	
 	<!-- 회원 상세 -->
@@ -85,21 +85,21 @@
 	<select id="getRegList" parameterType="String" resultType="boardDTO">
 		SELECT * FROM BOARD_INFO
 		WHERE REG_NO = #{user_no}
-		ORDER BY NOTICE_CHECK DESC, BOARD_NO DESC
+		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC
 	</select>
 	
 	<!-- 작성글 검색 -->
 	<select id="getRegSearch" parameterType="boardDTO" resultType="boardDTO">
 		SELECT * FROM BOARD_INFO
 		WHERE REG_NO = #{reg_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
-		ORDER BY NOTICE_CHECK DESC, BOARD_NO DESC
+		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC
 	</select>
 	
 	<!-- 회원 검색 -->
 	<select id="getUserSearch" resultType="userDTO">
 		SELECT * FROM USER_INFO
 		WHERE NOT AUTH = "AA" AND (USER_NAME LIKE #{search} OR USER_ID LIKE #{search})
-		ORDER BY USER_NO ASC
+		ORDER BY CAST(USER_NO AS UNSIGNED) ASC
 	</select>
 	
 	<!-- 성별 분석 -->
@@ -153,14 +153,17 @@
 		SELECT COUNT(USER_NO) DATA
 		FROM USER_INFO
 	</select>
+	
 	<!-- 메인 동호회-->
 	<select id="getManageNum" resultType="manageDTO">
 		SELECT COUNT(TEAM_NO) NUM
 		FROM BOARD_MANAGE
 	</select>
+	
 	<!-- 메인 게시물 -->
 	<select id="getBoardNum" resultType="boardDTO">
 		SELECT COUNT(BOARD_NO) DATA
 		FROM BOARD_INFO
 	</select>
+	
 </mapper>

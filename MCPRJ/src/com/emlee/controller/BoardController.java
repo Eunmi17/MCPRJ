@@ -113,7 +113,7 @@ public class BoardController {
 		String bcheck = CmmUtil.nvl((String)session.getAttribute("check"));
 		String team_no = "";
 		if(bcheck.equals("F")){
-			team_no = "0"; //ÀÚÀ¯ °Ô½ÃÆÇ ÆÀ¹øÈ£´Â 0
+			team_no = "0"; //ììœ ê²Œì‹œíŒ íŒ€ë²ˆí˜¸ëŠ” 0
 		}else if(bcheck.equals("T")){
 			team_no = CmmUtil.nvl((String)session.getAttribute("session_team_no"));
 		}
@@ -123,7 +123,7 @@ public class BoardController {
 		String content = TextUtil.exchangeEscapeNvl(c);
 		content = content.replace("\r\n", "<br>");
 		String notice = CmmUtil.nvl(req.getParameter("notice"));
-		String check = CmmUtil.nvl(req.getParameter("check")); //1ÀÌ¸é ÆÄÀÏ ¾øÀ½ 2¸é ÆÄÀÏÀÖÀ½
+		String check = CmmUtil.nvl(req.getParameter("check")); //1ì´ë©´ íŒŒì¼ ì—†ìŒ 2ì´ë©´ íŒŒì¼ìˆìŒ
 		if (notice == "") {
 			notice = "N";
 		}
@@ -166,13 +166,13 @@ public class BoardController {
 		
 		if(re != 0) {
 			if(file.equals("Y")){
-			fileProc(f, req, model, board_no, team_no, user_no);
+			fileProc(f, req, model, board_no, team_no, user_no, "c");
 			}else{
-				model.addAttribute("msg", "±ÛÀÌ µî·ÏµÇ¾ú½À´Ï´Ù.");
+				model.addAttribute("msg", "ê¸€ì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 				model.addAttribute("url", "/boardR.do?board_no="+board_no);
 			}
 		}else{
-			model.addAttribute("msg", "±Û µî·Ï¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+			model.addAttribute("msg", "ê¸€ ë“±ë¡ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/boardC.do");
 		}
 		
@@ -180,20 +180,21 @@ public class BoardController {
 		return "/alert";
 	}
 	public String fileProc(@RequestParam(value="f") MultipartFile file,
-			HttpServletRequest req, Model model, String board_no, String team_no, String user_no) throws Exception {
+			HttpServletRequest req, Model model, String board_no, String team_no, String user_no, String check) throws Exception {
 		log.info(getClass() + "file start!!!");
 		
 		log.info("file : " + file);
 		log.info("board_no : " + board_no);
 		log.info("user_no : " + user_no);
 		log.info("team_no : " + team_no);
+		log.info("check : " + check);
 		
-		// ÇöÀç ³¯Â¥ ºÒ·¯¿À±â
+		// í˜„ì¬ ë‚ ì§œ ë¶ˆëŸ¬ì˜¤ê¸°
 	      long time = System.currentTimeMillis();
 	      SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMdd-HH-mm-ss", Locale.KOREA);
 	      String strDate = dayTime.format(new Date(time));
 
-	      // ÆÄÀÏ ÀúÀå °æ·Î
+	      // íŒŒì¼ ì €ì¥ ê²½ë¡œ
 	      String savePath = req.getSession().getServletContext().getRealPath("file");
 
 	      String originalFileName = file.getOriginalFilename();
@@ -203,12 +204,12 @@ public class BoardController {
 	      String rename = SHA256.SHA256_encode(onlyFileName) + "_" + strDate + extention;
 	      String fullPath = savePath + "\\" + rename;
 
-	      log.info("ÀúÀå °æ·Î : " + savePath);
-	      log.info("ÆÄÀÏ¸í+Å¸ÀÔ : " + originalFileName);
-	      log.info("ÆÄÀÏ¸í : " + onlyFileName);
-	      log.info("Å¸ÀÔ : " + extention);
-	      log.info("¹Ù²ï ÀÌ¸§ : " + rename);
-	      log.info("ÀüÃ¼ °æ·Î : " + fullPath);
+	      log.info("ì €ì¥ ê²½ë¡œ : " + savePath);
+	      log.info("íŒŒì¼ëª…+íƒ€ì… : " + originalFileName);
+	      log.info("íŒŒì¼ëª…: " + onlyFileName);
+	      log.info("íƒ€ì…: " + extention);
+	      log.info("ë°”ë€ ì´ë¦„ : " + rename);
+	      log.info("ì „ì²´ ê²½ë¡œ : " + fullPath);
 	      
 	            byte[] bytes = file.getBytes();
 	            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fullPath)));
@@ -231,10 +232,15 @@ public class BoardController {
 	            int r = boardService.insertFile(f);
 
 	            if(r != 0){
-	            model.addAttribute("msg", "±Û µî·Ï¿¡ ¼º°øÇÏ¿´½À´Ï´Ù!");
-	            model.addAttribute("url", "/boardR.do?board_no="+board_no);
+	            	if(check.equals("c")){
+			            model.addAttribute("msg", "ê¸€ ë“±ë¡ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤!");
+			            model.addAttribute("url", "/boardR.do?board_no="+board_no);
+	            	}else{
+	            		model.addAttribute("msg", "ê¸€ ìˆ˜ì •ì— ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤!");
+			            model.addAttribute("url", "/boardR.do?board_no="+board_no);
+	            	}
 	            }else{
-	            model.addAttribute("msg", "±Û µî·Ï¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù...");
+	            model.addAttribute("msg", "ê¸€ ë“±ë¡ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤...");
 	            model.addAttribute("url", "/boardC.do");
 	            }
 		
@@ -261,13 +267,13 @@ public class BoardController {
 		
 		log.info("check : " + check);
 		
-		boardDTO bDTO = new boardDTO(); //»ó¼¼ °¡Á®¿À±â¿ë
-		boardDTO cDTO = new boardDTO(); //Á¶È¸¼ö ¿Ã¸®±â¿ë
-		fileDTO fDTO = new fileDTO(); //ÆÄÀÏ °¡Á®¿À±â¿ë
+		boardDTO bDTO = new boardDTO(); //ìƒì„¸ ê°€ì ¸ì˜¤ê¸°ìš©
+		boardDTO cDTO = new boardDTO(); //ì¡°íšŒìˆ˜ ì˜¬ë¦¬ê¸°ìš©
+		fileDTO fDTO = new fileDTO(); //íŒŒì¼ ê°€ì ¸ì˜¤ê¸°ìš©
 		
 		cDTO.setBoard_no(board_no);
 		boardService.updateCnt(cDTO);
-		log.info("Á¶È¸¼ö Áõ°¡!!!");
+		log.info("ì¡°íšŒìˆ˜ ì¦ê°€!!!");
 		
 		bDTO.setBoard_no(board_no);
 		bDTO = boardService.getBoard(bDTO);
@@ -316,9 +322,11 @@ public class BoardController {
 		
 		String board_no = CmmUtil.nvl(req.getParameter("board_no"));
 		String check = CmmUtil.nvl((String)session.getAttribute("check"));
+		String user_id = CmmUtil.nvl((String)session.getAttribute("session_user_id"));
 		
 		log.info("board_no : " + board_no);
 		log.info("check : " + check);
+		log.info("user_id : " + user_id);
 		
 		boardDTO bDTO = new boardDTO();
 		fileDTO fDTO = new fileDTO();
@@ -329,16 +337,20 @@ public class BoardController {
 		if(re != 0) {
 			fDTO.setBoard_no(board_no);
 			boardService.deleteFile(fDTO);
-			log.info("ÆÄÀÏ »èÁ¦ ¼º°ø");
-			model.addAttribute("msg", "±ÛÀÌ »èÁ¦µÇ¾ú½À´Ï´Ù.");
+			log.info("íŒŒì¼ ì‚­ì œ ì„±ê³µ");
+			model.addAttribute("msg", "ê¸€ì´ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.");
 			if(check.equals("T")){
 				model.addAttribute("url", "/boardL.do");
 			}else{
-				model.addAttribute("url", "/teamL.do");
+				if(user_id.equals("admin")){
+					model.addAttribute("url", "/boardL.do");
+				}else{
+					model.addAttribute("url", "/teamL.do");
+				}
 			}
 			
 		}else{
-			model.addAttribute("msg", "±Û »èÁ¦¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+			model.addAttribute("msg", "ê¸€ ì‚­ì œì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/boardR.do?board_no="+board_no);
 		}
 		
@@ -352,8 +364,8 @@ public class BoardController {
 		String board_no =CmmUtil.nvl(req.getParameter("board_no"));
 		log.info("board_no : " + board_no);
 		
-		boardDTO bDTO = new boardDTO(); //»ó¼¼ °¡Á®¿À±â¿ë
-		fileDTO fDTO = new fileDTO(); //ÆÄÀÏ°¡Á®¿À±â¿ë
+		boardDTO bDTO = new boardDTO(); //ìƒì„¸ ê°€ì ¸ì˜¤ê¸°ìš©
+		fileDTO fDTO = new fileDTO(); //íŒŒì¼ ê°€ì ¸ì˜¤ê¸°ìš©
 		
 		bDTO.setBoard_no(board_no);
 		bDTO = boardService.getBoard(bDTO);
@@ -385,7 +397,7 @@ public class BoardController {
 		String content = TextUtil.exchangeEscapeNvl(c);
 		content = content.replace("\r\n", "<br>");
 		String notice = CmmUtil.nvl(req.getParameter("notice"));
-		String check = CmmUtil.nvl(req.getParameter("check")); //1ÀÌ¸é ÆÄÀÏ ¾øÀ½ 2¸é ÆÄÀÏÀÖÀ½
+		String check = CmmUtil.nvl(req.getParameter("check")); //1ì´ë©´ íŒŒì¼ ì—†ìŒ 2ì´ë©´ íŒŒì¼ìˆìŒ
 		if (notice == "") {
 			notice = "N";
 		}
@@ -424,7 +436,7 @@ public class BoardController {
 		
 		if(check.equals("1")) {
 				boardService.deleteFile(fDTO);
-				log.info("ÆÄÀÏ »èÁ¦ ¼º°øÀÌ´å!");
+				log.info("íŒŒì¼ ì‚­ì œ ì„±ê³µì´ë‹·!");
 		}
 		
 		int re = boardService.updateBoard(bDTO);
@@ -432,14 +444,14 @@ public class BoardController {
 		if (re != 0) {
 			if (file.equals("Y")) {
 				boardService.deleteFile(fDTO);
-				log.info("ÆÄÀÏ »èÁ¦ ¼º°ø");
-				fileProc(f, req, model, board_no, team_no, user_no);
+				log.info("íŒŒì¼ ì‚­ì œ ì„±ê³µ");
+				fileProc(f, req, model, board_no, team_no, user_no, "u");
 			} else {
-				model.addAttribute("msg", "±ÛÀÌ ¼öÁ¤µÇ¾ú½À´Ï´Ù.");
+				model.addAttribute("msg", "ê¸€ì´ ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
 				model.addAttribute("url", "/boardR.do?board_no=" + board_no);
 			}
 		} else {
-			model.addAttribute("msg", "±Û ¼öÁ¤¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+			model.addAttribute("msg", "ê¸€ ìˆ˜ì •ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/boardU.do?board_no=" + board_no);
 		}
 		
@@ -598,15 +610,15 @@ public class BoardController {
 		String memo = CmmUtil.nvl(req.getParameter("team_memo"));
 		String team_memo = "";
 		if(memo.equals("")){
-			team_memo = team_name+"¿¡ È¯¿µÇÕ´Ï´Ù.";
+			team_memo = team_name+"ì— í™˜ì˜í•©ë‹ˆë‹¤.";
 		}else{
 			team_memo = TextUtil.exchangeEscapeNvl(memo);
 		}
 		
 		if(join.equals("A")){
-			join_form = "ÀÚµ¿ ½ÂÀÎ";
+			join_form = "ìë™ ìŠ¹ì¸";
 		}else{
-			join_form = "¸®´õ ½ÂÀÎ";
+			join_form = "ë¦¬ë” ìŠ¹ì¸";
 		}
 		
 		log.info("user_no : " + user_no);
@@ -627,22 +639,22 @@ public class BoardController {
 		int re = boardService.insertTeam(mDTO);
 		
 		if(re != 0) {
-			//º¯°æµÈ Á¤º¸ ¼¼¼Ç ¿Ã¸®±â
+			//ë³€ê²½ëœ ì •ë³´ ì„¸ì…˜ ì˜¬ë¦¬ê¸°
 			mDTO = boardService.getTeamNo(mDTO);
 			String team_no = mDTO.getTeam_no();
 			log.info("team_no : " + team_no);
 			session.setAttribute("session_team_no", team_no);
 			session.setAttribute("session_auth", "UA");
-			//È¸¿ø ±ÇÇÑ, ÆÀ¹øÈ£ ¼öÁ¤
+			//íšŒì› ê¶Œí•œ, íŒ€ë²ˆí˜¸ ìˆ˜ì •
 			userDTO uDTO = new userDTO();
 			uDTO.setAuth("UA");
 			uDTO.setUser_no(user_no);
 			uDTO.setTeam_no(team_no);
 			boardService.updateUserTeam(uDTO);
-			model.addAttribute("msg", "µ¿È£È¸°¡ °³¼³µÇ¾ú½À´Ï´Ù.");
+			model.addAttribute("msg", "ë™í˜¸íšŒê°€ ê°œì„¤ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/teamL.do");
 		}else{
-			model.addAttribute("msg", "µ¿È£È¸ °³¼³¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+			model.addAttribute("msg", "ë™í˜¸íšŒ ê°œì„¤ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/teamC.do");
 		}
 		
@@ -681,12 +693,12 @@ public class BoardController {
 		String join_check = "";
 		
 		if(memo.equals("")){
-			join_memo = "Àß ºÎÅ¹µå¸³´Ï´Ù.";
+			join_memo = "ì˜ ë¶€íƒë“œë¦½ë‹ˆë‹¤.";
 		}else{
 			join_memo = TextUtil.exchangeEscapeNvl(memo);
 		}
 		
-		if(join_form.equals("ÀÚµ¿ ½ÂÀÎ")){
+		if(join_form.equals("ìë™ ìŠ¹ì¸")){
 			join_check = "O";
 			boardService.updateTeamUp(team_no);
 		}else{
@@ -710,26 +722,26 @@ public class BoardController {
 		if(re != 0) {
 			session.setAttribute("session_team_no", team_no);
 			String auth = "";
-			//°¡ÀÔ ¹æ½Ä¿¡ µû¶ó ±ÇÇÑ ´Ù¸£°Ô ÁÖ¾î¼­ ÆÀ¹øÈ£¿Í ±ÇÇÑ ¼öÁ¤ÇÏ°í ¼¼¼Ç¿Ã¸®±â
+			//ê°€ì… ë°©ì‹ì— ë”°ë¼ ê¶Œí•œ ë‹¤ë¥´ê²Œ ì£¼ì–´ì„œ íŒ€ë²ˆí˜¸ì™€ ê¶Œí•œ ìˆ˜ì •í•˜ê³  ì„¸ì…˜ì˜¬ë¦¬ê¸°
 			if(join_check.equals("O")){
-				//ÀÚµ¿½ÂÀÎ UU
+				//ìë™ìŠ¹ì¸ UU
 				session.setAttribute("session_auth", "UU");
 				auth = "UU";
 			}else{
-				//¸®´õ½ÂÀÎ ÇÊ¿ä UD
+				//ë¦¬ë”ìŠ¹ì¸ UD
 				session.setAttribute("session_auth", "UD");
 				auth = "UD";
 			}
-			//È¸¿ø ±ÇÇÑ, ÆÀ¹øÈ£ ¼öÁ¤
+			//íšŒì› ê¶Œí•œ, íŒ€ë²ˆí˜¸ ìˆ˜ì •
 			userDTO uDTO = new userDTO();
 			uDTO.setUser_no(user_no);
 			uDTO.setTeam_no(team_no);
 			uDTO.setAuth(auth);
 			boardService.updateUserTeam(uDTO);
-			model.addAttribute("msg", "µ¿È£È¸ °¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
+			model.addAttribute("msg", "ë™í˜¸íšŒ ê°€ì…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/teamL.do");
 		}else{
-			model.addAttribute("msg", "µ¿È£È¸ °¡ÀÔ¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+			model.addAttribute("msg", "ë™í˜¸íšŒ ê°€ì…ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/teamI.do?team_no="+team_no);
 		}
 		
@@ -742,8 +754,9 @@ public class BoardController {
 		
 		String team_no = (String) session.getAttribute("session_team_no");
 		String user_no = CmmUtil.nvl(req.getParameter("user_no"));
+		String no = (String) session.getAttribute("session_user_no");
 		if(user_no.equals("")){
-			user_no = (String) session.getAttribute("session_user_no");
+			user_no = no;
 		}
 		log.info("user_no : " + user_no);
 		
@@ -753,9 +766,10 @@ public class BoardController {
 		uDTO.setAuth("U");
 		boardService.updateUserTeam(uDTO);
 		
-		session.setAttribute("session_auth", "U");
-		session.setAttribute("session_team_no", "0");
-		
+		if(user_no.equals(no)){
+			session.setAttribute("session_auth", "U");
+			session.setAttribute("session_team_no", "0");
+		}
 		joinDTO jDTO = new joinDTO();
 		jDTO.setUser_no(user_no);
 		
@@ -779,14 +793,14 @@ public class BoardController {
 		String memo = CmmUtil.nvl(req.getParameter("team_memo"));
 		String team_memo = "";
 		if(memo.equals("")){
-			team_memo = team_name+"¿¡ È¯¿µÇÕ´Ï´Ù.";
+			team_memo = team_name+"ì— í™˜ì˜í•©ë‹ˆë‹¤.";
 		}else{
 			team_memo = TextUtil.exchangeEscapeNvl(memo);
 		}
 		if(join.equals("A")){
-			join_form = "ÀÚµ¿ ½ÂÀÎ";
+			join_form = "ìë™ ìŠ¹ì¸";
 		}else{
-			join_form = "¸®´õ ½ÂÀÎ";
+			join_form = "ë¦¬ë” ìŠ¹ì¸";
 		}
 		
 		log.info("user_no : " + user_no);
@@ -805,10 +819,10 @@ public class BoardController {
 		int re = boardService.updateTeam(mDTO);
 		
 		if(re != 0) {
-			model.addAttribute("msg", "µ¿È£È¸ Á¤º¸°¡ ¼öÁ¤µÇ¾ú½À´Ï´Ù.");
+			model.addAttribute("msg", "ë™í˜¸íšŒ ì •ë³´ê°€ ìˆ˜ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/teamR.do?team_no="+team_no);
 		}else{
-			model.addAttribute("msg", "µ¿È£È¸ ¼öÁ¤¿¡ ½ÇÆĞÇÏ¿´½À´Ï´Ù.");
+			model.addAttribute("msg", "ë™í˜¸íšŒ ìˆ˜ì •ì— ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
 			model.addAttribute("url", "/teamU.do?team_no="+team_no);
 		}
 		
@@ -828,10 +842,10 @@ public class BoardController {
 		userDTO uDTO = new userDTO();
 		uDTO.setTeam_no(team_no);
 		uDTO.setAuth("U");
-		boardService.deleteTeamDrop(team_no); //ÆÀ »èÁ¦(manageDTO)
-		boardService.updateTeamDrop(uDTO); //ÇØ´ç ÆÀ¿¡ µî·ÏµÇ¾îÀÖ´Â »ç¶÷ Á¤º¸ º¯°æ(userDTO)
-		boardService.deleteTeamBoard(team_no); //±Û »èÁ¦(boardDTO)
-		boardService.deleteTeamFile(team_no); //ÆÄÀÏ »èÁ¦(fileDTO)
+		boardService.deleteTeamDrop(team_no); //íŒ€ ì‚­ì œ(manageDTO)
+		boardService.updateTeamDrop(uDTO); //í•´ë‹¹ íŒ€ì— ë“±ë¡ë˜ì–´ìˆëŠ” ì‚¬ëŒ ì •ë³´ ë³€ê²½(userDTO)
+		boardService.deleteTeamBoard(team_no); //ê¸€ ì‚­ì œ(boardDTO)
+		boardService.deleteTeamFile(team_no); //íŒŒì¼ ì‚­ì œ(fileDTO)
 		
 		if(auth.equals("UA")){
 			session.setAttribute("session_auth", "U");

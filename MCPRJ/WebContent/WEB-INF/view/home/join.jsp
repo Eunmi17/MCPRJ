@@ -114,31 +114,36 @@ window.onload = function(){
 		})
 	};
 	
-	email_btn.onclick = function() { //이메일 전송
+	email_btn.onclick = function() { //이름과 이메일이 일치하는 회원 있는지 확인
 		var user_email = document.getElementById("user_email");
+		var user_name = document.getElementById("user_name");
 		var email = $('#user_email').val();
+		var name = $('#user_name').val();
 		
-		if(email != "") {
-		$.ajax({
-			url : '/emailEx.do',
-			method : 'post',
-			data : {
-				'user_email' : email
-			},
-			success : function(data) {
-				if ($.trim(data) != 0) {
-					$('#emailc').html('<p style="color:green;">인증번호를 전송하였습니다.</p>');
-					email_btn.style.display="none";
-					user_email.readOnly = true;
-					$('#email_key').focus();
-				}else{
-					$('#emailc').html('<p style="color:red;">인증번호 전송에 실패하였습니다. 다시 시도해주세요.</p>');
+		if(name != "") {
+			if(email != "") {
+			$.ajax({
+				url : '/NECheck.do',
+				method : 'post',
+				data : {
+					'user_name' : name,
+					'user_email' : email
+				},
+				success : function(data) {
+					if ($.trim(data) == 0) {
+						emailCheck();
+					}else{
+						$('#emailc').html('<p style="color:red;">이미 가입된 회원 정보입니다.</p>');
+					}
 				}
+			})
+			}else{
+				$('#emailc').html('<p style="color:red;">이메일을 입력해주세요.</p>');
+				user_email.focus();
 			}
-		})
 		}else{
-			$('#emailc').html('<p style="color:red;">이메일을 입력해주세요.</p>');
-			user_email.focus();
+			$('#emailc').html('<p style="color:red;">이름 부터 입력해주세요.</p>');
+			user_name.focus();
 		}
 	};
 	
@@ -205,6 +210,27 @@ window.onload = function(){
          	}
       	}).open();
 	};
+}
+function emailCheck(e){ //이메일 전송
+	var email = e;
+	$.ajax({
+		url : '/emailEx.do',
+		method : 'post',
+		data : {
+			'user_email' : email
+		},
+		success : function(data) {
+			if ($.trim(data) != 0) {
+				$('#emailc').html('<p style="color:green;">인증번호를 전송하였습니다.</p>');
+				email_btn.style.display="none";
+				user_email.readOnly = true;
+				$('#email_key').focus();
+			}else{
+				$('#emailc').html('<p style="color:red;">인증번호 전송에 실패하였습니다. 다시 시도해주세요.</p>');
+				user_email.focus();
+			}
+		}
+	})
 }
 function doSubmit(f) { //전송시 유효성 체크
 	if (idCheck == false) {

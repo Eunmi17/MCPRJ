@@ -8,6 +8,11 @@ public class TextUtil {
         value = value.replaceAll("& #39;", "'");
         return value;
 	}
+	public static String exchangeEscape2(String value){
+		value = value.replaceAll("&lt;br /&gt;", "<br>");
+        value = value.replaceAll("&amp;nbsp;", "&nbsp;");
+        return value;
+	}
 	public static String replaceBr(String str){
 		str = str.replaceAll("\n", "</br>");
 		return str;

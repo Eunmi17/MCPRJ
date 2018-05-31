@@ -46,32 +46,46 @@
 	String allurl = url + pageNo + servicekey;
 	Document text = Jsoup.connect(allurl).get();
 
-	Elements mntnid = text.select("mntnid");
-	Elements mntnnm = text.select("mntnnm");
 	Elements item = text.select("items > item");
-	Elements mntninfohght = text.select("mntninfohght");
 
 	int s = 0;
+	int count = 10;
 	String[] addr = new String[10];
+	String[] id = new String[10];
+	String[] name = new String[10];
+	String[] h = new String[10];
+	
+	if(pageNo.equals("160")){
+		
+		addr = new String[2];
+		id = new String[2];
+		name = new String[2];
+		h = new String[2];
+		count = 2;
+	}	
 
 	for (Element add : item) {
+
 		Elements mntninfopoflc = add.getElementsByTag("mntninfopoflc");
+		Elements mntnid = add.getElementsByTag("mntnid");
+		Elements mntnnm = add.getElementsByTag("mntnnm");
+		Elements mntninfohght = add.getElementsByTag("mntninfohght");
+
 		addr[s] = mntninfopoflc.get(0).text().trim();
+		id[s] = mntnid.get(0).text().trim();
+		name[s] = mntnnm.get(0).text().trim();
+		h[s] = mntninfohght.get(0).text().trim();
+
 		s++;
-		if (s > 10) {
+		if (s > count) {
 			break;
 		}
 	}
-
-	String[] id = mntnid.text().split(" ");
-	String[] name = mntnnm.text().split(" ");
-	String[] h = mntninfohght.text().split(" ");
 %>
 <%
 	int pages = Integer.parseInt(pageNo);
 	int countList = 10;
 	int countPage = 10;
-	int totalCount = 1592;
 	int totalPage = 160;
 	
 	int startPage = ((pages -1) / 10) * 10 + 1;

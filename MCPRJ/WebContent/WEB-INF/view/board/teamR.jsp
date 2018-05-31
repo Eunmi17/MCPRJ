@@ -124,6 +124,30 @@
 						href="/apiMain.do"> <i class="material-icons">filter_hdr</i>
 							<p>정보</p>
 					</a></li>
+					<%
+						if (session_user_id.equals("admin")) {
+					%>
+					<li class="nav-item"><a class="nav-link" href="/userList.do">
+							<i class="material-icons">person</i>
+							<p>회원 관리</p>
+					</a></li>
+					<li class="nav-item active "><a class="nav-link"
+						href="/teamL.do"> <i
+							class="material-icons">dvr</i>
+							<p>게시판 관리</p>
+					</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="/boardL.do"> <i class="material-icons">list</i>
+							<p>자유게시판</p>
+					</a></li>
+					<li class="nav-item "><a class="nav-link"
+						href="/chart.do"> <i
+							class="material-icons">assessment</i>
+							<p>분석</p>
+					</a></li>
+					<%
+						} else {
+					%>
 					<li class="nav-item "><a class="nav-link" id="nav1"> <i
 							class="material-icons">person</i>
 							<p>마이페이지</p>
@@ -143,15 +167,16 @@
 									<p>상세</p>
 							</a></li>
 						</ul></li>
-					<li class="nav-item "><a class="nav-link"
-						href="/boardL.do"> <i class="material-icons">list</i>
-							<p>자유게시판</p>
-					</a></li>
-					<li class="nav-item active"><a class="nav-link"
-						href="/teamL.do"> <i
-							class="material-icons">favorite</i>
-							<p>동호회</p>
-					</a></li>
+							<li class="nav-item"><a class="nav-link"
+								href="/boardL.do"> <i class="material-icons">list</i>
+									<p>자유게시판</p>
+							</a></li>
+							<li class="nav-item active "><a class="nav-link"
+								href="/teamL.do"> <i
+									class="material-icons">favorite</i>
+									<p>동호회</p>
+							</a></li>
+						<%} %>
 				</ul>
 			</div>
 		</div>

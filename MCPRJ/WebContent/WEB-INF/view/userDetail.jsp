@@ -229,10 +229,12 @@
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
-													<label class="bmd-label-floating">동호회</label> <img
-														src="bootstrap/assets/img/reder.png"> <input
-														type="text" class="form-control"
-														value="<%=CmmUtil.nvl(uDTO.getTeam_no())%>" readonly>
+													<label class="bmd-label-floating">동호회</label>
+														<%if(uDTO.getAuth().equals("UA")) {%>
+															<img src="bootstrap/assets/img/reder.png">
+														<%} %>
+														<input type="text" class="form-control"
+															value="<%=CmmUtil.nvl(uDTO.getTeam_no())%>" readonly>
 												</div>
 											</div>
 										</div>

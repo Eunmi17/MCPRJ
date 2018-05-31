@@ -220,7 +220,7 @@ display: block;
 											<div class="col-md-6">
 												<div class="form-group">
 													<label class="bmd-label-floating">부재</label>
-													<div class="sam"><%=mntnsbttlinfo.text() %><hr></div>
+													<div class="sam"><%=TextUtil.exchangeEscape2(mntnsbttlinfo.text()) %><hr></div>
 												</div>
 											</div>
 										</div>
@@ -244,7 +244,7 @@ display: block;
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="bmd-label-floating">개관</label>
-													<div class="sam"><%=mntninfodscrt.text()%><hr></div>
+													<div class="sam"><%=TextUtil.exchangeEscape2(mntninfodscrt.text())%><hr></div>
 												</div>
 											</div>
 										</div>
@@ -253,7 +253,7 @@ display: block;
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="bmd-label-floating">상세</label>
-													<div class="sam"><%=mntninfodtlinfocont.text()%><hr></div>
+													<div class="sam"><%=TextUtil.exchangeEscape2(mntninfodtlinfocont.text())%><hr></div>
 												</div>
 											</div>
 										</div>
@@ -262,7 +262,7 @@ display: block;
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="bmd-label-floating">주변관광</label>
-													<div class="sam"><%=crcmrsghtnginfodscrt.text()%><hr></div>
+													<div class="sam"><%=TextUtil.exchangeEscape2(crcmrsghtnginfodscrt.text())%><hr></div>
 												</div>
 											</div>
 										</div>
@@ -272,7 +272,7 @@ display: block;
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="bmd-label-floating">대중교통</label>
-													<div class="sam"><%=pbtrninfodscrt.text()%><hr></div>
+													<div class="sam"><%=TextUtil.exchangeEscape2(pbtrninfodscrt.text())%><hr></div>
 												</div>
 											</div>
 										</div>
@@ -282,7 +282,7 @@ display: block;
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="bmd-label-floating">산행포인트</label>
-													<div class="sam"><%=crcmrsghtnginfoetcdscrt.text()%><hr></div>
+													<div class="sam"><%=TextUtil.exchangeEscape2(crcmrsghtnginfoetcdscrt.text())%><hr></div>
 												</div>
 											</div>
 										</div>

@@ -262,7 +262,7 @@
 													<%} else {%>
 													<td onclick="doDetail(<%=bDTO.getBoard_no()%>);"><%=bDTO.getTitle()%></td>
 													<%}%>
-													<td><%=bDTO.getReg_no()%></td>
+													<td><%=bDTO.getReg_name()%></td>
 													<td><%=bDTO.getReg_dt()%></td>
 													<td><%=bDTO.getCnt()%></td>
 												</tr>
