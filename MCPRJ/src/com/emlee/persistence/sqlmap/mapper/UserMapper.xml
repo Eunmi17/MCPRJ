@@ -58,7 +58,7 @@
 	<select id="getUserList" resultType="userDTO">
 		SELECT * FROM USER_INFO
 		WHERE NOT AUTH = "AA"
-		ORDER BY CAST(USER_NO AS UNSIGNED) ASC
+		ORDER BY CAST(USER_NO AS UNSIGNED) LIMIT 10
 	</select>
 	
 	<!-- 회원 상세 -->
@@ -152,6 +152,7 @@
 	<select id="getUserNum" resultType="userDTO">
 		SELECT COUNT(USER_NO) DATA
 		FROM USER_INFO
+		WHERE NOT AUTH="AA"
 	</select>
 	
 	<!-- 메인 동호회-->

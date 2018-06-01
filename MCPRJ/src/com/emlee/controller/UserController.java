@@ -403,7 +403,11 @@ public class UserController {
 		if(uList == null) {
 			uList = new ArrayList<>();
 		}
+		
+		userDTO cDTO = userService.getUserNum();
+		
 		model.addAttribute("uList", uList);
+		model.addAttribute("cDTO", cDTO);
 		
 		log.info(getClass() + "userList end!!!");
 		return "userList";
@@ -701,10 +705,17 @@ public class UserController {
 		log.info(getClass() + "apiSearch start!!!");
 		request.setCharacterEncoding("UTF-8");
 		String nm = CmmUtil.nvl(request.getParameter("nm"));
+		String no = CmmUtil.nvl(request.getParameter("no"));
+
+		if(no.equals("")){
+			no = "1";
+		}
 		
 		log.info("nm : " + nm);
+		log.info("no : " + no);
 		
 		model.addAttribute("nm", nm);
+		model.addAttribute("no", no);
 		
 		log.info(getClass() + "apiSearch end!!!");
 		return "/apiSearch";

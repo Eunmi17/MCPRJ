@@ -43,19 +43,48 @@
 
 	String url = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?mntnNm=";
 	String mntnNm = CmmUtil.nvl((String) request.getAttribute("nm"));
+	String pageNo = (String)request.getAttribute("no");
+	String pageNos = "&pageNo=";
 	String servicekey = "&serviceKey=HNnmPvdDJDrKEsF3NjHy%2BNkeMnO3zSVJs9GbDxpnYAVpX7GeVtnWIiqpPIOugTK8gq0l9b7sVNBKHL%2FF39%2FClw%3D%3D";
-	String allurl = url + mntnNm + servicekey;
+	String allurl = url + mntnNm + pageNos + pageNo + servicekey;
 	Document text = Jsoup.connect(allurl).get();
 
 	Elements item = text.select("items > item");
 	Elements totalCount = text.select("totalCount");
 	int count = Integer.parseInt(totalCount.text());
+	int pageno = Integer.parseInt(pageNo);
+	int countList = 0;
+	int totalPage = 0;
+	int countPage = 10;
+	
+	if(count > 10){
+		countList = 10;
+		totalPage = count / countList;
+		if(count % countList > 0){
+			totalPage++;
+			if(totalPage == pageno){
+				countList = count % countList;
+			}
+		}
+	}else{
+		countList = count;
+		totalPage = 1;
+	}
+	
+	int startPage = ((pageno - 1) / 10) * 10 + 1;
+	int endPage = totalPage;
+	if(totalPage > 10){
+		endPage = startPage + countPage - 1;
+	}
+	if(endPage > totalPage) {
+		endPage = totalPage;
+	}
 	
 	int s = 0;
-	String[] addr = new String[count];
-	String[] id = new String[count];
-	String[] name = new String[count];
-	String[] h = new String[count];
+	String[] addr = new String[countList];
+	String[] id = new String[countList];
+	String[] name = new String[countList];
+	String[] h = new String[countList];
 
 	for (Element add : item) {
 		
@@ -70,7 +99,7 @@
 		h[s] = mntninfohght.get(0).text().trim();
 		
 		s++;
-		if (s > 10) {
+		if (s > countList) {
 			break;
 		}
 	}
@@ -168,7 +197,7 @@
 					<li class="nav-item "><a class="nav-link"
 						href="/teamL.do"> <i
 							class="material-icons">dvr</i>
-							<p>게시판 관리</p>
+							<p>동호회 관리</p>
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="/boardL.do"> <i class="material-icons">list</i>
@@ -273,12 +302,45 @@
 													<td><%=id[i]%></td>
 													<td><%=name[i]%></td>
 													<td><%=addr[i]%></td>
+													<%if(h[i].equals("") && (addr[i].equals(""))) {%>
+													<td></td>
+													<td></td>
+													<%}else{ %>
 													<td><%=h[i]%> M</td>
 													<td><img onclick="doDetail('<%=name[i]%>', '<%=h[i]%>');" src="bootstrap/assets/img/loupe.png"></td>
+													<%} %>
 												</tr>
 												<%}%>
 											</tbody>
 										</table>
+									</div>
+									<div id="paging">
+										<nav aria-label="Page navigation example">
+											<ul class="pagination justify-content-center">
+												<%if(startPage != 1) {%>
+												<li class="page-item">
+													<a class="page-link" href="/apiSearch.do?nm=<%=mntnNm%>&no=<%=((pageno -11) / 10) * 10 + 1%>" aria-label="Previous">
+														<span aria-hidden="true">&laquo;</span>
+														<span class="sr-only">Previous</span>
+													</a>
+												</li>
+												<%} %>
+												<%for (int iCount = startPage; iCount <= endPage; iCount++) {
+													if(iCount == pageno) {%>
+														<li class="page-item"><a class="page-link"><b>(<%=iCount%>)</b></a></li>
+													<%}else{ %>
+														<li class="page-item"><a class="page-link" href="/apiSearch.do?nm=<%=mntnNm%>&no=<%=iCount%>"><%=iCount%></a></li>
+													<%} }%>
+												<%if(endPage != totalPage) {%>
+												<li class="page-item">
+													<a class="page-link" href="/apiSearch.do?nm=<%=mntnNm%>&no=<%=((pageno +9) / 10) * 10 + 1%>" aria-label="Next">
+														<span aria-hidden="true">&raquo;</span>
+														<span class="sr-only">Next</span>
+													</a>
+												</li>
+												<%} %>
+											</ul>
+										</nav>
 									</div>
 									<%}else{ %>
 									<div align="center" style="color:red;">'<%=mntnNm %>' 에 해당하는 검색결과가 없습니다.</div>

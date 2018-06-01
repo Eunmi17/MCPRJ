@@ -176,7 +176,7 @@
 					<li class="nav-item "><a class="nav-link"
 						href="/teamL.do"> <i
 							class="material-icons">dvr</i>
-							<p>게시판 관리</p>
+							<p>동호회 관리</p>
 					</a></li>
 					<li class="nav-item active"><a class="nav-link"
 						href="/boardL.do"> <i class="material-icons">list</i>

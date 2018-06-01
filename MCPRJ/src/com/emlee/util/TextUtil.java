@@ -11,6 +11,12 @@ public class TextUtil {
 	public static String exchangeEscape2(String value){
 		value = value.replaceAll("&lt;br /&gt;", "<br>");
         value = value.replaceAll("&amp;nbsp;", "&nbsp;");
+        value = value.replaceAll("&amp;ucirc;", "&ucirc;");
+        value = value.replaceAll("&amp;aring;", "&aring;");
+        value = value.replaceAll("&amp;atilde;", "&atilde;");
+        value = value.replaceAll("&amp;acirc;", "&acirc;");
+        value = value.replaceAll("&lt;strong&gt;", "<strong>");
+        value = value.replaceAll("&lt;/strong&gt;", "</strong>");
         return value;
 	}
 	public static String replaceBr(String str){

@@ -30,6 +30,8 @@
 <!-- iframe removal -->
 <%
 	String session_user_name = CmmUtil.nvl((String)session.getAttribute("session_user_name"));
+	userDTO cDTO = (userDTO)request.getAttribute("cDTO");
+	int count = Integer.parseInt(cDTO.getData());
 
 	List<userDTO> uList = (List<userDTO>)request.getAttribute("uList");
 	if(uList == null){
@@ -95,6 +97,44 @@
 				});
 			}
 		};
+		
+		//페이징 시작
+		
+		var page = 1;
+		var countPage = 10;
+		var countList = 10;
+		var totalCount = <%=count%>;
+		var totalPage = totalCount / countList;
+		
+		if(totalCount % countList > 0){
+			totalPage++;
+		}
+		if(totalPage < page){
+			page += totalPage;
+		}
+		
+		var startPage = ((page - 1) / 10) * 10 + 1;
+		var endPage = startPage + countPage - 1
+		
+		if(endPage > totalPage) {
+			endPage = totalPage;
+		}
+		
+		var content = "";
+		content="<div id='paging'>";
+		content="<nav aria-label='Page navigation example'>";
+		content="<ul class='pagination justify-content-center'>";
+		for(var iCount = startPage; iCount <= endPage; iCount++){
+			if(iCount == page) {
+				content = "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
+			}else{
+				content = "<li class='page-item'><a class='page-link'>"+iCount+"</a></li>";
+			}
+		}
+		content = "</ul></nav></div>";
+		$('#paging').html(content);
+		
+		//페이징 끝
 	}
 	function doDetail(no){
 		var user_no = no;
@@ -147,7 +187,7 @@
 					<li class="nav-item "><a class="nav-link"
 						href="/teamL.do"> <i
 							class="material-icons">dvr</i>
-							<p>게시판 관리</p>
+							<p>동호회 관리</p>
 					</a></li>
 					<li class="nav-item "><a class="nav-link"
 						href="/boardL.do"> <i
@@ -224,6 +264,13 @@
 												<%} %>
 											</tbody>
 										</table>
+									</div>
+									<div id="paging">
+										<nav aria-label="Page navigation example">
+											<ul class="pagination justify-content-center">
+												<li class='page-item'><a class='page-link'><b>1</b></a></li>
+											</ul>
+										</nav>
 									</div>
 								</div>
 							</div>

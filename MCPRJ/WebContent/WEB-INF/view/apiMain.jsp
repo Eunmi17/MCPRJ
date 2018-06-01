@@ -125,97 +125,6 @@
 				location.href="/apiSearch.do?nm="+nm;
 			}
 		}
-		
-		
-		
-		<%if(startPage != 1){%>
-			var back = document.getElementById("back");
-			back.onclick = function() {
-				<%
-					startPage = ((pages -1) / 10) * 10 + 1;
-					endPage = startPage + countPage - 1;
-				
-					if (endPage > totalPage) {
-					endPage = totalPage;
-					}
-				%>
-				
-				var content = "";
-				
-				content = "<div id='paging'>";
-				content = "<nav aria-label='Page navigation example'>";
-				content = "<ul class='pagination justify-content-center'>";
-				<%if(startPage != 1) {%>
-					content = "<li class='page-item'>";
-					content = "<a class='page-link' id='back' aria-label='Previous'>";
-					content = "<span aria-hidden='true'>&laquo;</span>";
-					content = "<span class='sr-only'>Previous</span>";
-					content = "</a></li>";
-				<%} %>
-				<%for (int iCount = startPage; iCount <= endPage; iCount++) {
-					if(iCount == pages) {%>
-						content = "<li class='page-item'><a class='page-link'><b>(<%=iCount%>)</b></a></li>";
-					<%}else{ %>
-						content = "<li class='page-item'><a class='page-link' href='/apiMain.do?no=<%=iCount%>'><%=iCount%></a></li>";
-					<%} }%>
-					<%if(endPage != 160) {%>
-						content = "<li class='page-item'>";
-						content = "<a class='page-link' id='next' aria-label='Next'>";
-						content = "<span aria-hidden='true'>&raquo;</span>";
-						content = "<span class='sr-only'>Next</span></a></li>";
-					<%} %>
-				content = "</ul></nav></div>";
-				
-				$('#paging').html(content);
-			};
-		<%}%>
-		<%if(endPage != 160) {%>
-			var next = document.getElementById("next");
-			next.onclick = function() {
-				<%
-					startPage = ((pages -1) / 10) * 10 + 1;
-					endPage = startPage + countPage - 1;
-				
-					if (endPage > totalPage) {
-					endPage = totalPage;
-					}
-				%>
-				
-				var content = "";
-				
-				content = "<div id='paging'>";
-				content = "<nav aria-label='Page navigation example'>";
-				content = "<ul class='pagination justify-content-center'>";
-				<%if(startPage != 1) {%>
-					content = "<li class='page-item'>";
-					content = "<a class='page-link' id='back' aria-label='Previous'>";
-					content = "<span aria-hidden='true'>&laquo;</span>";
-					content = "<span class='sr-only'>Previous</span>";
-					content = "</a></li>";
-				<%} %>
-				<%for (int iCount = startPage; iCount <= endPage; iCount++) {
-					if(iCount == pages) {%>
-						content = "<li class='page-item'><a class='page-link'><b>(";
-						content = <%=iCount%>;
-						content = ")</b></a></li>";
-					<%}else{ %>
-						content = "<li class='page-item'><a class='page-link' href='/apiMain.do?no=";
-						content = <%=iCount%>;
-						content = "'>";
-						content = <%=iCount%>;
-						content = "</a></li>";
-					<%} }%>
-					<%if(endPage != 160) {%>
-						content = "<li class='page-item'>";
-						content = "<a class='page-link' id='next' aria-label='Next'>";
-						content = "<span aria-hidden='true'>&raquo;</span>";
-						content = "<span class='sr-only'>Next</span></a></li>";
-					<%} %>
-				content = "</ul></nav></div>";
-				
-				$('#paging').html(content);
-			};
-		<%}%>
 	}
 	
 	function doDetail(n, h){
@@ -278,7 +187,7 @@
 					<li class="nav-item "><a class="nav-link"
 						href="/teamL.do"> <i
 							class="material-icons">dvr</i>
-							<p>게시판 관리</p>
+							<p>동호회 관리</p>
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="/boardL.do"> <i class="material-icons">list</i>
@@ -385,8 +294,13 @@
 													<td><%=id[i]%></td>
 													<td><%=name[i]%></td>
 													<td><%=addr[i]%></td>
+													<%if(h[i].equals("") || (addr[i].equals(""))) {%>
+													<td></td>
+													<td></td>
+													<%}else{ %>
 													<td><%=h[i]%> M</td>
 													<td><img onclick="doDetail('<%=name[i]%>', '<%=h[i]%>');" src="bootstrap/assets/img/loupe.png"></td>
+													<%} %>
 												</tr>
 												<%}%>
 											</tbody>
@@ -397,7 +311,7 @@
 											<ul class="pagination justify-content-center">
 												<%if(startPage != 1) {%>
 												<li class="page-item">
-													<a class="page-link" id="back" aria-label="Previous">
+													<a class="page-link" href="/apiMain.do?no=<%=((pages -11) / 10) * 10 + 1%>" aria-label="Previous">
 														<span aria-hidden="true">&laquo;</span>
 														<span class="sr-only">Previous</span>
 													</a>
@@ -411,7 +325,7 @@
 													<%} }%>
 												<%if(endPage != 160) {%>
 												<li class="page-item">
-													<a class="page-link" id="next" aria-label="Next">
+													<a class="page-link" href="/apiMain.do?no=<%=((pages +9) / 10) * 10 + 1%>" aria-label="Next">
 														<span aria-hidden="true">&raquo;</span>
 														<span class="sr-only">Next</span>
 													</a>

@@ -1,3 +1,4 @@
+<%@page import="org.jsoup.nodes.Element"%>
 <%@page import="com.emlee.util.CmmUtil"%>
 <%@page import="com.emlee.util.TextUtil"%>
 <%@page import="org.jsoup.select.Elements"%>
@@ -40,21 +41,26 @@
 	String mntnHght = CmmUtil.nvl((String) request.getAttribute("hght"));
 	String hght = "&mntnHght=";
 	String servicekey = "&serviceKey=HNnmPvdDJDrKEsF3NjHy%2BNkeMnO3zSVJs9GbDxpnYAVpX7GeVtnWIiqpPIOugTK8gq0l9b7sVNBKHL%2FF39%2FClw%3D%3D";
-	String allurl = url+mntnNm+hght+mntnHght+servicekey;
+	String allurl = url+mntnNm+hght+mntnHght+"&numOfRows=1"+servicekey;
 	Document text = Jsoup.connect(allurl).get();
 	
-	Elements mntnid = text.select("mntnid");
-	Elements mntnnm = text.select("mntnnm");
-	Elements mntninfopoflc = text.select("mntninfopoflc");
-	Elements mntninfohght = text.select("mntninfohght");
-	Elements mntninfodscrt = text.select("mntninfodscrt");
-	Elements mntninfodtlinfocont = text.select("mntninfodtlinfocont");
-	Elements pbtrninfodscrt = text.select("pbtrninfodscrt");
-	Elements crcmrsghtnginfodscrt = text.select("crcmrsghtnginfodscrt");
-	Elements crcmrsghtnginfoetcdscrt = text.select("crcmrsghtnginfoetcdscrt");
-	Elements mntnsbttlinfo = text.select("mntnsbttlinfo");
-	Elements crcmrsghtngetcimageseq = text.select("crcmrsghtngetcimageseq");
+	Elements item = text.select("items > item");
+	Elements totalCount = text.select("totalCount");
 	
+		Elements mntnid = text.select("mntnid");
+		Elements mntnnm = text.select("mntnnm");
+		Elements mntninfopoflc = text.select("mntninfopoflc");
+		Elements mntninfohght = text.select("mntninfohght");
+		Elements mntninfodscrt = text.select("mntninfodscrt");
+		Elements mntninfodtlinfocont = text.select("mntninfodtlinfocont");
+		Elements pbtrninfodscrt = text.select("pbtrninfodscrt");
+		Elements crcmrsghtnginfodscrt = text.select("crcmrsghtnginfodscrt");
+		Elements crcmrsghtnginfoetcdscrt = text.select("crcmrsghtnginfoetcdscrt");
+		Elements mntnsbttlinfo = text.select("mntnsbttlinfo");
+		Elements crcmrsghtngetcimageseq = text.select("crcmrsghtngetcimageseq");
+		Elements mntnattchimageseq = text.select("mntnattchimageseq");
+		Elements pageNo = text.select("pageNo");
+
 %>
 <script>
 
@@ -135,7 +141,7 @@ display: block;
 					<li class="nav-item "><a class="nav-link"
 						href="/teamL.do"> <i
 							class="material-icons">dvr</i>
-							<p>게시판 관리</p>
+							<p>동호회 관리</p>
 					</a></li>
 					<li class="nav-item"><a class="nav-link"
 						href="/boardL.do"> <i class="material-icons">list</i>
@@ -203,7 +209,8 @@ display: block;
 			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-md-12">
+					<div align="center">
+						<div class="col-md-10" style="text-align: left;">
 							<div class="card">
 								<div class="card-header card-header-primary">
 									<h5 align="right">
@@ -215,17 +222,28 @@ display: block;
 								</div>
 								<div class="card-body">
 									<form>
+									<div class="row">
 										<%if(!mntnsbttlinfo.text().equals("")) {%>
-										<div class="row">
-											<div class="col-md-6">
+											<div class="col-md-6" align="center">
+												<div class="form-group">
+													<img src="<%=mntnattchimageseq.text()%>" width="80%">
+												</div>
+											</div>
+											<div class="col-md-5">
 												<div class="form-group">
 													<label class="bmd-label-floating">부재</label>
 													<div class="sam"><%=TextUtil.exchangeEscape2(mntnsbttlinfo.text()) %><hr></div>
 												</div>
+												<div class="form-group">
+													<label class="bmd-label-floating">소재지</label>
+													<div class="sam"><%=mntninfopoflc.text() %><hr></div>
+												</div>
+												<div class="form-group">
+													<label class="bmd-label-floating">높이</label>
+													<div class="sam"><%=mntninfohght.text() %> M<hr></div>
+												</div>
 											</div>
-										</div>
-										<%} %>
-										<div class="row">
+										<%}else{ %>
 											<div class="col-md-6">
 												<div class="form-group">
 													<label class="bmd-label-floating">소재지</label>
@@ -238,8 +256,9 @@ display: block;
 													<div class="sam"><%=mntninfohght.text() %> M<hr></div>
 												</div>
 											</div>
+										<%} %>
 										</div>
-										<%if(!mntninfodscrt.text().equals("&amp;nbsp;")) {%>
+										<%if(!mntninfodscrt.text().equals("&amp;nbsp;")&&!mntninfodscrt.text().equals("&nbsp;")&&!mntninfodscrt.text().equals("")) {%>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -249,6 +268,7 @@ display: block;
 											</div>
 										</div>
 										<%} %>
+										<%if(!mntninfodtlinfocont.text().equals("&amp;nbsp;")&&!mntninfodtlinfocont.text().equals("&nbsp;")&&!mntninfodtlinfocont.text().equals("")) {%>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -257,7 +277,8 @@ display: block;
 												</div>
 											</div>
 										</div>
-										<%if(!crcmrsghtnginfodscrt.text().equals("&amp;nbsp;")) {%>
+										<%} %>
+										<%if(!crcmrsghtnginfodscrt.text().equals("&amp;nbsp;")&&!crcmrsghtnginfodscrt.text().equals("&nbsp;")&&!crcmrsghtnginfodscrt.text().equals("")) {%>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -267,7 +288,7 @@ display: block;
 											</div>
 										</div>
 										<%} %>
-										<%if(!pbtrninfodscrt.text().equals("&amp;nbsp;")) {%>
+										<%if(!pbtrninfodscrt.text().equals("&amp;nbsp;")&&!pbtrninfodscrt.text().equals("&nbsp;")&&!pbtrninfodscrt.text().equals("")) {%>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -277,24 +298,38 @@ display: block;
 											</div>
 										</div>
 										<%} %>
-										<%if(!crcmrsghtnginfoetcdscrt.text().equals("&amp;nbsp;")) {%>
-										<div class="row">
-											<div class="col-md-12">
-												<div class="form-group">
-													<label class="bmd-label-floating">산행포인트</label>
-													<div class="sam"><%=TextUtil.exchangeEscape2(crcmrsghtnginfoetcdscrt.text())%><hr></div>
+										<%if(!crcmrsghtnginfoetcdscrt.text().equals("&amp;nbsp;")&&!crcmrsghtnginfoetcdscrt.text().equals("&nbsp;")&&!crcmrsghtnginfoetcdscrt.text().equals("")) {%>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="form-group">
+														<label class="bmd-label-floating">산행포인트</label>
+														<div class="sam"><%=TextUtil.exchangeEscape2(crcmrsghtnginfoetcdscrt.text())%><hr>
+														</div>
+													</div>
+												</div>
+												<%
+												if(crcmrsghtngetcimageseq.text().endsWith("swf")){
+												%>
+												<div class="col-md-6">
+													<div class="form-group">
+														<label class="bmd-label-floating">산행포인트 지도</label><br>
+														<div class="sam"><a id="m" href="<%=crcmrsghtngetcimageseq.text()%>"><%=crcmrsghtngetcimageseq.text()%></a><hr></div>
+														<p style="color: red;">링크를 클릭하시면 파일이 다운로드됩니다.</p>
+													</div>
+												</div>
+												<%} %>
+											</div>
+											<%
+												if(crcmrsghtngetcimageseq.text().endsWith("swf")){
+											%>
+											<div class="row">
+												<div class="col-md-12" align="center">
+													<div class="form-group">
+														<embed src="<%=crcmrsghtngetcimageseq.text()%>" width="800" height="500"></embed>
+													</div>
 												</div>
 											</div>
-										</div>
-										<div class="row">
-											<div class="col-md-6">
-												<div class="form-group">
-													<label class="bmd-label-floating">산행포인트 지도</label><br>
-													<a id="m" href="<%=crcmrsghtngetcimageseq.text()%>"><%=crcmrsghtngetcimageseq.text()%></a>
-													<p style="color:red;">링크를 클릭하시면 파일이 다운로드됩니다.</p>
-												</div>
-											</div>
-										</div>
+											<%} %>
 										<%} %>
 										<button type="button" id="list" class="btn btn-primary pull-right">리스트로 이동</button>
 										<div class="clearfix"></div>
@@ -302,6 +337,7 @@ display: block;
 								</div>
 							</div>
 						</div>
+					</div>
 					</div>
 				</div>
 			</div>
