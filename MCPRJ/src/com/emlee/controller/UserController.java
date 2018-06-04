@@ -1,5 +1,6 @@
 package com.emlee.controller;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +54,9 @@ public class UserController {
 		manageDTO m = userService.getManageNum();
 		boardDTO b = userService.getBoardNum();
 		
-		log.info("u :" + u);
-		log.info("m :" + m);
-		log.info("b :" + b);
+		log.info("u :" + u.getData());
+		log.info("m :" + m.getNum());
+		log.info("b :" + b.getData());
 		
 		if(log_user.equals("admin")){
 			log.info(this.getClass() + "admin_main end!!!");
@@ -543,8 +544,10 @@ public class UserController {
 		if(bList == null) {
 			bList = new ArrayList<boardDTO>();
 		}
+		boardDTO cDTO = userService.getRegNum(user_no);
 		
 		model.addAttribute("bList", bList);
+		model.addAttribute("cDTO", cDTO);
 		
 		bList = null;
 		
@@ -571,7 +574,7 @@ public class UserController {
 		return bList;
 	}
 	@RequestMapping(value="/userSearch")
-	public @ResponseBody List<userDTO> userSearch(@RequestParam(value="search") String search, HttpSession session) throws Exception {
+	public @ResponseBody List<userDTO> userSearch(@RequestParam(value="search") String search, Model model, HttpSession session) throws Exception {
 		log.info(getClass()  + "userSearch start!!!");
 		log.info("search : " + search);
 		
@@ -705,6 +708,7 @@ public class UserController {
 		log.info(getClass() + "apiSearch start!!!");
 		request.setCharacterEncoding("UTF-8");
 		String nm = CmmUtil.nvl(request.getParameter("nm"));
+		nm = URLDecoder.decode(nm, "UTF-8");
 		String no = CmmUtil.nvl(request.getParameter("no"));
 
 		if(no.equals("")){
@@ -719,5 +723,115 @@ public class UserController {
 		
 		log.info(getClass() + "apiSearch end!!!");
 		return "/apiSearch";
+	}
+	
+	@RequestMapping(value="/userPaging")
+	public @ResponseBody List<userDTO> userPaging(@RequestParam(value="num") int num, HttpSession session) throws Exception {
+		log.info(getClass()  + "userPaging start!!!");
+		log.info("num : " + num);
+		
+		userDTO uDTO = new userDTO();
+		
+		num = (num * 10) - 10;
+		
+		uDTO.setNum(num);
+		
+		List<userDTO> uList = userService.getUserPaging(uDTO);
+		
+		log.info(getClass() + "userPaging end!!!");
+		return uList;
+	}
+	
+	@RequestMapping(value="/userSearchNum")
+	public @ResponseBody int userSearchNum(@RequestParam(value="search") String search, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "userSearchNum start!!!");
+		log.info("search : " + search);
+		
+		userDTO sDTO = new userDTO();
+		sDTO.setSearch("%"+search+"%");
+		sDTO = userService.getUserSearchNum(sDTO);
+		
+		int num = Integer.parseInt(sDTO.getData());
+		
+		log.info(getClass() + "userSearchNum end!!!");
+		return num;
+	}
+	
+	@RequestMapping(value="/userSearchPaging")
+	public @ResponseBody List<userDTO> userSearchPaging(@RequestParam(value="search") String search, @RequestParam(value="num") int num, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "userSearchPaging start!!!");
+		log.info("search : " + search);
+		log.info("num : " + num);
+		
+		userDTO uDTO = new userDTO();
+		uDTO.setSearch("%"+search+"%");
+		num = (num * 10) - 10;
+		uDTO.setNum(num);
+		
+		List<userDTO> uList = userService.getUserSearchPage(uDTO);
+		
+		log.info(getClass() + "userSearchPaging end!!!");
+		return uList;
+	}
+	
+	@RequestMapping(value="/regPaging")
+	public @ResponseBody List<boardDTO> regPaging(@RequestParam(value="num") int num, HttpSession session) throws Exception {
+		log.info(getClass()  + "regPaging start!!!");
+		String reg_no = (String) session.getAttribute("session_user_no");
+		
+		log.info("reg_no : " + reg_no);
+		log.info("num : " + num);
+		
+		boardDTO bDTO = new boardDTO();
+		
+		num = (num * 10) - 10;
+		
+		bDTO.setReg_no(reg_no);
+		bDTO.setNum(num);
+		
+		List<boardDTO> bList = userService.getRegPaging(bDTO);
+		
+		log.info(getClass() + "regPaging end!!!");
+		return bList;
+	}
+	
+	@RequestMapping(value="/regSearchNum")
+	public @ResponseBody int regSearchNum(@RequestParam(value="search") String search, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "regSearchNum start!!!");
+		String reg_no = (String) session.getAttribute("session_user_no");
+		
+		log.info("reg_no : " + reg_no);
+		log.info("reg : " + search);
+		
+		boardDTO sDTO = new boardDTO();
+		sDTO.setSearch("%"+search+"%");
+		sDTO.setReg_no(reg_no);
+		sDTO = userService.getRegSearchNum(sDTO);
+		
+		int num = Integer.parseInt(sDTO.getData());
+		
+		log.info(getClass() + "userSearchNum end!!!");
+		return num;
+	}
+	
+	@RequestMapping(value="/regSearchPaging")
+	public @ResponseBody List<boardDTO> regSearchPaging(@RequestParam(value="search") String search, @RequestParam(value="num") int num, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "regSearchPaging start!!!");
+		String reg_no = (String) session.getAttribute("session_user_no");
+		
+		log.info("user_no : " + reg_no);
+		log.info("search : " + search);
+		log.info("num : " + num);
+		
+		boardDTO uDTO = new boardDTO();
+		uDTO.setSearch("%"+search+"%");
+		num = (num * 10) - 10;
+		uDTO.setNum(num);
+		uDTO.setReg_no(reg_no);
+		
+		List<boardDTO> bList = userService.getRegSearchPage(uDTO);
+		
+		log.info(getClass() + "userSearchPaging end!!!");
+		return bList;
 	}
 }

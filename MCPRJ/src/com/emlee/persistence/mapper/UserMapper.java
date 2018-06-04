@@ -63,5 +63,19 @@ public interface UserMapper {
 	manageDTO getManageNum() throws Exception;
 
 	boardDTO getBoardNum() throws Exception;
+
+	List<userDTO> getUserPaging(userDTO uDTO) throws Exception;
+
+	userDTO getUserSearchNum(userDTO sDTO) throws Exception;
+
+	List<userDTO> getUserSearchPage(userDTO uDTO) throws Exception;
+
+	List<boardDTO> getRegPaging(boardDTO bDTO) throws Exception;
+
+	boardDTO getRegSearchNum(boardDTO sDTO) throws Exception;
+
+	List<boardDTO> getRegSearchPage(boardDTO uDTO) throws Exception;
+
+	boardDTO getRegNum(String user_no) throws Exception;
 	
 }

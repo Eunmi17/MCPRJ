@@ -13,6 +13,13 @@ public class manageDTO {
 	String num;
 	String search;
 	String leader_name;
+	int data;
+	public int getData() {
+		return data;
+	}
+	public void setData(int data) {
+		this.data = data;
+	}
 	public String getLeader_name() {
 		return leader_name;
 	}

@@ -32,7 +32,7 @@
 	String session_user_name = CmmUtil.nvl((String)session.getAttribute("session_user_name"));
 	userDTO cDTO = (userDTO)request.getAttribute("cDTO");
 	int count = Integer.parseInt(cDTO.getData());
-
+	System.out.println("count : " + count);
 	List<userDTO> uList = (List<userDTO>)request.getAttribute("uList");
 	if(uList == null){
 		uList = new ArrayList();
@@ -50,6 +50,7 @@
 		sbtn.onclick = function() {
 			var contents = "";
 			var search = $('#search').val();
+			var num = 1;
 			
 			if(search == "") {
 				location.href="/userList.do";
@@ -95,46 +96,230 @@
 						}
 					}
 				});
+				
+				$.ajax({
+					url : "/userSearchNum.do",
+					method : "post",
+					data : {'search' : search},
+					datatype : "int",
+					success : function(data) {
+						console.log(data);
+						var page = 1;
+						var countPage = 10;
+						var countList = 10;
+						var totalCount = data;
+						var totalPage =  parseInt(totalCount / countList);
+						if(totalCount % countList > 0){
+							totalPage++;
+						}
+						if(totalPage < page){
+							page = totalPage;
+						}
+						
+						var startPage = ((page - 1) / 10) * 10 + 1;
+						var endPage = startPage + countPage - 1
+						
+						if(endPage > totalPage) {
+							endPage = totalPage;
+						}
+						console.log(startPage);
+						console.log(endPage);
+						console.log(page);
+						var content = "";
+						content += "<div id='paging'>";
+						content += "<nav aria-label='Page navigation example'>";
+						content += "<ul class='pagination justify-content-center'>";
+						for(var iCount = startPage; iCount <= endPage; iCount++){
+							if(iCount == page) {
+								content += "<li class='page-item'><a class='page-links'><b>("+iCount+")</b></a></li>";
+							}else{
+								content += "<li class='page-item'><a class='page-links' id='"+iCount+"' value='"+search+"'>"+iCount+"</a></li>";
+							}
+						}
+						content += "</ul></nav></div>";
+						$('#paging').html(content);
+					},
+					error : function(error) {alert("num : "  + error)}
+				});
+				
 			}
 		};
 		
-		//페이징 시작
+		$(document).on("click", ".page-links", function() {
+			var num = $(this).attr('id');
+			var search = $(this).attr('value');
+			console.log("num : " + num);
+			console.log("search : " + search);
+			$.ajax({
+				url : "/userSearchPaging.do",
+				method : "post",
+				data : {"search" : search, "num" : num},
+				dataType : "json",
+				success : function(data, st, xhr) {
+					console.log(data);
+					var contents = "";
+					contents += "<div class='table-responsive' id='divTable'>";
+					contents += "<table class='table'>";
+					contents += "<thead class='text-primary'>";
+					contents += "<th><strong>번호</strong></th>";
+					contents += "<th><strong>이름</strong></th>";
+					contents += "<th><strong>ID</strong></th>";
+					contents += "<th><strong>동호회</strong></th>";
+					contents += "<th><strong>권한</strong></th>";
+					contents += "<th></th></thead><tbody>";
+					$.each(data, function(key, value) {
+						contents += "<tr>";
+						contents += "<td>"+value.user_no+"</td>";
+						contents += "<td>"+value.user_name+"</td>";
+						contents += "<td>"+value.user_id+"</td>";
+						contents += "<td>"+value.team_no+"</td>";
+						contents += "<td>"+value.auth+"</td>";
+						contents += "<td><img onclick='doDetail("+value.user_no+");' src='bootstrap/assets/img/loupe.png'></td>";
+						contents += "</tr>";
+					});
+					contents += "</tbody></table></div>";
+					$('#divTable').html(contents);
+					
+					countPage = 10;
+					countList = 10;
+					page = num;
+					if(totalPage < page){
+						page = totalPage;
+					}
+					
+					startPage =  parseInt(((page - 1) / 10)) * 10 + 1;
+					endPage = startPage + countPage - 1;
+					
+					if(endPage > totalPage) {
+						endPage = totalPage;
+					}
+					console.log(startPage);
+					console.log(endPage);
+					console.log(page);
+					content = "";
+					content += "<div id='paging'>";
+					content += "<nav aria-label='Page navigation example'>";
+					content += "<ul class='pagination justify-content-center'>";
+					for(var iCount = startPage; iCount <= endPage; iCount++){
+						if(iCount == page) {
+							content += "<li class='page-item'><a class='page-links'><b>("+iCount+")</b></a></li>";
+						}else{
+							content += "<li class='page-item'><a class='page-links' id='"+iCount+"' value='"+search+"'>"+iCount+"</a></li>";
+						}
+					}
+					content += "</ul></nav></div>";
+					$('#paging').html(content);
+				},
+				error : function(xhr, st, error) {alert(error)}
+			});
+		});
 		
+		//첫화면페이징 시작
 		var page = 1;
 		var countPage = 10;
 		var countList = 10;
 		var totalCount = <%=count%>;
-		var totalPage = totalCount / countList;
+		var totalPage =  parseInt(totalCount / countList);
 		
 		if(totalCount % countList > 0){
 			totalPage++;
 		}
 		if(totalPage < page){
-			page += totalPage;
+			page = totalPage;
 		}
 		
 		var startPage = ((page - 1) / 10) * 10 + 1;
-		var endPage = startPage + countPage - 1
+		var endPage = startPage + countPage - 1;
 		
 		if(endPage > totalPage) {
 			endPage = totalPage;
 		}
-		
+		console.log(startPage);
+		console.log(endPage);
+		console.log(page);
 		var content = "";
-		content="<div id='paging'>";
-		content="<nav aria-label='Page navigation example'>";
-		content="<ul class='pagination justify-content-center'>";
+		content += "<div id='paging'>";
+		content += "<nav aria-label='Page navigation example'>";
+		content += "<ul class='pagination justify-content-center'>";
 		for(var iCount = startPage; iCount <= endPage; iCount++){
 			if(iCount == page) {
-				content = "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
+				content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
 			}else{
-				content = "<li class='page-item'><a class='page-link'>"+iCount+"</a></li>";
+				content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
 			}
 		}
-		content = "</ul></nav></div>";
+		content += "</ul></nav></div>";
 		$('#paging').html(content);
+		//첫화면페이징 끝
 		
-		//페이징 끝
+		//본론페이징 시작
+		$(document).on("click", ".page-link", function() {
+			var num = $(this).attr('id');
+			console.log("num : " + num);
+			$.ajax({
+				url : "/userPaging.do",
+				method : "post",
+				data : {"num" : num},
+				dataType : "json",
+				success : function(data, st, xhr) {
+					console.log(data);
+					console.log(st);
+					console.log(xhr);
+					var contents = "";
+					contents += "<div class='table-responsive' id='divTable'>";
+					contents += "<table class='table'>";
+					contents += "<thead class='text-primary'>";
+					contents += "<th><strong>번호</strong></th>";
+					contents += "<th><strong>이름</strong></th>";
+					contents += "<th><strong>ID</strong></th>";
+					contents += "<th><strong>동호회</strong></th>";
+					contents += "<th><strong>권한</strong></th>";
+					contents += "<th></th></thead><tbody>";
+					$.each(data, function(key, value) {
+						contents += "<tr>";
+						contents += "<td>"+value.user_no+"</td>";
+						contents += "<td>"+value.user_name+"</td>";
+						contents += "<td>"+value.user_id+"</td>";
+						contents += "<td>"+value.team_no+"</td>";
+						contents += "<td>"+value.auth+"</td>";
+						contents += "<td><img onclick='doDetail("+value.user_no+");' src='bootstrap/assets/img/loupe.png'></td>";
+						contents += "</tr>";
+					});
+					contents += "</tbody></table></div>";
+					$('#divTable').html(contents);
+					
+					page = num;
+					if(totalPage < page){
+						page = totalPage;
+					}
+					
+					startPage =  parseInt(((page - 1) / 10)) * 10 + 1;
+					endPage = startPage + countPage - 1
+					
+					if(endPage > totalPage) {
+						endPage = totalPage;
+					}
+					console.log(startPage);
+					console.log(endPage);
+					console.log(page);
+					content = "";
+					content += "<div id='paging'>";
+					content += "<nav aria-label='Page navigation example'>";
+					content += "<ul class='pagination justify-content-center'>";
+					for(var iCount = startPage; iCount <= endPage; iCount++){
+						if(iCount == page) {
+							content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
+						}else{
+							content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
+						}
+					}
+					content += "</ul></nav></div>";
+					$('#paging').html(content);
+				},
+				error : function(xhr, st, error) {alert(error)}
+			});
+		});
+		//본론페이징 끝
 	}
 	function doDetail(no){
 		var user_no = no;
@@ -153,6 +338,26 @@
 #m:hover {
 	color: #6c757d;
 	text-decoration: underline;
+}
+.page-links{
+    list-style: none;
+    border: 0;
+    border-radius: 30px !important;
+    transition: all .3s;
+    padding: 0px 11px;
+    margin: 0 3px;
+    min-width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #999999;
+    font-weight: 400;
+    font-size: 12px;
+    text-transform: uppercase;
+    background: transparent;
+    text-align: center;
+}
+.page-links:not([href]):not([tabindex]){
+	color: #999999
 }
 </style>
 </head>
@@ -266,11 +471,6 @@
 										</table>
 									</div>
 									<div id="paging">
-										<nav aria-label="Page navigation example">
-											<ul class="pagination justify-content-center">
-												<li class='page-item'><a class='page-link'><b>1</b></a></li>
-											</ul>
-										</nav>
 									</div>
 								</div>
 							</div>

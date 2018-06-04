@@ -20,6 +20,13 @@ public class userDTO {
 	String search;
 	String data;
 	String data1;
+	int num;
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	public String getData1() {
 		return data1;
 	}

@@ -148,5 +148,40 @@ public class UserService implements IUserService {
 	public boardDTO getBoardNum() throws Exception {
 		return userMapper.getBoardNum();
 	}
+
+	@Override
+	public List<userDTO> getUserPaging(userDTO uDTO) throws Exception {
+		return userMapper.getUserPaging(uDTO);
+	}
+
+	@Override
+	public userDTO getUserSearchNum(userDTO sDTO) throws Exception {
+		return userMapper.getUserSearchNum(sDTO);
+	}
+
+	@Override
+	public List<userDTO> getUserSearchPage(userDTO uDTO) throws Exception {
+		return userMapper.getUserSearchPage(uDTO);
+	}
+
+	@Override
+	public List<boardDTO> getRegPaging(boardDTO bDTO) throws Exception {
+		return userMapper.getRegPaging(bDTO);
+	}
+
+	@Override
+	public boardDTO getRegSearchNum(boardDTO sDTO) throws Exception{
+		return userMapper.getRegSearchNum(sDTO);
+	}
+
+	@Override
+	public List<boardDTO> getRegSearchPage(boardDTO uDTO) throws Exception{
+		return userMapper.getRegSearchPage(uDTO);
+	}
+
+	@Override
+	public boardDTO getRegNum(String user_no) throws Exception {
+		return userMapper.getRegNum(user_no);
+	}
 		
 }
