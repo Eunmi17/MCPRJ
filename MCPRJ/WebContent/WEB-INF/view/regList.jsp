@@ -176,7 +176,7 @@
 			console.log("num : " + num);
 			console.log("search : " + search);
 			$.ajax({
-				url : "/retSearchPaging.do",
+				url : "/regSearchPaging.do",
 				method : "post",
 				data : {"search" : search, "num" : num},
 				dataType : "json",
@@ -290,12 +290,13 @@
 		
 		$(document).on("click", ".page-link", function() {
 			var num = $(this).attr('id');
+			num = parseInt(num);
 			console.log("num : " + num);
 			$.ajax({
 				url : "/regPaging.do",
 				method : "post",
-				data : {"num " : num},
-				dataType  : "json",
+				data : {"num" : num},
+				dataType : "json",
 				success : function(data, st, xhr) {
 					console.log(data);
 					console.log(st);
