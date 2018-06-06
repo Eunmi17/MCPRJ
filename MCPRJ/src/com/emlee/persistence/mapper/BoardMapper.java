@@ -82,4 +82,12 @@ public interface BoardMapper {
 
 	List<boardDTO> getboardSearch(boardDTO bDTO) throws Exception;
 
+	userDTO getUserNum(String team_no) throws Exception;
+
+	userDTO getUserTeamSearchNum(userDTO uDTO) throws Exception;
+
+	List<userDTO> getUserTeamSearchPage(userDTO uDTO) throws Exception;
+
+	List<userDTO> getUserTeamPaging(userDTO uDTO) throws Exception;
+
 }

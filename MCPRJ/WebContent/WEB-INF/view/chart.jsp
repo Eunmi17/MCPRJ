@@ -131,16 +131,11 @@
 	                		var chartdata = {
 	                				labels:num1,
 	                				datasets:[{
-	                					label:"성별",
-	                					backgroundColor: [,
-	                                        'rgba(54, 162, 235, 0.2)',
-	                                        'rgba(255, 99, 132, 0.2)'
+	                					label: "성별",
+	                					backgroundColor: [
+	                						'rgba(54, 162, 235, 0.6)',
+	          	          					'rgba(255,99,132,0.6)'
 	                                    ],
-	                                    borderColor: [
-	                                        'rgba(54, 162, 235, 1)',
-	                                        'rgba(255,99,132,1)'
-	                                    ],
-	                                    borderWidth: 1,
 	                                    data:num2
 	                				}]
 	                		};
@@ -194,11 +189,11 @@
 	                				labels:num1,
 	                				datasets:[{
 	                					label:'가입',
-	                					backgroundColor:'rgba(54, 162, 235, 0.2)',
+	                					backgroundColor:'rgba(051, 204, 051, 0.6)',
 	                                    data:num2
 	                			},{
 		                				label:'미가입',
-		            					backgroundColor:'rgba(255, 99, 132, 0.2)',
+		            					backgroundColor:'rgba(051, 102, 051, 0.6)',
 		                                data:num3
 	                				}]
 	                		};
@@ -250,15 +245,10 @@
 	                				labels:num1,
 	                				datasets:[{
 	                					label:'동호회 가입여부',
-	                					backgroundColor: [,
-	                                        'rgba(54, 162, 235, 0.2)',
-	                                        'rgba(255, 99, 132, 0.2)'
+	                					backgroundColor: [
+	                						'rgba(153, 102, 204, 0.6)',
+	          				                'rgba(204, 051, 204, 0.6)'
 	                                    ],
-	                                    borderColor: [
-	                                        'rgba(54, 162, 235, 1)',
-	                                        'rgba(255,99,132,1)'
-	                                    ],
-	                                    borderWidth: 1,
 	                                    data:num2
 	                				}]
 	                		};
@@ -308,12 +298,13 @@
 			                		datasets: [{
 			                			data: num2,
 			                        	backgroundColor: [
-			                        		'rgba(255, 0, 0, 1)',
-			                        		'rgba(0, 0, 255, 1)',
-			            					'rgba(0, 255, 0, 1)',
-			            					'rgba(255, 255, 0, 1)',
-			            					'rgba(255, 0, 255, 1)',
-			            					'rgba(0, 255, 255, 1)'
+			                        		'rgba(255, 0, 0, 0.8)',
+			                        		'rgba(0, 0, 255, 0.8)',
+			            					'rgba(0, 255, 0, 0.8)',
+			            					'rgba(255, 255, 0, 0.8)',
+			            					'rgba(255, 0, 255, 0.8)',
+			            					'rgba(0, 255, 255, 0.8)',
+			            					'rgba(255, 102, 0, 0.8)'
 			                        	],
 			                		}],
 			                		labels: ['10대 미만', '10대', '20대', '30대', '40대', '50대', '60대 이상']
@@ -403,8 +394,8 @@
 			    				datasets: [{
 			    					label: '가입자 수',
 			    					fill: false,
-			    					backgroundColor: 'rgba(0, 0, 255, 1)',
-			    					borderColor: 'rgba(0, 0, 255, 1)',
+			    					backgroundColor: 'rgba(000, 102, 153, 0.8)',
+			    					borderColor: 'rgba(000, 102, 153, 0.8)',
 			    					data: num2
 			    				}]
 			    			},
@@ -467,8 +458,8 @@
 			    				datasets: [{
 			    					label: '게시글 수',
 			    					fill: false,
-			    					backgroundColor: 'rgba(0, 0, 255, 1)',
-			    					borderColor: 'rgba(0, 0, 255, 1)',
+			    					backgroundColor: 'rgba(000, 153, 051, 0.8)',
+			    					borderColor: 'rgba(000, 153, 051, 0.8)',
 			    					data: num2
 			    				}]
 			    			},
@@ -522,7 +513,7 @@
 					<div class="row">
 						<div class="col-md-4">
 							<div class="card card-chart">
-								<div class="card-header card-header-success">
+								<div class="card-header card-header-primary">
 									<div class="ct-chart">
 										<canvas id="gender"></canvas>
 									</div>
@@ -545,7 +536,7 @@
 						</div>
 						<div class="col-md-4">
 							<div class="card card-chart">
-								<div class="card-header card-header-success">
+								<div class="card-header card-header-primary">
 									<div class="ct-chart">
 										<canvas id="team"></canvas>
 									</div>
@@ -568,7 +559,7 @@
 						</div>
 						<div class="col-md-4 ">
 							<div class="card card-chart">
-								<div class="card-header card-header-success">
+								<div class="card-header card-header-primary">
 									<div class="ct-chart">
 										<canvas id="gt"></canvas>
 									</div>
@@ -593,7 +584,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="card card-chart">
-								<div class="card-header card-header-success">
+								<div class="card-header card-header-primary">
 									<div class="ct-chart">
 										<canvas id="age"></canvas>
 									</div>
@@ -616,7 +607,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="card card-chart">
-								<div class="card-header card-header-success">
+								<div class="card-header card-header-primary">
 									<div class="ct-chart">
 										<canvas id="addr"></canvas>
 									</div>
@@ -641,7 +632,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="card card-chart">
-								<div class="card-header card-header-success">
+								<div class="card-header card-header-primary">
 									<div class="ct-chart">
 										<canvas id="reg"></canvas>
 									</div>
@@ -664,7 +655,7 @@
 						</div>
 						<div class="col-md-6">
 							<div class="card card-chart">
-								<div class="card-header card-header-success">
+								<div class="card-header card-header-primary">
 									<div class="ct-chart">
 										<canvas id="board"></canvas>
 									</div>

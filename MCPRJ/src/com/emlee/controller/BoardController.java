@@ -567,8 +567,11 @@ public class BoardController {
 			uList = new ArrayList<userDTO>();
 		}
 		
+		userDTO cDTO = boardService.getUserNum(team_no);
+		
 		model.addAttribute("uList", uList);
 		model.addAttribute("uDTO", uDTO);
+		model.addAttribute("cDTO", cDTO);
 		model.addAttribute("team_name", team_name);
 		
 		log.info(getClass() + "teamUL end!!!");
@@ -955,5 +958,66 @@ public class BoardController {
 		
 		log.info(getClass() + "boardSearch end!!!");
 		return bList;
+	}
+	
+	@RequestMapping(value="/userTeamSearchNum")
+	public @ResponseBody int userSearchNum(@RequestParam(value="search") String search, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "userTeamSearchNum start!!!");
+		String team_no = (String) session.getAttribute("session_team_no");
+		
+		log.info("team_no : " + team_no);
+		log.info("search : " + search);
+
+		userDTO uDTO = new userDTO();
+		
+		uDTO.setTeam_no(team_no);
+		uDTO.setSearch("%"+search+"%");
+		
+		uDTO = boardService.getUserTeamSearchNum(uDTO);
+		
+		int num = Integer.parseInt(uDTO.getData());
+		log.info("num : " + num);
+		log.info(getClass() + "userTeamSearchNum end!!!");
+		return num;
+	}
+	@RequestMapping(value="/userTeamSearchPaging")
+	public @ResponseBody List<userDTO> userSearchPaging(@RequestParam(value="search") String search, @RequestParam(value="num") int num, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "userTeamSearchPaging start!!!");
+		String team_no = (String) session.getAttribute("session_team_no");
+		
+		log.info("team_no : " + team_no);
+		log.info("search : " + search);
+		log.info("num : " + num);
+		
+		userDTO uDTO = new userDTO();
+		uDTO.setTeam_no(team_no);
+		uDTO.setSearch("%"+search+"%");
+		num = (num * 10) - 10;
+		uDTO.setNum(num);
+		
+		List<userDTO> uList = boardService.getUserTeamSearchPage(uDTO);
+		
+		log.info(getClass() + "userTeamSearchPaging end!!!");
+		return uList;
+	}
+	@RequestMapping(value="/userTeamPagin")
+	public @ResponseBody List<userDTO> userPaging(@RequestParam(value="num") int num, HttpSession session) throws Exception {
+		log.info(getClass()  + "userTeamPagin start!!!");
+		String team_no = (String) session.getAttribute("session_team_no");
+		
+		log.info("team_no : " + team_no);
+		log.info("num : " + num);
+		
+		userDTO uDTO = new userDTO();
+		
+		num = (num * 10) - 10;
+		
+		uDTO.setTeam_no(team_no);
+		uDTO.setNum(num);
+		
+		List<userDTO> uList = boardService.getUserTeamPaging(uDTO);
+		
+		log.info(getClass() + "userTeamPagin end!!!");
+		return uList;
 	}
 }

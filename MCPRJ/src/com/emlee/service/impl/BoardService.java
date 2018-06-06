@@ -194,5 +194,25 @@ public class BoardService implements IBoardService{
 	public List<boardDTO> getboardSearch(boardDTO bDTO) throws Exception {
 		return boardMapper.getboardSearch(bDTO);
 	}
+
+	@Override
+	public userDTO getUserNum(String team_no) throws Exception {
+		return boardMapper.getUserNum(team_no);
+	}
+
+	@Override
+	public userDTO getUserTeamSearchNum(userDTO uDTO) throws Exception {
+		return boardMapper.getUserTeamSearchNum(uDTO);
+	}
+
+	@Override
+	public List<userDTO> getUserTeamSearchPage(userDTO uDTO) throws Exception {
+		return boardMapper.getUserTeamSearchPage(uDTO);
+	}
+
+	@Override
+	public List<userDTO> getUserTeamPaging(userDTO uDTO) throws Exception {
+		return boardMapper.getUserTeamPaging(uDTO);
+	}
 	
 }
