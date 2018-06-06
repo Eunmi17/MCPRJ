@@ -310,7 +310,10 @@
 			                		labels: ['10대 미만', '10대', '20대', '30대', '40대', '50대', '60대 이상']
 			                	},
 			                	options: {
-			                		responsive: true
+			                		responsive: true,
+			                		legend: {
+				    					position: 'right',
+				    				}
 			                	}
 			                };
 		                    var agechart = document.getElementById('age').getContext('2d');
@@ -335,38 +338,44 @@
 		                			num1.push(value.data)
 		                			num2.push(value.data1);
 		                		}
-		                		console.log(num1);
-		                		console.log(num2);
+		                		console.log(num1); //지역
+		                		console.log(num2); //인원수
 		                	});
 				            var config = {
-				                type: 'doughnut',
 				                data: {
 				                	datasets: [{
 				                		data: num2,
 				                   		backgroundColor: [
 				                   			'rgba(255, 0, 0, 1)',
-				                       		'rgba(0, 0, 255, 1)',
-				            				'rgba(0, 255, 0, 1)',
-				            				'rgba(255, 255, 0, 1)',
-				            				'rgba(255, 0, 255, 1)',
-				            				'rgba(0, 255, 255, 1)'
+				                       		'rgba(0, 0, 255, 1)'
 				                		],
+				                		label : 'My dataset'
 				             		}],
 				                	labels: num1
 				                },
 				                options: {
-				                	responsive: true,
+				    				responsive: true,
 				    				legend: {
-				    					position: 'top',
+				    					position: 'right'
+				    				},
+				    				title: {
+				    					display: true,
+				    					text: 'thank'
+				    				},
+				    				scale: {
+				    					ticks: {
+				    						beginAtZero: true
+				    					},
+				    					reverse: false
 				    				},
 				    				animation: {
-				    					animateScale: true,
-				    					animateRotate: true
+				    					animateRotate: false,
+				    					animateScale: true
 				    				}
 				    			}
 				    		};
-			                var addrchart = document.getElementById('addr').getContext('2d');
-			                addr = new Chart(addrchart, config);
+			                var addrchart = document.getElementById('addr');
+			                addr = new Chart.PolarArea(addrchart, config);
 			    		},
 		               	error: function(data){
 		           		console.log(data);

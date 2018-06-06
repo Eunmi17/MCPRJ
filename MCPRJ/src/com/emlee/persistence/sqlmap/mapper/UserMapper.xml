@@ -129,7 +129,7 @@
 	
 	<!-- 지역 분석 -->
 	<select id="getAddrData" resultType="userDTO">
-		SELECT SUBSTRING_INDEX(ADDR1, ' ', 2) AS DATA, COUNT(ADDR1) DATA1
+		SELECT SUBSTRING_INDEX(ADDR1, ' ', 1) AS DATA, COUNT(ADDR1) DATA1
 		FROM USER_INFO
 		GROUP BY DATA;
 	</select>
