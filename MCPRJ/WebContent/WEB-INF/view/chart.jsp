@@ -185,8 +185,6 @@
 	                	}
 	                });
 	                
-	                
-	                
 					var gtctx = document.getElementById("gt").getContext('2d');
 	                
 	                $.ajax({
@@ -333,7 +331,6 @@
 	                	}
 	                });
 	           		
-	                
 	                $.ajax({
 	                	url:"ageData.do",
 	                	method:"POST",
@@ -680,8 +677,6 @@
 	           		console.log(data);
 	               	}
                });
-		            
-		            
 		            
 	           	
 	        }); 

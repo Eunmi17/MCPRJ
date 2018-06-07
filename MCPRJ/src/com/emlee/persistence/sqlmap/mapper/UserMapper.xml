@@ -110,13 +110,13 @@
 	
 	<!-- 동호회여부 분석 -->
 	<select id="getTeamData" resultType="userDTO">
-		SELECT COUNT(IF(AUTH='UU'||AUTH='UA', 1, null)) AS data, COUNT(IF(AUTH='UU'||AUTH='UA', null, 1)) AS data1
+		SELECT COUNT(IF(AUTH='UU'||AUTH='UA', 1, null)) AS DATA, COUNT(IF(AUTH='UU'||AUTH='UA', null, 1)) AS DATA1
 		FROM USER_INFO;
 	</select>
 	
 	<!-- 성별별 동호회여부 분석 -->
 	<select id="getGTData" resultType="userDTO">
-		SELECT GENDER, COUNT(IF(AUTH='UU'||AUTH='UA', 1, null)) AS data, COUNT(IF(AUTH='UU'||AUTH='UA', null, 1)) AS data1
+		SELECT GENDER, COUNT(IF(AUTH='UU'||AUTH='UA', 1, null)) AS DATA, COUNT(IF(AUTH='UU'||AUTH='UA', null, 1)) AS DATA1
 		FROM USER_INFO GROUP BY GENDER;
 	</select>
 	
