@@ -112,7 +112,7 @@
 	           		
 	           		
 	           		var ctx = document.getElementById("gender");
-	                
+	           		
 	                $.ajax({
 	                	url:"genderData.do",
 	                	method:"POST",
@@ -157,6 +157,28 @@
 		                            }
 		                        }
 	                		});
+	                		var content = "";
+	                		var win = "";
+	                		var loser = "";
+	                		var vs = 0;
+	                		
+	                		if(parseInt(num2[0]) > parseInt(num2[1])){
+	                			vs = parseInt(num2[0])-parseInt(num2[1]);
+	                			win = num1[0];
+	                			loser = num1[1];
+	                			
+	                			content = win+" > "+loser+", &nbsp; <span class='text-success'>"+win+" "+vs+"명 <i class='fa fa-long-arrow-up'></i></span>";
+	                		}else if(parseInt(num2[0]) == parseInt(num2[1])){
+	                			content = "남자와 여자의 비율은 <span class='text-success'>50%</span>로 동일";
+	                		}else{
+	                			vs = parseInt(num2[1])-parseInt(num2[0]);
+	                			win = num1[1];
+	                			loser = num1[0];
+	                			
+	                			content = win+" > "+loser+", &nbsp; <span class='text-success'>"+win+" "+vs+"명 <i class='fa fa-long-arrow-up'></i></span>";
+	                		}
+	                		
+	                		$('#gtext').html(content);
 	                	},
 	                	error: function(data){
 	                		console.log(data);
@@ -216,6 +238,19 @@
 		        					}
 		        				}
 	                		});
+	                		
+	                		var content = "";
+	                		var man = "";
+	                		var woman = "";
+	                		
+	                		man = parseInt(parseInt(num2[0]) / (parseInt(num2[0]) + parseInt(num3[0])) * 100);
+	                		woman = parseInt(parseInt(num2[1]) / (parseInt(num2[1]) + parseInt(num3[1])) * 100);
+	                		
+	                		content = "남자 가입 <span class='text-success'>"+man+"%</span>, 여자 가입 <span class='text-success'>"+woman+"%</span>";
+	                		console.log("gttext : " + content);
+	                		
+	                		$('#gttext').html(content);
+	                		
 	                	},
 	                	error: function(data){
 	                		console.log(data);
@@ -270,6 +305,28 @@
 		                            }
 		                        }
 	                		});
+	                		
+	                		var content = "";
+	                		var win = "";
+	                		var loser = "";
+	                		var vs = 0;
+	                		
+	                		if(parseInt(num2[0]) > parseInt(num2[1])){
+	                			vs = parseInt(num2[0])-parseInt(num2[1]);
+	                			win = num1[0];
+	                			loser = num1[1];
+	                			content = win+" > "+loser+", &nbsp; <span class='text-success'>"+win+" "+vs+"명 <i class='fa fa-long-arrow-up'></i></span>";
+	                		}else if(parseInt(num2[0]) == parseInt(num2[1])){
+	                			content = "가입수와 미가입수의 비율은 <span class='text-success'>50%</span>로 동일";
+	                		}else{
+	                			vs = parseInt(num2[1])-parseInt(num2[0]);
+	                			win = num1[1];
+	                			loser = num1[0];
+	                			content = win+" > "+loser+", &nbsp; <span class='text-success'>"+win+" "+vs+"명 <i class='fa fa-long-arrow-up'></i></span>";
+	                		}
+	                		
+	                		$('#ttext').html(content);
+	                		
 	                	},
 	                	error: function(data){
 	                		console.log(data);
@@ -283,6 +340,7 @@
 	                	success:function(data){
 	                		var num1 = [];
 	            			var num2 = [];
+	            			var num = ['10대 미만', '10대', '20대', '30대', '40대', '50대', '60대 이상'];
 	                		$.each(data, function(key, value){
 	                			console.log(value);
 	                			if(value != null) {
@@ -298,16 +356,16 @@
 			                		datasets: [{
 			                			data: num2,
 			                        	backgroundColor: [
-			                        		'rgba(255, 0, 0, 0.8)',
-			                        		'rgba(0, 0, 255, 0.8)',
-			            					'rgba(0, 255, 0, 0.8)',
-			            					'rgba(255, 255, 0, 0.8)',
-			            					'rgba(255, 0, 255, 0.8)',
-			            					'rgba(0, 255, 255, 0.8)',
-			            					'rgba(255, 102, 0, 0.8)'
+			                        		'rgba(255, 051, 051, 0.8)',
+			                        		'rgba(051, 102, 255, 0.8)',
+			            					'rgba(153, 255, 102, 0.8)',
+			            					'rgba(255, 255, 153, 0.8)',
+			            					'rgba(255, 153, 255, 0.8)',
+			            					'rgba(153, 255, 255, 0.8)',
+			            					'rgba(255, 153, 051, 0.8)'
 			                        	],
 			                		}],
-			                		labels: ['10대 미만', '10대', '20대', '30대', '40대', '50대', '60대 이상']
+			                		labels: num
 			                	},
 			                	options: {
 			                		responsive: true,
@@ -318,6 +376,32 @@
 			                };
 		                    var agechart = document.getElementById('age').getContext('2d');
 		                    age = new Chart(agechart, config);
+		                    
+		                    var content = "";
+			                var max = parseInt(num2[0]);
+			                var month = "";
+			                var hap = 0;
+			                var p = 0;
+			                
+			                for(var i = 0; i < num2.length; i++){
+			                	hap += parseInt(num2[i]);
+			                }
+			                for(var i = 0; i < num2.length; i++){
+			                	if(parseInt(num2[i]) > max) {
+			                		max = parseInt(num2[i]);
+			                		month = num[i];
+			                	}else if(parseInt(num2[i]) == max){
+			                		if(i == 0){
+			                			month = num[i];
+			                		}else{
+			                			month += ", "+num[i];
+			                		}
+			                	}
+			                }
+			                p = parseInt(max / hap * 100);
+			                content = "<span class='text-success'>"+month+"</span>가(이) <span class='text-success'>"+p+"%</span>로 가장 수가 많은 연령대임";
+			                $('#agetext').html(content);
+		                    
 		               },
 		               error: function(data){
 		           		console.log(data);
@@ -346,8 +430,23 @@
 				                	datasets: [{
 				                		data: num2,
 				                   		backgroundColor: [
-				                   			'rgba(255, 0, 0, 1)',
-				                       		'rgba(0, 0, 255, 1)'
+				                   			'rgba(255, 0, 0, 0.5)',
+				                       		'rgba(0, 0, 255, 0.5)',
+				                       		'rgba(0, 255, 0, 0.5)',
+				                       		'rgba(255, 255, 0, 0.5)',
+				                       		'rgba(0, 255, 255, 0.5)',
+				                       		'rgba(255, 0, 255, 0.5)',
+				                       		'rgba(255, 255, 255, 0.5)',
+				                       		'rgba(0, 0, 0, 0.5)',
+				                       		'rgba(153, 0, 153, 0.5)',
+				                       		'rgba(0, 102, 51, 0.5)',
+				                       		'rgba(255, 102, 51, 0.5)',
+				                       		'rgba(153, 51, 0, 0.5)',
+				                       		'rgba(153, 153, 153, 0.5)',
+				                       		'rgba(153, 102, 0, 0.5)',
+				                       		'rgba(51, 0, 51, 0.5)',
+				                       		'rgba(204, 204, 153, 0.5)',
+				                       		'rgba(255, 204, 255, 0.5)'
 				                		],
 				                		label : 'My dataset'
 				             		}],
@@ -357,10 +456,6 @@
 				    				responsive: true,
 				    				legend: {
 				    					position: 'right'
-				    				},
-				    				title: {
-				    					display: true,
-				    					text: 'thank'
 				    				},
 				    				scale: {
 				    					ticks: {
@@ -376,6 +471,32 @@
 				    		};
 			                var addrchart = document.getElementById('addr');
 			                addr = new Chart.PolarArea(addrchart, config);
+			                
+			                var content = "";
+			                var max = parseInt(num2[0]);
+			                var month = "";
+			                var hap = 0;
+			                var p = 0;
+			                
+			                for(var i = 0; i < num2.length; i++){
+			                	hap += parseInt(num2[i]);
+			                }
+			                for(var i = 0; i < num2.length; i++){
+			                	if(parseInt(num2[i]) > max) {
+			                		max = parseInt(num2[i]);
+			                		month = num1[i];
+			                	}else if(parseInt(num2[i]) == max){
+			                		if(i=0){
+			                			month = num1[i];
+			                		}else{
+			                			month += ", "+num1[i];
+			                		}
+			                	}
+			                }
+			                p = parseInt(max / hap * 100);
+			                content = "<span class='text-success'>"+month+"</span>이(가) <span class='text-success'>"+p+"%</span>로 회원이 많이 분포되어있음";
+			                $('#addrtext').html(content);
+			                
 			    		},
 		               	error: function(data){
 		           		console.log(data);
@@ -439,6 +560,31 @@
 			    		};
 		                var regchart = document.getElementById('reg').getContext('2d');
 		                reg = new Chart(regchart, configs);
+		                
+		                var content = "";
+		                var max = parseInt(num2[0]);
+		                var month = "";
+		                var hap = 0;
+		                var p = 0;
+		                
+		                for(var i = 0; i < num2.length; i++){
+		                	hap += parseInt(num2[i]);
+		                }
+		                for(var i = 0; i < num2.length; i++){
+		                	if(parseInt(num2[i]) > max) {
+		                		max = parseInt(num2[i]);
+		                		month = parseInt(i+1);
+		                	}else if(parseInt(num2[i]) == max){
+		                		if(i = 0) {
+		                			month = parseInt(i+1);
+		                		}else{
+		                			month += ", "+parseInt(i+1);
+		                		}
+		                	}
+		                }
+		                p = parseInt(max / hap * 100);
+		                content = "<span class='text-success'>"+month+"월</span>이 <span class='text-success'>"+p+"%</span>로 가입률이 높음";
+		                $('#jtext').html(content);
 		           	},
 	               	error: function(data){
 	           		console.log(data);
@@ -503,6 +649,32 @@
 			    		};
 		                var boardchart = document.getElementById('board').getContext('2d');
 		                board = new Chart(boardchart, configss);
+		                
+		                var content = "";
+		                var max = parseInt(num2[0]);
+		                var month = "";
+		                var hap = 0;
+		                var p = 0;
+		                
+		                for(var i = 0; i < num2.length; i++){
+		                	hap += parseInt(num2[i]);
+		                }
+		                for(var i = 0; i < num2.length; i++){
+		                	if(parseInt(num2[i]) > max) {
+		                		max = parseInt(num2[i]);
+		                		month = parseInt(i+1);
+		                	}else if(parseInt(num2[i]) == max){
+		                		if(i = 0){
+		                			month = parseInt(i+1);
+		                		}else{
+		                			month += ", "+parseInt(i+1);
+		                		}
+		                	}
+		                }
+		                p = parseInt(max / hap * 100);
+		                content = "<span class='text-success'>"+month+"월</span>이 <span class='text-success'>"+p+"%</span>로 활동률이 높음";
+		                $('#ntext').html(content);
+		                
 		           	},
 	               	error: function(data){
 	           		console.log(data);
@@ -528,17 +700,12 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<h4 class="card-title">Daily Sales</h4>
-									<p class="card-category">
-										<span class="text-success"><i
-											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
-										sales.
-									</p>
+									<h4 class="card-title">성별 분석</h4>
+									<p class="card-category" id="gtext"></p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> updated 4 minutes
-										ago
+										회원 남녀 비율 확인
 									</div>
 								</div>
 							</div>
@@ -551,17 +718,12 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<h4 class="card-title">Daily Sales</h4>
-									<p class="card-category">
-										<span class="text-success"><i
-											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
-										sales.
-									</p>
+									<h4 class="card-title">동호회 가입여부 분석</h4>
+									<p class="card-category" id="ttext"></p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> updated 4 minutes
-										ago
+										동호회 가입 비율 확인
 									</div>
 								</div>
 							</div>
@@ -574,17 +736,12 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<h4 class="card-title">Daily Sales</h4>
-									<p class="card-category">
-										<span class="text-success"><i
-											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
-										sales.
-									</p>
+									<h4 class="card-title">남녀별 동호회 가입여부 분석</h4>
+									<p class="card-category" id="gttext"></p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> updated 4 minutes
-										ago
+										남녀별로 동호회 가입 비율 확인
 									</div>
 								</div>
 							</div>
@@ -599,17 +756,12 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<h4 class="card-title">Daily Sales</h4>
-									<p class="card-category">
-										<span class="text-success"><i
-											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
-										sales.
-									</p>
+									<h4 class="card-title">나이 분석</h4>
+									<p class="card-category" id="agetext"></p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> updated 4 minutes
-										ago
+										회원 나이 비율 확인
 									</div>
 								</div>
 							</div>
@@ -622,17 +774,12 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<h4 class="card-title">Daily Sales</h4>
-									<p class="card-category">
-										<span class="text-success"><i
-											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
-										sales.
-									</p>
+									<h4 class="card-title">지역 분석</h4>
+									<p class="card-category" id="addrtext"></p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> updated 4 minutes
-										ago
+										회원 거주지 비율 확인
 									</div>
 								</div>
 							</div>
@@ -647,17 +794,12 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<h4 class="card-title">Daily Sales</h4>
-									<p class="card-category">
-										<span class="text-success"><i
-											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
-										sales.
-									</p>
+									<h4 class="card-title">월별 회원 가입 비율 분석</h4>
+									<p class="card-category" id="jtext"></p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> updated 4 minutes
-										ago
+										회원이 어느달에 가입이 많이 되는지 확인
 									</div>
 								</div>
 							</div>
@@ -670,17 +812,12 @@
 									</div>
 								</div>
 								<div class="card-body">
-									<h4 class="card-title">Daily Sales</h4>
-									<p class="card-category">
-										<span class="text-success"><i
-											class="fa fa-long-arrow-up"></i> 55% </span> increase in today
-										sales.
-									</p>
+									<h4 class="card-title">월별 활동 비율 분석</h4>
+									<p class="card-category" id="ntext"></p>
 								</div>
 								<div class="card-footer">
 									<div class="stats">
-										<i class="material-icons">access_time</i> updated 4 minutes
-										ago
+										글이 많이 써지는 달을 기준으로 활발히 활동하는 시기 확인
 									</div>
 								</div>
 							</div>
