@@ -52,7 +52,9 @@
 		var change = document.getElementById("change");
 		var file_del = document.getElementById("file_del");
 		change.onchange = function () {
-			document.getElementById("file_route").value = change.value;
+			var name = change.value;
+			var nameArray = name.split('\\');
+			document.getElementById("file_route").value = nameArray[2];
 			document.getElementById("c").style.display = "none";
 			file_del.style.display = "";
 			document.getElementById("check").value = "2";

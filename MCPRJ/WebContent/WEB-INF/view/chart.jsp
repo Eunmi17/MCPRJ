@@ -110,8 +110,19 @@
 			<script>
 	           	$(document).ready(function(){
 	           		
+	           		genderChart();
+		           	teamChart();
+		            teamGeanderChart();
+		           	ageChart();
+		           	addrChart();
+		           	regChart();
+		           	boardChart();
 	           		
-	           		var ctx = document.getElementById("gender");
+	        	});
+	           	
+	           	
+	        
+	           	function genderChart(){
 	           		
 	                $.ajax({
 	                	url:"genderData.do",
@@ -139,6 +150,7 @@
 	                                    data:num2
 	                				}]
 	                		};
+	                		var ctx = document.getElementById("gender");
 	                		gender = new Chart(ctx, {
 	                			type: 'bar',
 	                			data: chartdata,
@@ -184,81 +196,10 @@
 	                		console.log(data);
 	                	}
 	                });
-	                
-					var gtctx = document.getElementById("gt").getContext('2d');
-	                
-	                $.ajax({
-	                	url:"GTData.do",
-	                	method:"POST",
-	                	success:function(data){
-	                		var num1 = [];
-	            			var num2 = [];
-	            			var num3 = [];
-	                		$.each(data, function(key, value){
-	                			console.log(value);
-	                			if(value != null) {
-	                				num1.push(value.gender);
-	                				num2.push(value.data);
-	                				num3.push(value.data1);
-	                			}
-	                			console.log(num1);
-	                			console.log(num2);
-	                			console.log(num3);
-	                		});
-	                		var chartdata = {
-	                				labels:num1,
-	                				datasets:[{
-	                					label:'가입',
-	                					backgroundColor:'rgba(051, 204, 051, 0.6)',
-	                                    data:num2
-	                			},{
-		                				label:'미가입',
-		            					backgroundColor:'rgba(051, 102, 051, 0.6)',
-		                                data:num3
-	                				}]
-	                		};
-	                		gt = new Chart(gtctx, {
-	                			type: 'bar',
-	                			data: chartdata,
-		                		options: {
-		        					tooltips: {
-		        						mode: 'index',
-		        						intersect: false
-		        					},
-		        					responsive: true,
-		        					scales: {
-		        						xAxes: [{
-		        							stacked: true,
-		        						}],
-		        						yAxes: [{
-		        							stacked: true
-		        						}]
-		        					}
-		        				}
-	                		});
-	                		
-	                		var content = "";
-	                		var man = "";
-	                		var woman = "";
-	                		
-	                		man = parseInt(parseInt(num2[0]) / (parseInt(num2[0]) + parseInt(num3[0])) * 100);
-	                		woman = parseInt(parseInt(num2[1]) / (parseInt(num2[1]) + parseInt(num3[1])) * 100);
-	                		
-	                		content = "남자 가입 <span class='text-success'>"+man+"%</span>, 여자 가입 <span class='text-success'>"+woman+"%</span>";
-	                		console.log("gttext : " + content);
-	                		
-	                		$('#gttext').html(content);
-	                		
-	                	},
-	                	error: function(data){
-	                		console.log(data);
-	                	}
-	                });
+	           	};
+	           	
+	           	function teamChart(){
 	           		
-	           		
-	                
-					var tctx = document.getElementById("team");
-	                
 	                $.ajax({
 	                	url:"teamData.do",
 	                	method:"POST",
@@ -285,6 +226,7 @@
 	                                    data:num2
 	                				}]
 	                		};
+	                		var tctx = document.getElementById("team");
 	                		team = new Chart(tctx, {
 	                			type: 'bar',
 	                			data: chartdata,
@@ -330,8 +272,84 @@
 	                		console.log(data);
 	                	}
 	                });
+	           	};
+	           	
+	           	function teamGeanderChart(){
 	           		
 	                $.ajax({
+	                	url:"GTData.do",
+	                	method:"POST",
+	                	success:function(data){
+	                		var num1 = [];
+	            			var num2 = [];
+	            			var num3 = [];
+	                		$.each(data, function(key, value){
+	                			console.log(value);
+	                			if(value != null) {
+	                				num1.push(value.gender);
+	                				num2.push(value.data);
+	                				num3.push(value.data1);
+	                			}
+	                			console.log(num1);
+	                			console.log(num2);
+	                			console.log(num3);
+	                		});
+	                		var chartdata = {
+	                				labels:num1,
+	                				datasets:[{
+	                					label:'가입',
+	                					backgroundColor:'rgba(051, 204, 051, 0.6)',
+	                                    data:num2
+	                			},{
+		                				label:'미가입',
+		            					backgroundColor:'rgba(051, 102, 051, 0.6)',
+		                                data:num3
+	                				}]
+	                		};
+	                		var gtctx = document.getElementById("gt").getContext('2d');
+	                		gt = new Chart(gtctx, {
+	                			type: 'bar',
+	                			data: chartdata,
+		                		options: {
+		        					tooltips: {
+		        						mode: 'index',
+		        						intersect: false
+		        					},
+		        					responsive: true,
+		        					scales: {
+		        						xAxes: [{
+		        							stacked: true,
+		        						}],
+		        						yAxes: [{
+		        							stacked: true
+		        						}]
+		        					}
+		        				}
+	                		});
+	                		
+	                		var content = "";
+	                		var man = "";
+	                		var woman = "";
+	                		
+	                		man = parseInt(parseInt(num2[0]) / (parseInt(num2[0]) + parseInt(num3[0])) * 100);
+	                		woman = parseInt(parseInt(num2[1]) / (parseInt(num2[1]) + parseInt(num3[1])) * 100);
+	                		
+	                		content = "남자 가입 <span class='text-success'>"+man+"%</span>, 여자 가입 <span class='text-success'>"+woman+"%</span>";
+	                		console.log("gttext : " + content);
+	                		
+	                		$('#gttext').html(content);
+	                		
+	                	},
+	                	error: function(data){
+	                		console.log(data);
+	                	}
+	                });
+	           		
+	           	};
+	           	
+	           	function ageChart(){
+	           		
+	           		$.ajax({
 	                	url:"ageData.do",
 	                	method:"POST",
 	                	success:function(data){
@@ -404,10 +422,11 @@
 		           		console.log(data);
 		               }
 		           	});
-		                
-		           	
-		                
-		            $.ajax({
+	           	};
+	           	
+	           	function addrChart(){
+	           		
+	           		$.ajax({
 		            	url:"addrData.do",
 		                method:"POST",
 		                success:function(data){
@@ -483,7 +502,7 @@
 			                		max = parseInt(num2[i]);
 			                		month = num1[i];
 			                	}else if(parseInt(num2[i]) == max){
-			                		if(i=0){
+			                		if(i == 0){
 			                			month = num1[i];
 			                		}else{
 			                			month += ", "+num1[i];
@@ -499,9 +518,11 @@
 		           		console.log(data);
 		               }
 		           	});
-		            
-		            
-		            $.ajax({
+	           	};
+	           	
+	           	function regChart(){
+	           		
+	           		$.ajax({
 		            	url:"regData.do",
 		                method:"POST",
 		                success:function(data){
@@ -572,7 +593,7 @@
 		                		max = parseInt(num2[i]);
 		                		month = parseInt(i+1);
 		                	}else if(parseInt(num2[i]) == max){
-		                		if(i = 0) {
+		                		if(i == 0) {
 		                			month = parseInt(i+1);
 		                		}else{
 		                			month += ", "+parseInt(i+1);
@@ -587,10 +608,12 @@
 	           		console.log(data);
 	               	}
                });
-		            
-		            
-		            
-		            $.ajax({
+	           		
+	           	};
+	           	
+	           	function boardChart(){
+	           		
+	           		$.ajax({
 		            	url:"boardData.do",
 		                method:"POST",
 		                success:function(data){
@@ -661,7 +684,7 @@
 		                		max = parseInt(num2[i]);
 		                		month = parseInt(i+1);
 		                	}else if(parseInt(num2[i]) == max){
-		                		if(i = 0){
+		                		if(i == 0){
 		                			month = parseInt(i+1);
 		                		}else{
 		                			month += ", "+parseInt(i+1);
@@ -677,9 +700,9 @@
 	           		console.log(data);
 	               	}
                });
-		            
+	           		
+	          };
 	           	
-	        }); 
             </script>
 
 

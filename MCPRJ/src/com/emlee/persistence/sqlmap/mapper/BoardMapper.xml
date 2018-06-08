@@ -198,7 +198,7 @@
 	<select id="getboardSearch" parameterType="boardDTO" resultType="boardDTO">
 		SELECT * FROM BOARD_INFO
 		WHERE TEAM_NO = #{team_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
-		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC
+		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC LIMIT 10
 	</select>
 	<!-- 팀원수 -->
 	<select id="getUserNum" parameterType="String" resultType="userDTO">

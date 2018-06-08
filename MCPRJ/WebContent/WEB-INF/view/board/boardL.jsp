@@ -118,8 +118,59 @@
 						}
 					}
 				});
+				
+				$.ajax({
+					url : "/boardSearchNum.do",
+					method : "post",
+					data : {'search' : search},
+					dataType : "int",
+					success : function(data) {
+						console.log(data);
+						var page = 1;
+						var countPage = 10;
+						var countList = 10;
+						var totalCount = data;
+						var totalPage =  parseInt(totalCount / countList);
+						if(totalCount % countList > 0){
+							totalPage++;
+						}
+						if(totalPage < page){
+							page = totalPage;
+						}
+						
+						var startPage = ((page - 1) / 10) * 10 + 1;
+						var endPage = startPage + countPage - 1
+						
+						if(endPage > totalPage) {
+							endPage = totalPage;
+						}
+						console.log(startPage);
+						console.log(endPage);
+						console.log(page);
+						var content = "";
+						content += "<div id='paging'>";
+						content += "<nav aria-label='Page navigation example'>";
+						content += "<ul class='pagination justify-content-center'>";
+						for(var iCount = startPage; iCount <= endPage; iCount++){
+							if(iCount == page) {
+								content += "<li class='page-item'><a class='page-links'><b>("+iCount+")</b></a></li>";
+							}else{
+								content += "<li class='page-item'><a class='page-links' id='"+iCount+"' value='"+search+"'>"+iCount+"</a></li>";
+							}
+						}
+						content += "</ul></nav></div>";
+						$('#paging').html(content);
+					},
+					error : function(error) {alert("num : "  + error)}
+				});
+				
 			}
 		};
+		
+		$(document).on("click", ".page-links", function() {
+			var num = $(this).attr('id');
+			var search = $();
+		})
 		
 		var list = document.getElementById("list");
 		list.onclick = function() {
