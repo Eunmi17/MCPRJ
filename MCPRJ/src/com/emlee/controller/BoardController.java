@@ -64,8 +64,11 @@ public class BoardController {
 			bList = new ArrayList<boardDTO>();
 		}
 		
+		boardDTO cDTO = boardService.getBoardNum(team_no);
+		
 		session.setAttribute("check", check);
 		model.addAttribute("bList", bList);
+		model.addAttribute("cDTO", cDTO);
 		
 		bList = null;
 		
@@ -96,8 +99,11 @@ public class BoardController {
 			bList = new ArrayList<boardDTO>();
 		}
 		
+		boardDTO cDTO = boardService.getBoardNum(team_no);
+		
 		model.addAttribute("bList", bList);
-		model.addAttribute("tName", tName);		
+		model.addAttribute("tName", tName);	
+		model.addAttribute("cDTO", cDTO);
 		bList = null;
 		
 		log.info(getClass() + "teamboardL end!!!");
@@ -468,6 +474,9 @@ public class BoardController {
 		log.info("user_id : " + user_id);
 		log.info("auth : " + auth);
 		
+		manageDTO cDTO = boardService.getTeamNum();
+		
+		
 		if(user_id.equals("admin")){
 
 			List<manageDTO> mList = boardService.getTeamList();
@@ -477,6 +486,7 @@ public class BoardController {
 			}
 			
 			model.addAttribute("mList", mList);
+			model.addAttribute("cDTO", cDTO);
 			
 			return "board/ateamL";
 		}else{
@@ -489,6 +499,7 @@ public class BoardController {
 				}
 				
 				model.addAttribute("mList", mList);
+				model.addAttribute("cDTO", cDTO);
 				
 				return "board/uteamL";
 			}else{
@@ -1019,5 +1030,144 @@ public class BoardController {
 		
 		log.info(getClass() + "userTeamPagin end!!!");
 		return uList;
+	}
+	@RequestMapping(value="/boardSearchNum")
+	public @ResponseBody int boardSearchNum(@RequestParam(value="search") String search, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "boardSearchNum start!!!");
+		
+		String check = (String) session.getAttribute("check");
+		String team_no = "";
+		
+		if(check.equals("F")){
+			team_no = "0";
+		}else{
+			team_no = (String) session.getAttribute("session_team_no");
+		}
+		
+		log.info("check : " + check);
+		log.info("team_no : " + team_no);
+		log.info("search : " + search);
+		
+		boardDTO bDTO = new boardDTO();
+		
+		bDTO.setTeam_no(team_no);
+		bDTO.setSearch("%"+search+"%");
+		
+		bDTO = boardService.getboardSearchNum(bDTO);
+		
+		int num = Integer.parseInt(bDTO.getData());
+		
+		log.info(getClass() + "boardSearchNum end!!!");
+		return num;
+	}
+	@RequestMapping(value="/boardSearchPaging")
+	public @ResponseBody List<boardDTO> boardSearchPaging(@RequestParam(value="search") String search, @RequestParam(value="num") int num, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "boardSearchPaging start!!!");
+		
+		String check = (String) session.getAttribute("check");
+		String team_no = "";
+		
+		if(check.equals("F")){
+			team_no = "0";
+		}else{
+			team_no = (String) session.getAttribute("session_team_no");
+		}
+		
+		log.info("check : " + check);
+		log.info("team_no : " + team_no);
+		log.info("search : " + search);
+		log.info("num : " + num);
+		
+		boardDTO bDTO = new boardDTO();
+		
+		bDTO.setTeam_no(team_no);
+		bDTO.setSearch("%"+search+"%");
+		num = (num * 10) - 10;
+		bDTO.setNum(num);
+		
+		List<boardDTO> bList = boardService.getboardSearchPage(bDTO);
+		
+		log.info(getClass() + "boardSearchPaging end!!!");
+		return bList;
+	}
+	@RequestMapping(value="/boardPaging")
+	public @ResponseBody List<boardDTO> boardPaging(@RequestParam(value="num") int num, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "boardPaging start!!!");
+		
+		String check = (String) session.getAttribute("check");
+		String team_no = "";
+		
+		if(check.equals("F")){
+			team_no = "0";
+		}else{
+			team_no = (String) session.getAttribute("session_team_no");
+		}
+		
+		log.info("check : " + check);
+		log.info("team_no : " + team_no);
+		log.info("num : " + num);
+		
+		boardDTO bDTO = new boardDTO();
+		
+		bDTO.setTeam_no(team_no);
+		num = (num * 10) - 10;
+		bDTO.setNum(num);
+		
+		List<boardDTO> bList = boardService.getboardPaging(bDTO);
+		
+		log.info(getClass() + "boardPaging end!!!");
+		return bList;
+	}
+	
+	@RequestMapping(value="/teamSearchNum")
+	public @ResponseBody int teamSearchNum(@RequestParam(value="search") String search, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "teamSearchNum start!!!");
+		
+		log.info("search : " + search);
+		
+		manageDTO mDTO = new manageDTO();
+		
+		mDTO.setSearch("%"+search+"%");
+		
+		mDTO = boardService.getTeamSearchNum(mDTO);
+		
+		int num = Integer.parseInt(mDTO.getData1());
+		
+		log.info(getClass() + "teamSearchNum end!!!");
+		return num;
+	}
+	@RequestMapping(value="/teamSearchPaging")
+	public @ResponseBody List<manageDTO> teamSearchPaging(@RequestParam(value="search") String search, @RequestParam(value="num") int num, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "teamSearchPaging start!!!");
+		
+		log.info("search : " + search);
+		log.info("num : " + num);
+		
+		manageDTO mDTO = new manageDTO();
+		
+		mDTO.setSearch("%"+search+"%");
+		num = (num * 10) - 10;
+		mDTO.setData(num);
+		
+		List<manageDTO> mList = boardService.getTeamSearchPage(mDTO);
+		
+		log.info(getClass() + "teamSearchPaging end!!!");
+		return mList;
+	}
+	@RequestMapping(value="/teamPaging")
+	public @ResponseBody List<manageDTO> teamPaging(@RequestParam(value="num") int num, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "teamPaging start!!!");
+		
+		log.info("num : " + num);
+		
+		manageDTO mDTO = new manageDTO();
+		
+		num = (num * 10) - 10;
+		mDTO.setData(num);
+		
+		List<manageDTO> mList = boardService.getTeamPaging(mDTO);
+		
+		log.info(getClass() + "teamPaging end!!!");
+		return mList;
 	}
 }

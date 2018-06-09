@@ -14,6 +14,13 @@ public class manageDTO {
 	String search;
 	String leader_name;
 	int data;
+	String data1;
+	public String getData1() {
+		return data1;
+	}
+	public void setData1(String data1) {
+		this.data1 = data1;
+	}
 	public int getData() {
 		return data;
 	}

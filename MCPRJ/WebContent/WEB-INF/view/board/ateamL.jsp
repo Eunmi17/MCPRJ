@@ -36,12 +36,14 @@
 	String session_team_name = CmmUtil.nvl((String) session.getAttribute("session_team_no"));
 	String session_user_name = CmmUtil.nvl((String) session.getAttribute("session_user_name"));
 %>
-<!-- 나중에 팀이름으로 바꾸기 -->
 <%
 	List<manageDTO> mList = (List<manageDTO>)request.getAttribute("mList");
 	if(mList == null) {
 		mList = new ArrayList();
 	}
+	
+	manageDTO cDTO = (manageDTO)request.getAttribute("cDTO");
+	int count = Integer.parseInt(cDTO.getData1());
 	
 %>
 <script>
@@ -56,6 +58,7 @@
 		sbtn.onclick = function() {
 			var contents = "";
 			var search = $('#search').val();
+			var num = 1;
 			
 			if(search == "") {
 				location.href="/teamL.do";
@@ -103,8 +106,238 @@
 						}
 					}
 				});
+				
+				$.ajax({
+					url : "/teamSearchNum.do",
+					method : "post",
+					data : {'search' : search},
+					datatype : "int",
+					success : function(data) {
+						console.log(data);
+						var page = 1;
+						var countPage = 10;
+						var countList = 10;
+						var totalCount = data;
+						var totalPage =  parseInt(totalCount / countList);
+						if(totalCount % countList > 0){
+							totalPage++;
+						}
+						if(totalPage < page){
+							page = totalPage;
+						}
+						
+						var startPage = ((page - 1) / 10) * 10 + 1;
+						var endPage = startPage + countPage - 1
+						
+						if(endPage > totalPage) {
+							endPage = totalPage;
+						}
+						console.log(startPage);
+						console.log(endPage);
+						console.log(page);
+						var content = "";
+						content += "<div id='paging'>";
+						content += "<nav aria-label='Page navigation example'>";
+						content += "<ul class='pagination justify-content-center'>";
+						for(var iCount = startPage; iCount <= endPage; iCount++){
+							if(iCount == page) {
+								content += "<li class='page-item'><a class='page-links'><b>("+iCount+")</b></a></li>";
+							}else{
+								content += "<li class='page-item'><a class='page-links' id='"+iCount+"' value='"+search+"'>"+iCount+"</a></li>";
+							}
+						}
+						content += "</ul></nav></div>";
+						$('#paging').html(content);
+					},
+					error : function(error) {alert("num : " + error)}
+				});
 			}
 		};
+		
+		$(document).on("click", ".page-links", function() {
+			var num = $(this).attr('id');
+			var search = $(this).attr('value');
+			console.log("num : " + num);
+			console.log("search : " + search);
+			$.ajax({
+				url : "/teamSearchPaging.do",
+				method : "post",
+				data : {"search" : search, "num" : num},
+				dataType : "json",
+				success : function(data, st, xhr) {
+					console.log(data);
+					var contents = "";
+					var content = "";
+					var contentss = "";
+					
+					contents += "<div class='table-responsive' id='divTable'>";
+					contents += "<table class='table'>";
+					contents += "<thead class='text-primary'>";
+					contents += "<th><strong>번호</strong></th>";
+					contents += "<th><strong>동호회 명</strong></th>";
+					contents += "<th><strong>리더</strong></th>";
+					contents += "<th><strong>가입 방식</strong></th>";
+					contents += "<th><strong>인원수</strong></th>";
+					contents += "<th></th></thead><tbody>";
+					
+					$.each(data, function (key, value) {
+						content += "<tr>";
+							content += "<td>"+value.team_no+"</td>";
+							content += "<td>"+value.team_name+"</td>";
+							content += "<td>"+value.leader_name+"</td>";
+							content += "<td>"+value.join_form+"</td>";
+							content += "<td>"+value.num+"</td>";
+							content += "<td><img onclick='doDetail("+value.team_no+");'";
+							content += "scr='bootstrap/assets/img/loupe.png'>&emsp;";
+							content += "<img onclick='doDelete("+value.team_no+");'";
+							content += "src='bootstrap/assets/img/delete.png'></td></tr>";
+					});
+					
+					contentss += "</tbody></table></div>";
+					$('#divTable').html(contents+content+contentss);
+					
+					countPage = 10;
+					countList = 10;
+					page = num;
+					if(totalPage < page){
+						page = totalPage;
+					}
+					
+					startPage =  parseInt(((page - 1) / 10)) * 10 + 1;
+					endPage = startPage + countPage - 1;
+					
+					if(endPage > totalPage) {
+						endPage = totalPage;
+					}
+					console.log(startPage);
+					console.log(endPage);
+					console.log(page);
+					content = "";
+					content += "<div id='paging'>";
+					content += "<nav aria-label='Page navigation example'>";
+					content += "<ul class='pagination justify-content-center'>";
+					for(var iCount = startPage; iCount <= endPage; iCount++){
+						if(iCount == page) {
+							content += "<li class='page-item'><a class='page-links'><b>("+iCount+")</b></a></li>";
+						}else{
+							content += "<li class='page-item'><a class='page-links' id='"+iCount+"' value='"+search+"'>"+iCount+"</a></li>";
+						}
+					}
+					content += "</ul></nav></div>";
+					$('#paging').html(content);
+				},
+				error : function(xhr, st, error) {alert(error)}
+			});
+		});
+		
+		var page = 1;
+		var countPage = 10;
+		var countList = 10;
+		var totalCount = <%=count%>;
+		var totalPage =  parseInt(totalCount / countList);
+		
+		if(totalCount % countList > 0){
+			totalPage++;
+		}
+		if(totalPage < page){
+			page = totalPage;
+		}
+		
+		var startPage = ((page - 1) / 10) * 10 + 1;
+		var endPage = startPage + countPage - 1;
+		
+		if(endPage > totalPage) {
+			endPage = totalPage;
+		}
+		console.log(startPage);
+		console.log(endPage);
+		console.log(page);
+		var content = "";
+		content += "<div id='paging'>";
+		content += "<nav aria-label='Page navigation example'>";
+		content += "<ul class='pagination justify-content-center'>";
+		for(var iCount = startPage; iCount <= endPage; iCount++){
+			if(iCount == page) {
+				content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
+			}else{
+				content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
+			}
+		}
+		content += "</ul></nav></div>";
+		$('#paging').html(content);
+		
+		$(document).on("click", ".page-link", function() {
+			var num = $(this).attr('id');
+			console.log("num : " + num);
+			$.ajax({
+				url : "/teamPaging.do",
+				method : "post",
+				data : {"num" : num},
+				dataType : "json",
+				success : function(data, st, xhr) {
+					console.log(data);
+					var contents = "";
+					var content = "";
+					var contentss = "";
+					
+					contents += "<div class='table-responsive' id='divTable'>";
+					contents += "<table class='table'>";
+					contents += "<thead class='text-primary'>";
+					contents += "<th><strong>번호</strong></th>";
+					contents += "<th><strong>동호회 명</strong></th>";
+					contents += "<th><strong>리더</strong></th>";
+					contents += "<th><strong>가입 방식</strong></th>";
+					contents += "<th><strong>인원수</strong></th>";
+					contents += "<th></th></thead><tbody>";
+					
+					$.each(data, function (key, value) {
+						content += "<tr>";
+							content += "<td>"+value.team_no+"</td>";
+							content += "<td>"+value.team_name+"</td>";
+							content += "<td>"+value.leader_name+"</td>";
+							content += "<td>"+value.join_form+"</td>";
+							content += "<td>"+value.num+"</td>";
+							content += "<td><img onclick='doDetail("+value.team_no+");'";
+							content += "scr='bootstrap/assets/img/loupe.png'>&emsp;";
+							content += "<img onclick='doDelete("+value.team_no+");'";
+							content += "src='bootstrap/assets/img/delete.png'></td></tr>";
+					});
+					
+					contentss += "</tbody></table></div>";
+					$('#divTable').html(contents+content+contentss);
+					
+					page = num;
+					if(totalPage < page){
+						page = totalPage;
+					}
+					
+					startPage =  parseInt(((page - 1) / 10)) * 10 + 1;
+					endPage = startPage + countPage - 1
+					
+					if(endPage > totalPage) {
+						endPage = totalPage;
+					}
+					console.log(startPage);
+					console.log(endPage);
+					console.log(page);
+					content = "";
+					content += "<div id='paging'>";
+					content += "<nav aria-label='Page navigation example'>";
+					content += "<ul class='pagination justify-content-center'>";
+					for(var iCount = startPage; iCount <= endPage; iCount++){
+						if(iCount == page) {
+							content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
+						}else{
+							content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
+						}
+					}
+					content += "</ul></nav></div>";
+					$('#paging').html(content);
+				},
+				error : function(xhr, st, error) {alert(error)}
+			});
+		});
+		
 	};
 		
 	function doDetail(no){
@@ -134,6 +367,26 @@
 #notice{
     font-size: 15px;
     color: red;
+}
+.page-links{
+    list-style: none;
+    border: 0;
+    border-radius: 30px !important;
+    transition: all .3s;
+    padding: 0px 11px;
+    margin: 0 3px;
+    min-width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #999999;
+    font-weight: 400;
+    font-size: 12px;
+    text-transform: uppercase;
+    background: transparent;
+    text-align: center;
+}
+.page-links:not([href]):not([tabindex]){
+	color: #999999
 }
 </style>
 </head>
@@ -245,6 +498,8 @@
 											<%} %>
 											</tbody>
 										</table>
+									</div>
+									<div id="paging">
 									</div>
 								</div>
 							</div>

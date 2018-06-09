@@ -214,5 +214,45 @@ public class BoardService implements IBoardService{
 	public List<userDTO> getUserTeamPaging(userDTO uDTO) throws Exception {
 		return boardMapper.getUserTeamPaging(uDTO);
 	}
+
+	@Override
+	public boardDTO getBoardNum(String team_no) throws Exception {
+		return boardMapper.getBoardNum(team_no);
+	}
+
+	@Override
+	public boardDTO getboardSearchNum(boardDTO bDTO) throws Exception {
+		return boardMapper.getboardSearchNum(bDTO);
+	}
+
+	@Override
+	public List<boardDTO> getboardSearchPage(boardDTO bDTO) throws Exception {
+		return boardMapper.getboardSearchPage(bDTO);
+	}
+
+	@Override
+	public List<boardDTO> getboardPaging(boardDTO bDTO) throws Exception {
+		return boardMapper.getboardPaging(bDTO);
+	}
+
+	@Override
+	public manageDTO getTeamNum() throws Exception {
+		return boardMapper.getTeamNum();
+	}
+
+	@Override
+	public manageDTO getTeamSearchNum(manageDTO mDTO) throws Exception {
+		return boardMapper.getTeamSearchNum(mDTO);
+	}
+
+	@Override
+	public List<manageDTO> getTeamSearchPage(manageDTO mDTO) throws Exception {
+		return boardMapper.getTeamSearchPage(mDTO);
+	}
+
+	@Override
+	public List<manageDTO> getTeamPaging(manageDTO mDTO) throws Exception {
+		return boardMapper.getTeamPaging(mDTO);
+	}
 	
 }

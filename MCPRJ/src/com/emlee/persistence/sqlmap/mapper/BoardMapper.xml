@@ -223,4 +223,50 @@
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA"
 		ORDER BY AUTH ASC, CAST(USER_NO AS UNSIGNED) ASC LIMIT 10 OFFSET #{num}
 	</select>
+	<!-- 게시글 수 -->
+	<select id="getBoardNum" parameterType="String" resultType="boardDTO">
+		SELECT COUNT(BOARD_NO) DATA
+		FROM BOARD_INFO
+		WHERE TEAM_NO = #{team_no}
+	</select>
+	<!-- 게시글검색 결과수 -->
+	<select id="getboardSearchNum" resultType="boardDTO">
+		SELECT COUNT(BOARD_NO) DATA
+		FROM BOARD_INFO
+		WHERE TEAM_NO = #{team_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
+	</select>
+	<!-- 게시글 검색 페이징 -->
+	<select id="getboardSearchPage" resultType="boardDTO">
+		SELECT * FROM BOARD_INFO
+		WHERE TEAM_NO = #{team_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
+		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC LIMIT 10 OFFSET #{num}
+	</select>
+	<!-- 게시글 페이징 -->
+	<select id="getboardPaging" resultType="boardDTO">
+		SELECT * FROM BOARD_INFO
+		WHERE TEAM_NO = #{team_no}
+		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC LIMIT 10 OFFSET #{num}
+	</select>
+	<!-- 동호회 수 -->
+	<select id="getTeamNum" resultType="manageDTO">
+		SELECT COUNT(TEAM_NO) DATA1
+		FROM BOARD_MANAGE
+	</select>
+	<!-- 동호회 검색 결과수 -->
+	<select id="getTeamSearchNum" resultType="manageDTO">
+		SELECT COUNT(TEAM_NO) DATA1
+		FROM BOARD_MANAGE
+		WHERE TEAM_NAME LIKE #{search} OR LEADER_NAME LIKE #{search}
+	</select>
+	<!-- 동호회 검색 페이징 -->
+	<select id="getTeamSearchPage" resultType="manageDTO">
+		SELECT * FROM BOARD_MANAGE
+		WHERE TEAM_NAME LIKE #{search} OR LEADER_NAME LIKE #{search}
+		ORDER BY CAST(TEAM_NO AS UNSIGNED) ASC LIMIT 10 OFFSET #{data}
+	</select>
+	<!-- 동호회 페이징 -->
+	<select id="getTeamPaging" resultType="manageDTO">
+		SELECT * FROM BOARD_MANAGE
+		ORDER BY CAST(TEAM_NO AS UNSIGNED) ASC LIMIT 10 OFFSET #{data}
+	</select>
 </mapper>

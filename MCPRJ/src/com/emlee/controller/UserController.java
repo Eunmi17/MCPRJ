@@ -251,6 +251,8 @@ public class UserController {
 		response.getWriter().flush();
 		response.getWriter().close();
 		
+		log.info("머라고 넘어갈까 : " + uDTO);
+		
 		log.info(this.getClass() + "NECheck end!!!");
 	}
 	@RequestMapping(value = "/idCheck", method = RequestMethod.POST)

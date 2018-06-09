@@ -56,6 +56,17 @@
 	color: #6c757d;
 	text-decoration: underline;
 }
+.sam hr{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.sam{
+display: block;
+  width: 100%;
+  padding: 0.4375rem 0;
+  font-size: 1rem;
+}
 </style>
 </head>
 
@@ -198,6 +209,97 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+						<div class="col-md-3">
+							<div class="card">
+								<div class="card-header card-header-primary">
+									<h2 class="card-title">
+										<b>100대 명산</b>
+									</h2>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive" id="divTable">
+										<select>
+											<%for(int i = 1; i < 13; i++) {%>
+												<option><%=i %>월</option>
+											<%} %>
+										</select>
+										<select>
+											<%for(int i = 1; i < 8; i++) {%>
+												<option><%=i %>산행</option>
+											<%} %>
+										</select>
+										<table class="table">
+											<thead class=" text-primary">
+												<th><strong>No</strong></th>
+												<th><strong>산명</strong></th>
+											</thead>
+											<tbody>
+											<%for(int i = 1; i < 11; i++) {%>
+												<tr>
+													<td><%=i %></td>
+													<td>산명</td>
+												</tr>
+											<%} %>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-9">
+							<div class="card">
+								<div class="card-header card-header-primary">
+									<h2 class="card-title ">
+										<b>설명</b>
+									</h2>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-6" align="center">
+											<div class="form-group">
+												<img src="http://www.forest.go.kr/newkfsweb/cmm/fms/getImage.do?fileSn=1&atchFileId=FILE_000000000424055" width="80%">
+											</div>
+										</div>
+										<div class="col-md-5">
+											<div class="form-group">
+												<label class="bmd-label-floating">산 명</label>
+												<div class="sam">산 이름<hr>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="bmd-label-floating">높이</label>
+												<div class="sam">1000m<hr>
+												</div>
+											</div>
+											<div class="form-group">
+												<label class="bmd-label-floating">소재지</label>
+												<div class="sam">한국 어딘가<hr>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+									<div align="center">
+										<div class="col-md-11" align="left">
+											<div class="form-group">
+												<label class="bmd-label-floating">선정 이유</label>
+												<div class="sam">
+													"강원도에서 진달래가 가장 많이 피는 산으로 알려져 있고, 참나무 중심의 울창한 산림과 부드러운 산줄기 등
+													우리나라 산의 전형적인 모습을 갖추고 있으며, 홍천강의 발원지 및 소양강의 수원(水源)을 이루고 있는 점
+													등을 고려하여 선정 암봉이 솟아있는 정상에서 소양호를 조망할 수 있고, 야생화가 많이 서식하여
+													자연학습관찰에도 좋은 여건을 갖추고 있음. '98년 강원도에서 자연휴양림으로 지정"
+
+													<hr>
+												</div>
+											</div>
+										</div>
+									</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
                 </div>
             </div>
             <footer class="footer ">

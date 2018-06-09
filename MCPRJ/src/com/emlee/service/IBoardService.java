@@ -88,4 +88,20 @@ public interface IBoardService {
 
 	List<userDTO> getUserTeamPaging(userDTO uDTO) throws Exception;
 
+	boardDTO getBoardNum(String team_no) throws Exception;
+
+	boardDTO getboardSearchNum(boardDTO bDTO) throws Exception;
+
+	List<boardDTO> getboardSearchPage(boardDTO bDTO) throws Exception;
+
+	List<boardDTO> getboardPaging(boardDTO bDTO) throws Exception;
+
+	manageDTO getTeamNum() throws Exception;
+
+	manageDTO getTeamSearchNum(manageDTO mDTO) throws Exception;
+
+	List<manageDTO> getTeamSearchPage(manageDTO mDTO) throws Exception;
+
+	List<manageDTO> getTeamPaging(manageDTO mDTO) throws Exception;
+
 }

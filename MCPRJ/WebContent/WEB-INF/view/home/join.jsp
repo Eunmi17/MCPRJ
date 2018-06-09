@@ -130,10 +130,11 @@ window.onload = function(){
 					'user_email' : email
 				},
 				success : function(data) {
-					if ($.trim(data) == 0) {
-						emailCheck();
-					}else{
+					console.log("view : " + $.trim(data));
+					if ($.trim(data) != "null") {
 						$('#emailc').html('<p style="color:red;">이미 가입된 회원 정보입니다.</p>');
+					}else{
+						emailCheck(email);
 					}
 				}
 			})
@@ -165,7 +166,7 @@ window.onload = function(){
 					$('#keyc').html('<p style="color:red;">인증번호를 입력해주세요.</p>');
 						$('#email_key').focus();
 						keyCheck = false;
-				}else if ($.trim(data) != null) {
+				}else if ($.trim(data) != "null") {
 					$('#keyc').html('<p style="color:green;">인증되었습니다.</p>');
 						keyCheck = true;
 						key_btn.style.display= "none";
@@ -300,7 +301,6 @@ function doSubmit(f) { //전송시 유효성 체크
 }
 </script>
 </head>
-
 <body id="page-top">
 	
     <!-- Navigation -->
