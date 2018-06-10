@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.emlee.DTO.boardDTO;
+import com.emlee.DTO.informationDTO;
 import com.emlee.DTO.keyDTO;
 import com.emlee.DTO.manageDTO;
 import com.emlee.DTO.userDTO;
@@ -836,4 +837,52 @@ public class UserController {
 		log.info(getClass() + "userSearchPaging end!!!");
 		return bList;
 	}
+	
+	@RequestMapping(value="/test", method=RequestMethod.GET)
+	public String testhome(HttpServletRequest request, HttpServletResponse response, HttpSession session,
+					Model model) throws Exception {
+		log.info(getClass() + "test start!!!");
+		int num = 0;
+		
+		informationDTO iDTO = new informationDTO();
+		iDTO.setNum(num);
+		
+		List<informationDTO> iList = userService.getInfo(iDTO);
+		
+		model.addAttribute("iList", iList);
+		
+		log.info(getClass() + "test end!!!");
+		return "/test";
+	}
+	
+	@RequestMapping(value="/information")
+	public @ResponseBody List<informationDTO> information(@RequestParam(value="no") String no, HttpSession session) throws Exception {
+		log.info(getClass()  + "information start!!!");
+		log.info("no : " + no);
+		
+		informationDTO iDTO = new informationDTO();
+		
+		iDTO.setNo(no);
+		
+		List<informationDTO> iList = userService.getinformation(iDTO);
+		
+		log.info(getClass() + "information end!!!");
+		return iList;
+	}
+	
+	@RequestMapping(value="/infoPaging")
+	public @ResponseBody List<informationDTO> infoPaging(@RequestParam(value="num") int num, HttpSession session) throws Exception {
+		log.info(getClass()  + "infoPaging start!!!");
+		num = (num - 1) * 5;
+		log.info("num : " + num);
+		
+		informationDTO iDTO = new informationDTO();
+		iDTO.setNum(num);
+		
+		List<informationDTO> iList = userService.getInfo(iDTO);
+		
+		log.info(getClass() + "infoPaging end!!!");
+		return iList;
+	}
+
 }

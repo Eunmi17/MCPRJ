@@ -213,4 +213,18 @@
 		FROM BOARD_INFO
 		WHERE REG_NO = #{user_no}
 	</select>
+	
+	<!-- 100대명산 리스트 -->
+	<select id="getInfo" resultType="informationDTO">
+		SELECT NO, NAME
+		FROM INFORMATION
+		ORDER BY CAST(NO AS UNSIGNED) ASC LIMIT 5 OFFSET #{num}
+	</select>
+	
+	<!-- 100대명산 상세 -->
+	<select id="getinformation" resultType="informationDTO">
+		SELECT * FROM INFORMATION
+		WHERE NO = #{no}
+	</select>
+	
 </mapper>

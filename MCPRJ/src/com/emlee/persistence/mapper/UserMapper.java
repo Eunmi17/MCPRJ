@@ -3,6 +3,7 @@ package com.emlee.persistence.mapper;
 import java.util.List;
 
 import com.emlee.DTO.boardDTO;
+import com.emlee.DTO.informationDTO;
 import com.emlee.DTO.keyDTO;
 import com.emlee.DTO.manageDTO;
 import com.emlee.DTO.userDTO;
@@ -77,5 +78,9 @@ public interface UserMapper {
 	List<boardDTO> getRegSearchPage(boardDTO uDTO) throws Exception;
 
 	boardDTO getRegNum(String user_no) throws Exception;
-	
+
+	List<informationDTO> getInfo(informationDTO iDTO) throws Exception;
+
+	List<informationDTO> getinformation(informationDTO iDTO) throws Exception;
+
 }

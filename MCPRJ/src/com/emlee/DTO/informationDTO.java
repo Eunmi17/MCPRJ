@@ -5,6 +5,7 @@ public class informationDTO {
 	String name;
 	String height;
 	String addr;
+	String reason;
 	String month;
 	String theme;
 	String image;
@@ -33,6 +34,12 @@ public class informationDTO {
 	}
 	public void setAddr(String addr) {
 		this.addr = addr;
+	}
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
 	}
 	public String getMonth() {
 		return month;

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.emlee.DTO.boardDTO;
+import com.emlee.DTO.informationDTO;
 import com.emlee.DTO.keyDTO;
 import com.emlee.DTO.manageDTO;
 import com.emlee.DTO.userDTO;
@@ -182,6 +183,16 @@ public class UserService implements IUserService {
 	@Override
 	public boardDTO getRegNum(String user_no) throws Exception {
 		return userMapper.getRegNum(user_no);
+	}
+
+	@Override
+	public List<informationDTO> getInfo(informationDTO iDTO) throws Exception {
+		return userMapper.getInfo(iDTO);
+	}
+
+	@Override
+	public List<informationDTO> getinformation(informationDTO iDTO) throws Exception {
+		return userMapper.getinformation(iDTO);
 	}
 		
 }
