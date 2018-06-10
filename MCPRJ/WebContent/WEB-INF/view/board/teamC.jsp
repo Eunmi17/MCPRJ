@@ -169,20 +169,7 @@
 		</div>
 		<div class="main-panel">
 			<!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-						<div class="row">
-							<div class="row">
-								<i class="material-icons">person</i>
-								<p><%=session_user_name%></p>
-							</div>
-							&emsp;&emsp;&emsp;&emsp;
-							<a id="m" href="/logout.do">로그아웃</a>
-						</div>
-                    </div>
-                </div>
-            </nav>
+            <jsp:include page="../top.jsp" flush="true"/>
             <!-- End Navbar -->
 			<div class="content">
 				<div class="container-fluid">

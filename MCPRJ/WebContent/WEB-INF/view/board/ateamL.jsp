@@ -139,12 +139,24 @@
 						content += "<div id='paging'>";
 						content += "<nav aria-label='Page navigation example'>";
 						content += "<ul class='pagination justify-content-center'>";
+						if(startPage != 1) {
+							content += "<li class='page-item'>";
+							content += "<a class='page-links' id="+startPage-10+" value='"+search+"' aria-label='Previous'>";
+							content += "<span aria-hidden='true'>&laquo;</span>";
+							content += "<span class='sr-only'>Previous</span></a></li>";
+						}
 						for(var iCount = startPage; iCount <= endPage; iCount++){
 							if(iCount == page) {
 								content += "<li class='page-item'><a class='page-links'><b>("+iCount+")</b></a></li>";
 							}else{
 								content += "<li class='page-item'><a class='page-links' id='"+iCount+"' value='"+search+"'>"+iCount+"</a></li>";
 							}
+						}
+						if(endPage != totalPage) {
+							content += "<li class='page-item'>";
+							content += "<a class='page-links' id="+startPage+10+" value='"+search+"' aria-label='Next'>";
+							content += "<span aria-hidden='true'>&raquo;</span>";
+							content += "<span class='sr-only'>Next</span></a></li>";
 						}
 						content += "</ul></nav></div>";
 						$('#paging').html(content);
@@ -216,12 +228,24 @@
 					content += "<div id='paging'>";
 					content += "<nav aria-label='Page navigation example'>";
 					content += "<ul class='pagination justify-content-center'>";
+					if(startPage != 1) {
+						content += "<li class='page-item'>";
+						content += "<a class='page-links' id="+startPage-10+" value='"+search+"' aria-label='Previous'>";
+						content += "<span aria-hidden='true'>&laquo;</span>";
+						content += "<span class='sr-only'>Previous</span></a></li>";
+					}
 					for(var iCount = startPage; iCount <= endPage; iCount++){
 						if(iCount == page) {
 							content += "<li class='page-item'><a class='page-links'><b>("+iCount+")</b></a></li>";
 						}else{
 							content += "<li class='page-item'><a class='page-links' id='"+iCount+"' value='"+search+"'>"+iCount+"</a></li>";
 						}
+					}
+					if(endPage != totalPage) {
+						content += "<li class='page-item'>";
+						content += "<a class='page-links' id="+startPage+10+" value='"+search+"' aria-label='Next'>";
+						content += "<span aria-hidden='true'>&raquo;</span>";
+						content += "<span class='sr-only'>Next</span></a></li>";
 					}
 					content += "</ul></nav></div>";
 					$('#paging').html(content);
@@ -256,12 +280,24 @@
 		content += "<div id='paging'>";
 		content += "<nav aria-label='Page navigation example'>";
 		content += "<ul class='pagination justify-content-center'>";
+		if(startPage != 1) {
+			content += "<li class='page-item'>";
+			content += "<a class='page-link' id="+startPage-10+" aria-label='Previous'>";
+			content += "<span aria-hidden='true'>&laquo;</span>";
+			content += "<span class='sr-only'>Previous</span></a></li>";
+		}
 		for(var iCount = startPage; iCount <= endPage; iCount++){
 			if(iCount == page) {
 				content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
 			}else{
 				content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
 			}
+		}
+		if(endPage != totalPage) {
+			content += "<li class='page-item'>";
+			content += "<a class='page-link' id="+startPage+10+" aria-label='Next'>";
+			content += "<span aria-hidden='true'>&raquo;</span>";
+			content += "<span class='sr-only'>Next</span></a></li>";
 		}
 		content += "</ul></nav></div>";
 		$('#paging').html(content);
@@ -324,12 +360,24 @@
 					content += "<div id='paging'>";
 					content += "<nav aria-label='Page navigation example'>";
 					content += "<ul class='pagination justify-content-center'>";
+					if(startPage != 1) {
+						content += "<li class='page-item'>";
+						content += "<a class='page-link' id="+startPage-10+" aria-label='Previous'>";
+						content += "<span aria-hidden='true'>&laquo;</span>";
+						content += "<span class='sr-only'>Previous</span></a></li>";
+					}
 					for(var iCount = startPage; iCount <= endPage; iCount++){
 						if(iCount == page) {
 							content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
 						}else{
 							content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
 						}
+					}
+					if(endPage != totalPage) {
+						content += "<li class='page-item'>";
+						content += "<a class='page-link' id="+startPage+10+" aria-label='Next'>";
+						content += "<span aria-hidden='true'>&raquo;</span>";
+						content += "<span class='sr-only'>Next</span></a></li>";
 					}
 					content += "</ul></nav></div>";
 					$('#paging').html(content);
@@ -436,20 +484,7 @@
 		</div>
 		<div class="main-panel">
 			<!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-						<div class="row">
-							<div class="row">
-								<i class="material-icons">person</i>
-								<p><%=session_user_name%></p>
-							</div>
-							&emsp;&emsp;&emsp;&emsp;
-							<a id="m" href="/logout.do">로그아웃</a>
-						</div>
-                    </div>
-                </div>
-            </nav>
+            <jsp:include page="../top.jsp" flush="true"/>
             <!-- End Navbar -->
 			<div class="content">
 				<div class="container-fluid">

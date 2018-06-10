@@ -11,5 +11,6 @@
     	<typeAlias type="com.emlee.DTO.fileDTO" alias="fileDTO" />
     	<typeAlias type="com.emlee.DTO.joinDTO" alias="joinDTO" />
     	<typeAlias type="com.emlee.DTO.keyDTO" alias="keyDTO"/>
+    	<typeAlias type="com.emlee.DTO.informationDTO" alias="informationDTO"/>
     </typeAliases>
 </configuration>

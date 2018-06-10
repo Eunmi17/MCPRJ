@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/view/top.jsp=UTF-8
 encoding//src/com/emlee/config/MapperConfigurer.java=UTF-8
 encoding//src/com/emlee/controller/UserController.java=UTF-8
 encoding//src/com/emlee/filter/UrlFilter.java=UTF-8

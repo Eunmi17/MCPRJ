@@ -126,20 +126,7 @@ display: block;
         </div>
         <div class="main-panel">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-transparent  navbar-absolute fixed-top">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
-						<div class="row">
-							<div class="row">
-								<i class="material-icons">person</i>
-								<p><%=session_user_name%></p>
-							</div>
-							&emsp;&emsp;&emsp;&emsp;
-							<a id="m" href="/logout.do">로그아웃</a>
-						</div>
-                    </div>
-                </div>
-            </nav>
+            <jsp:include page="top.jsp" flush="true"/>
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
@@ -219,7 +206,21 @@ display: block;
 								</div>
 								<div class="card-body">
 									<div class="table-responsive" id="divTable">
-										<select>
+										<div align="center" style="width: 100%">
+											<span>전체</span>
+											<span>&emsp;|&emsp;</span>
+											<span>월별</span>
+											<span>&emsp;|&emsp;</span>
+											<span>테마</span>
+										</div>
+										<div align="right">
+											<select style="width: 80%;" name="month">
+												<%for(int i = 1; i < 13; i++) {%>
+													<option value="<%=i%>"><%=i %>월</option>
+												<%} %>
+											</select>
+										</div>
+										<%-- <select>
 											<%for(int i = 1; i < 13; i++) {%>
 												<option><%=i %>월</option>
 											<%} %>
@@ -228,7 +229,7 @@ display: block;
 											<%for(int i = 1; i < 8; i++) {%>
 												<option><%=i %>산행</option>
 											<%} %>
-										</select>
+										</select> --%>
 										<table class="table">
 											<thead class=" text-primary">
 												<th><strong>No</strong></th>
