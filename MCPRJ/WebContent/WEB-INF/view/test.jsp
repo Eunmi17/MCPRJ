@@ -37,6 +37,16 @@
     if(iList == null) {
     	iList = new ArrayList();
     }
+    userDTO u = (userDTO) request.getAttribute("u");
+    manageDTO m = (manageDTO) request.getAttribute("m");
+    boardDTO b = (boardDTO) request.getAttribute("b");
+
+	String url = "http://openapi.forest.go.kr/openapi/service/trailInfoService/getforeststoryservice?";
+	String servicekey = "serviceKey=HNnmPvdDJDrKEsF3NjHy%2BNkeMnO3zSVJs9GbDxpnYAVpX7GeVtnWIiqpPIOugTK8gq0l9b7sVNBKHL%2FF39%2FClw%3D%3D";
+	String allurl = url+servicekey;
+	Document text = Jsoup.connect(allurl).get();
+	
+	Elements totalCount = text.select("totalCount");
 %>
 
 <style>
@@ -356,6 +366,72 @@ window.onload = function() {
             <!-- End Navbar -->
             <div class="content">
                 <div class="container-fluid">
+                	 <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-header card-header-warning card-header-icon">
+                                    <div class="card-icon">
+                                        <i class="material-icons">highlight</i>
+                                    </div>
+                                    <p class="card-category">Informations</p>
+                                    <h3 class="card-title"><%=totalCount.text() %></h3>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats">
+                                    	산림청에서 제공하는 산 정보 수
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-header card-header-success card-header-icon">
+                                    <div class="card-icon">
+                                        <i class="material-icons">face</i>
+                                    </div>
+                                    <p class="card-category">Members</p>
+                                    <h3 class="card-title"><%=u.getData() %></h3>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats">
+                                    	회원가입한 회원 수
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-header card-header-danger card-header-icon">
+                                    <div class="card-icon">
+                                        <i class="material-icons">bubble_chart</i>
+                                    </div>
+                                    <p class="card-category">Clubs</p>
+                                    <h3 class="card-title"><%=m.getNum() %></h3>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats">
+                                    	동호회 개수
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="card card-stats">
+                                <div class="card-header card-header-info card-header-icon">
+                                    <div class="card-icon">
+                                    	<i class="material-icons">loyalty</i>
+                                    </div>
+                                    <p class="card-category">Posts</p>
+                                    <h3 class="card-title"><%=b.getData() %></h3>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats">
+                                    	총 게시물 수
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
 						<div class="col-md-3">
 							<div class="card">

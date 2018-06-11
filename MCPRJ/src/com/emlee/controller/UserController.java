@@ -843,6 +843,17 @@ public class UserController {
 					Model model) throws Exception {
 		log.info(getClass() + "test start!!!");
 		int num = 0;
+		String log_user = CmmUtil.nvl((String)session.getAttribute("session_user_id"));
+		
+		log.info("log_user : " + log_user);
+		
+		userDTO u = userService.getUserNum();
+		manageDTO m = userService.getManageNum();
+		boardDTO b = userService.getBoardNum();
+		
+		log.info("u :" + u.getData());
+		log.info("m :" + m.getNum());
+		log.info("b :" + b.getData());
 		
 		informationDTO iDTO = new informationDTO();
 		iDTO.setNum(num);
@@ -850,6 +861,9 @@ public class UserController {
 		List<informationDTO> iList = userService.getInfo(iDTO);
 		
 		model.addAttribute("iList", iList);
+		model.addAttribute("u", u);
+		model.addAttribute("m", m);
+		model.addAttribute("b", b);
 		
 		log.info(getClass() + "test end!!!");
 		return "/test";
