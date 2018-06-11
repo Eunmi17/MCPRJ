@@ -194,5 +194,15 @@ public class UserService implements IUserService {
 	public List<informationDTO> getinformation(informationDTO iDTO) throws Exception {
 		return userMapper.getinformation(iDTO);
 	}
+
+	@Override
+	public List<informationDTO> getMonth(informationDTO iDTO) throws Exception {
+		return userMapper.getMonth(iDTO);
+	}
+
+	@Override
+	public List<informationDTO> getTheme(informationDTO iDTO) throws Exception {
+		return userMapper.getTheme(iDTO);
+	}
 		
 }

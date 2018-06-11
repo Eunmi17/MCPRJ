@@ -59,11 +59,19 @@ public class UserController {
 		log.info("m :" + m.getNum());
 		log.info("b :" + b.getData());
 		
+		int num = 0;
+		
+		informationDTO iDTO = new informationDTO();
+		iDTO.setNum(num);
+		
+		List<informationDTO> iList = userService.getInfo(iDTO);
+		
 		if(log_user.equals("admin")){
 			log.info(this.getClass() + "admin_main end!!!");
 			model.addAttribute("u", u);
 			model.addAttribute("m", m);
 			model.addAttribute("b", b);
+			model.addAttribute("iList", iList);
 			return "/amain";
 		}else if(log_user.equals("")){
 			model.addAttribute("msg", "회원만 볼 수 있는 페이지 입니다. 로그인 해주세요");
@@ -75,6 +83,7 @@ public class UserController {
 			model.addAttribute("u", u);
 			model.addAttribute("m", m);
 			model.addAttribute("b", b);
+			model.addAttribute("iList", iList);
 			return "/umain";
 		}
 	}
@@ -896,6 +905,69 @@ public class UserController {
 		List<informationDTO> iList = userService.getInfo(iDTO);
 		
 		log.info(getClass() + "infoPaging end!!!");
+		return iList;
+	}
+	
+	@RequestMapping(value="/month")
+	public @ResponseBody List<informationDTO> month(@RequestParam(value="month") String month, HttpSession session) throws Exception {
+		log.info(getClass()  + "month start!!!");
+		log.info("month : " + month);
+		
+		int num = 0;
+		informationDTO iDTO = new informationDTO();
+		
+		iDTO.setMonth("%"+month+"%");
+		iDTO.setNum(num);
+		
+		List<informationDTO> iList = new ArrayList<informationDTO>();
+		
+		if(month.equals("")){
+			iList = userService.getInfo(iDTO);
+		}else{
+			iList = userService.getMonth(iDTO);
+		}
+		
+		log.info(getClass() + "month end!!!");
+		return iList;
+	}
+	
+	@RequestMapping(value="/theme")
+	public @ResponseBody List<informationDTO> theme(@RequestParam(value="theme") String theme, HttpSession session) throws Exception {
+		log.info(getClass()  + "theme start!!!");
+		log.info("theme : " + theme);
+		
+		int num = 0;
+		informationDTO iDTO = new informationDTO();
+		
+		iDTO.setTheme("%"+theme+"%");
+		iDTO.setNum(num);
+		
+		List<informationDTO> iList = new ArrayList<informationDTO>();
+		
+		if(theme.equals("")){
+			iList = userService.getInfo(iDTO);
+		}else{
+			iList = userService.getTheme(iDTO);
+		}
+		
+		log.info(getClass() + "theme end!!!");
+		return iList;
+	}
+	
+	@RequestMapping(value="/list")
+	public @ResponseBody List<informationDTO> list(@RequestParam(value="num") int num, HttpSession session) throws Exception {
+		log.info(getClass()  + "theme start!!!");
+		log.info("num : " + num);
+		
+		informationDTO iDTO = new informationDTO();
+		
+		iDTO.setNum(num);
+		
+		List<informationDTO> iList = new ArrayList<informationDTO>();
+		
+		iList = userService.getInfo(iDTO);
+		
+		log.info(getClass() + "list end!!!");
 		return iList;
 	}
 

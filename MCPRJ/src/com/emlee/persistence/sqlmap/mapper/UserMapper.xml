@@ -227,4 +227,20 @@
 		WHERE NO = #{no}
 	</select>
 	
+	<!-- 계절 리스트 -->
+	<select id="getMonth" resultType="informationDTO">
+		SELECT NO, NAME
+		FROM INFORMATION
+		WHERE MONTH LIKE #{month}
+		ORDER BY CAST(NO AS UNSIGNED) ASC LIMIT 5 OFFSET #{num}
+	</select>
+	
+	<!-- 테마 리스트 -->
+	<select id="getTheme" resultType="informationDTO">
+		SELECT NO, NAME
+		FROM INFORMATION
+		WHERE THEME LIKE #{theme}
+		ORDER BY CAST(NO AS UNSIGNED) ASC LIMIT 5 OFFSET #{num}
+	</select>
+	
 </mapper>

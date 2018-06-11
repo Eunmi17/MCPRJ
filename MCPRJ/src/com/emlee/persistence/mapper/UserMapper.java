@@ -83,4 +83,8 @@ public interface UserMapper {
 
 	List<informationDTO> getinformation(informationDTO iDTO) throws Exception;
 
+	List<informationDTO> getMonth(informationDTO iDTO) throws Exception;
+
+	List<informationDTO> getTheme(informationDTO iDTO) throws Exception;
+
 }
