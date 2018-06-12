@@ -77,6 +77,46 @@ display: block;
   padding: 0.4375rem 0;
   font-size: 1rem;
 }
+.page-linkm{
+    list-style: none;
+    border: 0;
+    border-radius: 30px !important;
+    transition: all .3s;
+    padding: 0px 11px;
+    margin: 0 3px;
+    min-width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #999999;
+    font-weight: 400;
+    font-size: 12px;
+    text-transform: uppercase;
+    background: transparent;
+    text-align: center;
+}
+.page-linkm:not([href]):not([tabindex]){
+	color: #999999
+}
+.page-linkt{
+    list-style: none;
+    border: 0;
+    border-radius: 30px !important;
+    transition: all .3s;
+    padding: 0px 11px;
+    margin: 0 3px;
+    min-width: 30px;
+    height: 30px;
+    line-height: 30px;
+    color: #999999;
+    font-weight: 400;
+    font-size: 12px;
+    text-transform: uppercase;
+    background: transparent;
+    text-align: center;
+}
+.page-linkt:not([href]):not([tabindex]){
+	color: #999999
+}
 </style>
 <script>
 window.onload = function() {
@@ -174,18 +214,65 @@ window.onload = function() {
 				$('.table').html(contents);
 			}
 		});
-		/* 
+		
 		$.ajax({
 			url : "/monthNum.do",
 			method : "post",
 			data : {'month' : month},
-			dataType : "int",
 			success : function(data) {
-				//페이징
+				console.log("data : " + data);
+				var page = 1;
+				var countPage = 5;
+				var countList = 5;
+				var totalCount = data;
+				var totalPage =  parseInt(totalCount / countList);
+				
+				if(totalCount % countList > 0){
+					totalPage++;
+				}
+				if(totalPage < page){
+					page = totalPage;
+				}
+				
+				var startPage = 1;
+				var endPage = startPage + countPage - 1
+				
+				if(endPage > totalPage) {
+					endPage = totalPage;
+				}
+				
+				console.log(startPage);
+				console.log(endPage);
+				console.log(page);
+				var content = "";
+				content += "<div id='paging'>";
+				content += "<nav aria-label='Page navigation example'>";
+				content += "<ul class='pagination justify-content-center'>";
+				if(startPage != 1) {
+					content += "<li class='page-item'>";
+					content += "<a class='page-linkm' id="+startPage-5+" value='"+month+"' aria-label='Previous'>";
+					content += "<span aria-hidden='true'>&laquo;</span>";
+					content += "<span class='sr-only'>Previous</span></a></li>";
+				}
+				for(var iCount = startPage; iCount <= endPage; iCount++){
+					if(iCount == page) {
+						content += "<li class='page-item'><a class='page-linkm'><b>("+iCount+")</b></a></li>";
+					}else{
+						content += "<li class='page-item'><a class='page-linkm' id='"+iCount+"' value='"+month+"'>"+iCount+"</a></li>";
+					}
+				}
+				if(endPage != totalPage) {
+					content += "<li class='page-item'>";
+					content += "<a class='page-linkm' id="+startPage+5+" value='"+month+"' aria-label='Next'>";
+					content += "<span aria-hidden='true'>&raquo;</span>";
+					content += "<span class='sr-only'>Next</span></a></li>";
+				}
+				content += "</ul></nav></div>";
+				$('#paging').html(content);
 			},
 			error : function(error) {alert("month : " + error)}
 		});
-		 */
+		 
 	});
 	
 	$(document).on("change", ".theme", function() {
@@ -458,7 +545,7 @@ window.onload = function() {
 	
 	var page = 1;
 	var countPage = 5;
-	var countList = 10;
+	var countList = 5;
 	var totalCount = 100;
 	var totalPage =  20;
 	
@@ -523,8 +610,84 @@ window.onload = function() {
 				if(totalPage < page){
 					page = totalPage;
 				}
-				if(page == 20) {
-					startPage = 16;
+				if(page % 5 == 0) {
+					startPage = page - 4;
+				}else{
+					startPage = parseInt(parseInt(page / 5) * 5) + 1;
+				}
+				endPage = startPage + countPage - 1
+				
+				if(endPage > totalPage) {
+					endPage = totalPage;
+				}
+				console.log(startPage);
+				console.log(endPage);
+				console.log(page);
+				content = "";
+				content += "<div id='paging'>";
+				content += "<nav aria-label='Page navigation example'>";
+				content += "<ul class='pagination justify-content-center'>";
+				if(startPage != 1) {
+					console.log("?");
+					var pre = parseInt(startPage-5);
+					content += "<li class='page-item'>";
+					content += "<a class='page-link' id="+pre+" aria-label='Previous'>";
+					content += "<span aria-hidden='true'>&laquo;</span>";
+					content += "<span class='sr-only'>Previous</span></a></li>";
+				}
+				for(var iCount = startPage; iCount <= endPage; iCount++){
+					if(iCount == page) {
+						content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
+					}else{
+						content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
+					}
+				}
+				if(endPage != totalPage) {
+					var next = parseInt(startPage+5);
+					content += "<li class='page-item'>";
+					content += "<a class='page-link' id="+next+" aria-label='Next'>";
+					content += "<span aria-hidden='true'>&raquo;</span>";
+					content += "<span class='sr-only'>Next</span></a></li>";
+				}
+				content += "</ul></nav></div>";
+				$('#paging').html(content);
+			},
+			error : function(xhr, st, error) {alert(error)}
+		});
+	});
+	
+	$(document).on("click", ".page-linkm", function() {
+		var num = $(this).attr('id');
+		var month = $(this).attr('value');
+		num = parseInt(num);
+		console.log("num : " + num);
+		console.log("month : " + month);
+		$.ajax({
+			url : "/monthPaging.do",
+			method : "post",
+			data : {"num" : num, "month" : month},
+			dataType : "json",
+			success : function(data, st, xhr) {
+				console.log(data);
+				console.log(st);
+				console.log(xhr);
+				var contents = "";
+				contents += "<table class='table'><thead class=' text-primary'>";
+				contents += "<th><strong>No</strong></th><th><strong>산명</strong></th>";
+				contents += "<th></th></thead><tbody>";
+				$.each(data, function (key, value) {
+					contents += "<tr><td>"+value.no+"</td><td>"+value.name+"</td>";
+					contents += "<td><img class='detail' id="+value.no+" src='bootstrap/assets/img/loupe.png'></td></tr>";
+				})
+				contents += "</tbody></table>";
+				$('.table').html(contents);
+				
+				page = num;
+				if(totalPage < page){
+					page = totalPage;
+				}
+				if(page % 5 == 0) {
+					startPage = page - 4;
 				}else{
 					startPage = parseInt(parseInt(page / 5) * 5) + 1;
 				}

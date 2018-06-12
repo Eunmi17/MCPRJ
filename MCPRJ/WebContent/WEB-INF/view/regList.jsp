@@ -127,7 +127,6 @@
 					url : "/regSearchNum.do",
 					method : "post",
 					data : {'search' : search},
-					datatype : "int",
 					success : function(data) {
 						console.log(data);
 						var page = 1;

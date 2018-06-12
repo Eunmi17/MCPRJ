@@ -243,4 +243,11 @@
 		ORDER BY CAST(NO AS UNSIGNED) ASC LIMIT 5 OFFSET #{num}
 	</select>
 	
+	<!-- 계절 갯수 -->
+	<select id="getmonthNum" resultType="informationDTO">
+		SELECT COUNT(NO) DATA
+		FROM INFORMATION
+		WHERE MONTH LIKE #{month}
+	</select>
+	
 </mapper>

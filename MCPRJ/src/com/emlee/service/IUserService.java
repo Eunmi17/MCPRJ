@@ -84,4 +84,6 @@ public interface IUserService {
 
 	List<informationDTO> getTheme(informationDTO iDTO) throws Exception;
 
+	informationDTO getmonthNum(informationDTO iDTO) throws Exception;
+
 }

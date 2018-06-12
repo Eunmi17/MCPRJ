@@ -970,5 +970,41 @@ public class UserController {
 		log.info(getClass() + "list end!!!");
 		return iList;
 	}
+	
+	@RequestMapping(value="/monthNum")
+	public @ResponseBody int monthNum(@RequestParam(value="month") String month, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "monthNum start!!!");
+		
+		log.info("month : " + month);
+		
+		informationDTO iDTO = new informationDTO();
+		
+		iDTO.setMonth("%"+month+"%");
+		
+		iDTO = userService.getmonthNum(iDTO);
+		
+		int num = Integer.parseInt(iDTO.getData());
+		log.info("num : " + num);
+		
+		log.info(getClass() + "monthNum end!!!");
+		return num;
+	}
+	
+	@RequestMapping(value="/monthPaging")
+	public @ResponseBody List<informationDTO> monthPaging(@RequestParam(value="num") int num, @RequestParam(value="month") String month, HttpSession session) throws Exception {
+		log.info(getClass()  + "monthPaging start!!!");
+		num = (num - 1) * 5;
+		log.info("num : " + num);
+		log.info("month : " + month);
+		
+		informationDTO iDTO = new informationDTO();
+		iDTO.setNum(num);
+		iDTO.setMonth(month);
+		
+		List<informationDTO> iList = userService.getMonth(iDTO);
+		
+		log.info(getClass() + "monthPaging end!!!");
+		return iList;
+	}
 
 }
