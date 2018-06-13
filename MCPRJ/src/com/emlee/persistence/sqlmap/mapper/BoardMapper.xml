@@ -81,10 +81,10 @@
 	<!-- 팀 개설 -->
 	<insert id="insertTeam" parameterType="manageDTO">
 		INSERT INTO
-		BOARD_MANAGE (TEAM_NO, LEADER_NO, TEAM_NAME, JOIN_FORM, TEAM_MEMO, REG_NO, REG_DT, NUM)
+		BOARD_MANAGE (TEAM_NO, LEADER_NO, LEADER_NAME, TEAM_NAME, JOIN_FORM, TEAM_MEMO, REG_NO, REG_DT, NUM)
 		VALUES(
 		(SELECT IFNULL(MAX(CAST(BM.TEAM_NO AS UNSIGNED)), 0)+1 FROM BOARD_MANAGE BM),
-		#{leader_no}, #{team_name}, #{join_form}, #{team_memo}, #{reg_no}, NOW(), 1)
+		#{leader_no}, #{leader_name}, #{team_name}, #{join_form}, #{team_memo}, #{reg_no}, NOW(), 1)
 	</insert>
 	<!-- 회원 권한, 팀번호 수정 -->
 	<update id="updateUserTeam" parameterType="userDTO">

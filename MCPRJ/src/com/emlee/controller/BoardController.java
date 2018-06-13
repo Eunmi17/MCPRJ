@@ -346,13 +346,9 @@ public class BoardController {
 			log.info("파일 삭제 성공");
 			model.addAttribute("msg", "글이 삭제되었습니다.");
 			if(check.equals("T")){
-				model.addAttribute("url", "/boardL.do");
+				model.addAttribute("url", "/teamL.do");
 			}else{
-				if(user_id.equals("admin")){
-					model.addAttribute("url", "/boardL.do");
-				}else{
-					model.addAttribute("url", "/teamL.do");
-				}
+				model.addAttribute("url", "/boardL.do");
 			}
 			
 		}else{
@@ -795,6 +791,31 @@ public class BoardController {
 		log.info(getClass() + "joinD end!!!");
 			return "/url";
 	}
+	@RequestMapping(value="/joinDD", method=RequestMethod.GET)
+	public String joinDD(HttpServletRequest req, HttpServletResponse res, Model model, HttpSession session) throws Exception{
+		log.info(getClass() + "joinDD start!!!");
+		
+		String user_no = (String) session.getAttribute("session_user_no");
+		log.info("user_no : " + user_no);
+		
+		userDTO uDTO = new userDTO();
+		uDTO.setUser_no(user_no);
+		uDTO.setTeam_no("0");
+		uDTO.setAuth("U");
+		boardService.updateUserTeam(uDTO);
+		
+		session.setAttribute("session_auth", "U");
+		session.setAttribute("session_team_no", "0");
+		joinDTO jDTO = new joinDTO();
+		jDTO.setUser_no(user_no);
+		
+		boardService.deleteJoin(jDTO);
+		
+		model.addAttribute("url", "/teamL.do");
+		
+		log.info(getClass() + "joinDD end!!!");
+			return "/url";
+	}
 	@RequestMapping(value="/teamU_proc", method=RequestMethod.POST)
 	public String teamU_proc(HttpServletRequest req, HttpServletResponse res, Model model, HttpSession session) throws Exception{
 		log.info(getClass() + "teamU_proc start!!!");
@@ -905,7 +926,7 @@ public class BoardController {
 		boardService.updateAuth(user_no);
 		boardService.updateJoinCheck(user_no);
 
-		model.addAttribute("url", "/teamUL");
+		model.addAttribute("url", "/teamUL.do");
 		
 		log.info(getClass() + "teamAdd end!!!");
 		return "/url";

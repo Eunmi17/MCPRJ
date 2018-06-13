@@ -182,6 +182,26 @@ public class UserController {
 		log.info(getClass() + "join_proc end!!!");
 		return "/alert";
 	}
+	@RequestMapping(value="/passwordCheck", method=RequestMethod.POST)
+    public void passwordCheck(@RequestParam(value = "user_email") String email, @RequestParam(value = "user_id") String id,
+    		HttpServletResponse response) throws Exception{
+		log.info(this.getClass() + ".passwordCheck start");
+		
+		log.info("email : " + email);
+		log.info("id : " + id);
+		
+		userDTO uDTO = new userDTO();
+		uDTO.setEmail(email);
+		uDTO.setUser_id(id);
+		
+		uDTO = userService.getPassword(uDTO);
+
+		response.getWriter().print(uDTO);
+		response.getWriter().flush();
+		response.getWriter().close();
+		
+		log.info(this.getClass() + "passwordCheck end!!!");
+	}
 	@RequestMapping(value = "/emailEx", method = RequestMethod.POST)
 	public void emailEx(@RequestParam(value = "user_email") String email, HttpServletResponse response) throws Exception {
 		log.info(this.getClass() + "emailEx start!!");
@@ -376,16 +396,7 @@ public class UserController {
 		log.info("email : " + email);
 		log.info("pw : " + password);
 		
-		userDTO uDTO = new userDTO();
-		
-		uDTO.setUser_id(user_id);
-		uDTO.setEmail(email);
-		
-		uDTO = userService.getPassword(uDTO);
-		
-		if (uDTO != null) {
-			
-			userDTO pDTO = new userDTO();
+		userDTO pDTO = new userDTO();
 			
 			pDTO.setUser_id(user_id);
 			pDTO.setPassword(password);
@@ -399,11 +410,6 @@ public class UserController {
 				model.addAttribute("msg", "비밀번호변경에 실패하였습니다.");
 				model.addAttribute("url", "/passwordReset.do");
 			}
-
-		}else{
-			model.addAttribute("msg", "입력하신 정보와 일치하는 회원이 없습니다. 다시 확인해주세요");
-			model.addAttribute("url", "/passwordReset.do");
-		}
 		
 		log.info(getClass() + "reset_pw end!!!");
 		return "/alert";

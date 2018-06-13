@@ -45,6 +45,7 @@
 
 	window.onload = function() {
 		
+		<%if(!session_user_id.equals("admin")){%>
 		var nav1 = document.getElementById("nav1");
 		var nav2 = document.getElementById("nav2");
 		var nav3 = document.getElementById("nav3");
@@ -52,6 +53,7 @@
 			nav2.style.display = "";
 			nav3.style.display = "";
 		};
+	<%}%>
 		<%if(session_auth.equals("U")){%>
 		var join = document.getElementById("join");
 		join.onclick = function() {

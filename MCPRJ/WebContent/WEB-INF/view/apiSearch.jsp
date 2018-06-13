@@ -108,6 +108,7 @@
 <script>
 
 	window.onload = function() {
+		<%if(!session_user_id.equals("admin")){%>
 		var nav1 = document.getElementById("nav1");
 		var nav2 = document.getElementById("nav2");
 		var nav3 = document.getElementById("nav3");
@@ -115,6 +116,7 @@
 			nav2.style.display = "";
 			nav3.style.display = "";
 		};
+	<%}%>
 		
 		var s = document.getElementById("search");
 		s.onclick = function(){

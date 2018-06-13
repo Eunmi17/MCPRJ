@@ -62,6 +62,12 @@ window.onload = function() {
 		nav2.style.display = "";
 		nav3.style.display = "";
 	};
+	var reset = document.getElementById("reset");
+	
+	reset.onclick = function(){
+		var user_no = <%=session_user_no%>
+		location.href="/userDetail.do?user_no="+user_no;
+	}
 	
 	post_btn.onclick = function(){ //주소찾기
 		new daum.Postcode({
@@ -314,6 +320,8 @@ function doSubmit(f) { //전송시 유효성 체크
 													<div id="addr"></div>
 											</div>
 										</div>
+										<button type="button" id="reset" class="btn btn-primary pull-right"
+											style="width: 100px">취소</button>
 										<button class="btn btn-primary pull-right"
 											style="width: 100px">수정</button>
 										<div class="clearfix"></div>

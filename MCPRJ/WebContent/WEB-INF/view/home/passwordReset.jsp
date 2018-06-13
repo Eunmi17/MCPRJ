@@ -82,27 +82,44 @@ window.onload = function() {
 	email_btn.onclick = function() { //이메일 전송
 		var user_email = document.getElementById("resetEmail");
 		var email = $('#resetEmail').val();
+		var id = $('#resetId').val();
 		
 		$.ajax({
-			url : '/emailEx.do',
+			url : '/passwordCheck.do',
 			method : 'post',
 			data : {
-				'user_email' : email
+				'user_email' : email,
+				'user_id' : id
 			},
 			success : function(data) {
-				if (!$('#resetEmail').val()) {
-					$('#emailc').html('<p style="color:red;">이메일를 입력해주세요.</p>');
-					$('#resetEmail').focus();
-				}else if ($.trim(data) != 0) {
-					$('#emailc').html('<p style="color:green;">인증번호가 전송되었습니다.</p>');
-					email_btn.style.display="none";
-					user_email.readOnly = true;
-					$('#resetKey').focus();
+				if ($.trim(data) != "null") {
+					$.ajax({
+						url : '/emailEx.do',
+						method : 'post',
+						data : {
+							'user_email' : email
+						},
+						success : function(data) {
+							if (!$('#resetEmail').val()) {
+								$('#emailc').html('<p style="color:red;">이메일를 입력해주세요.</p>');
+								$('#resetEmail').focus();
+							}else if ($.trim(data) != 0) {
+								$('#emailc').html('<p style="color:green;">인증번호가 전송되었습니다.</p>');
+								email_btn.style.display="none";
+								user_email.readOnly = true;
+								$('#resetKey').focus();
+							}else{
+								$('#emailc').html('<p style="color:red;">인증번호 전송에 실패하였습니다. 다시 시도해주세요.</p>');
+							}
+						}
+					});
 				}else{
-					$('#emailc').html('<p style="color:red;">인증번호 전송에 실패하였습니다. 다시 시도해주세요.</p>');
+					$('#emailc').html('<p style="color:red;">입력하신 정보가 올바르지않습니다. 다시 확인해주세요.</p>');
+					$('#resetEmail').focus();
 				}
 			}
-		})
+		});
+		
 	};
 	
 	key_btn.onclick = function(){ //인증번호 확인

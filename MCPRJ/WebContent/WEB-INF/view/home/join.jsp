@@ -225,6 +225,7 @@ function emailCheck(e){ //이메일 전송
 				$('#emailc').html('<p style="color:green;">인증번호를 전송하였습니다.</p>');
 				email_btn.style.display="none";
 				user_email.readOnly = true;
+				user_name.readOnly = true;
 				$('#email_key').focus();
 			}else{
 				$('#emailc').html('<p style="color:red;">인증번호 전송에 실패하였습니다. 다시 시도해주세요.</p>');

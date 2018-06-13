@@ -340,6 +340,8 @@
 				mountain.style.display = "";
 				themeinfo.style.display = "";
 				inf.style.display = "none";
+				infomation.style.display = "none";
+				info.style.display = "";
 			}
 			
 			console.log("테마 : " + theme);
@@ -488,6 +490,11 @@
 			inf.style.display = "";
 			infomation.style.display = "none";
 			season.style.display = "none";
+			mountain.style.display = "none";
+			themeinfo.style.display = "none";
+			
+			list();
+			paging();
 		});
 		
 		$(document).on("click", "#month", function() {
@@ -514,6 +521,7 @@
 			mountain.style.display = "none";
 			
 			list();
+			paging();
 		});
 		
 		$(document).on("click", "#theme", function() {
@@ -540,6 +548,7 @@
 			mountain.style.display = "none";
 			
 			list();
+			paging();
 		});
 		
 		var page = 1;
@@ -863,6 +872,48 @@
 				}
 			});
 		};
+		
+		function paging(){
+			console.log("전체 페이지 불러오기");
+			var page = 1;
+			var countPage = 5;
+			var countList = 5;
+			var totalCount = 100;
+			var totalPage =  20;
+			
+			if(totalCount % countList > 0){
+				totalPage++;
+			}
+			if(totalPage < page){
+				page = totalPage;
+			}
+			
+			var startPage = 1;
+			var endPage = 5;
+			
+			console.log(startPage);
+			console.log(endPage);
+			console.log(page);
+			var content = "";
+			content += "<div id='paging'>";
+			content += "<nav aria-label='Page navigation example'>";
+			content += "<ul class='pagination justify-content-center'>";
+			for(var iCount = startPage; iCount <= endPage; iCount++){
+				if(iCount == page) {
+					content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
+				}else{
+					content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
+				}
+			}
+			if(endPage != totalPage) {
+				content += "<li class='page-item'>";
+				content += "<a class='page-link' id='6' aria-label='Next'>";
+				content += "<span aria-hidden='true'>&raquo;</span>";
+				content += "<span class='sr-only'>Next</span></a></li>";
+			}
+			content += "</ul></nav></div>";
+			$('#paging').html(content);
+		}
 		
 	};
 </script>

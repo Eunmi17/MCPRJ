@@ -49,6 +49,7 @@
 %>
 <script>
 	window.onload = function() {
+		<%if(!session_auth.equals("UD")) {%>
 		var s = document.getElementById("search");
 		s.onclick = function(){
 			$('#search').val('');
@@ -91,7 +92,7 @@
 								content += "<td>"+value.join_form+"</td>";
 								content += "<td>"+value.num+"</td>";
 								content += "<td><img onclick='doDetail("+value.team_no+");'";
-								content += "scr='bootstrap/assets/img/loupe.png'></td></tr>";
+								content += "src='bootstrap/assets/img/loupe.png'></td></tr>";
 						});
 						
 						contentss += "</tbody></table>"
@@ -158,7 +159,11 @@
 							content += "<span class='sr-only'>Next</span></a></li>";
 						}
 						content += "</ul></nav></div>";
-						$('#paging').html(content);
+						if(totalCount != 0){
+							$('#paging').html(content);
+						}else{
+							$('#paging').html('');
+						}
 					},
 					error : function(error) {alert("num : " + error)}
 				});
@@ -198,7 +203,7 @@
 							content += "<td>"+value.join_form+"</td>";
 							content += "<td>"+value.num+"</td>";
 							content += "<td><img onclick='doDetail("+value.team_no+");'";
-							content += "scr='bootstrap/assets/img/loupe.png'></td></tr>";
+							content += "src='bootstrap/assets/img/loupe.png'></td></tr>";
 					});
 					
 					contentss += "</tbody></table>"
@@ -245,7 +250,12 @@
 						content += "<span class='sr-only'>Next</span></a></li>";
 					}
 					content += "</ul></nav></div>";
-					$('#paging').html(content);
+					if(totalPage != 0){
+						$('#paging').html(content);
+					}else{
+						$('#paging').html('');
+					}
+					
 				},
 				error : function(xhr, st, error) {alert(error)}
 			});
@@ -297,7 +307,12 @@
 			content += "<span class='sr-only'>Next</span></a></li>";
 		}
 		content += "</ul></nav></div>";
-		$('#paging').html(content);
+		if(totalPage != 0){
+			$('#paging').html(content);
+		}else{
+			$('#paging').html('');
+		}
+		
 		
 		$(document).on("click", ".page-link", function() {
 			var num = $(this).attr('id');
@@ -330,7 +345,7 @@
 							content += "<td>"+value.join_form+"</td>";
 							content += "<td>"+value.num+"</td>";
 							content += "<td><img onclick='doDetail("+value.team_no+");'";
-							content += "scr='bootstrap/assets/img/loupe.png'></td></tr>";
+							content += "src='bootstrap/assets/img/loupe.png'></td></tr>";
 					});
 					
 					contentss += "</tbody></table>"
@@ -375,11 +390,24 @@
 						content += "<span class='sr-only'>Next</span></a></li>";
 					}
 					content += "</ul></nav></div>";
-					$('#paging').html(content);
+					if(totalPage != 0){
+						$('#paging').html(content);
+					}else{
+						$('#paging').html('');
+					}
 				},
 				error : function(xhr, st, error) {alert(error)}
 			});
 		});
+		<%}%>
+		
+		var nav1 = document.getElementById("nav1");
+		var nav2 = document.getElementById("nav2");
+		var nav3 = document.getElementById("nav3");
+		nav1.onclick = function() {
+			nav2.style.display = "";
+			nav3.style.display = "";
+		};
 					
 		<%if(session_auth.equals("U")){%>		
 		var join = document.getElementById("join");
@@ -393,7 +421,7 @@
 		
 		btn.onclick = function() {
 			alert("동호회 가입을 취소하시겠습니까?");
-			location.href = "/joinD.do";
+			location.href = "/joinDD.do";
 		}
 		<%}%>
 	};

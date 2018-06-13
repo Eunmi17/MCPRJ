@@ -91,7 +91,7 @@
 								content += "<td>"+value.join_form+"</td>";
 								content += "<td>"+value.num+"</td>";
 								content += "<td><img onclick='doDetail("+value.team_no+");'";
-								content += "scr='bootstrap/assets/img/loupe.png'>&emsp;";
+								content += "src='bootstrap/assets/img/loupe.png'>&emsp;";
 								content += "<img onclick='doDelete("+value.team_no+");'";
 								content += "src='bootstrap/assets/img/delete.png'></td></tr>";
 						});
@@ -159,7 +159,11 @@
 							content += "<span class='sr-only'>Next</span></a></li>";
 						}
 						content += "</ul></nav></div>";
-						$('#paging').html(content);
+						if(totalCount != 0){
+							$('#paging').html(content);
+						}else{
+							$('#paging').html('');
+						}
 					},
 					error : function(error) {alert("num : " + error)}
 				});
@@ -200,7 +204,7 @@
 							content += "<td>"+value.join_form+"</td>";
 							content += "<td>"+value.num+"</td>";
 							content += "<td><img onclick='doDetail("+value.team_no+");'";
-							content += "scr='bootstrap/assets/img/loupe.png'>&emsp;";
+							content += "src='bootstrap/assets/img/loupe.png'>&emsp;";
 							content += "<img onclick='doDelete("+value.team_no+");'";
 							content += "src='bootstrap/assets/img/delete.png'></td></tr>";
 					});
@@ -334,7 +338,7 @@
 							content += "<td>"+value.join_form+"</td>";
 							content += "<td>"+value.num+"</td>";
 							content += "<td><img onclick='doDetail("+value.team_no+");'";
-							content += "scr='bootstrap/assets/img/loupe.png'>&emsp;";
+							content += "src='bootstrap/assets/img/loupe.png'>&emsp;";
 							content += "<img onclick='doDelete("+value.team_no+");'";
 							content += "src='bootstrap/assets/img/delete.png'></td></tr>";
 					});

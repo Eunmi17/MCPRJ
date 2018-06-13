@@ -174,7 +174,11 @@
 							content += "<span class='sr-only'>Next</span></a></li>";
 						}
 						content += "</ul></nav></div>";
-						$('#paging').html(content);
+						if(totalCount != 0){
+							$('#paging').html(content);
+						}else{
+							$('#paging').html('');
+						}
 					},
 					error : function(error) {alert("num : " + error)}
 				});
@@ -269,7 +273,11 @@
 						content += "<span class='sr-only'>Next</span></a></li>";
 					}
 					content += "</ul></nav></div>";
-					$('#paging').html(content);
+					if(totalCount != 0){
+						$('#paging').html(content);
+					}else{
+						$('#paging').html('');
+					}
 				},
 				error : function(xhr, st, error) {alert(error)}
 			});
@@ -321,7 +329,11 @@
 			content += "<span class='sr-only'>Next</span></a></li>";
 		}
 		content += "</ul></nav></div>";
-		$('#paging').html(content);
+		if(totalCount != 0){
+			$('#paging').html(content);
+		}else{
+			$('#paging').html('');
+		}
 		
 		$(document).on("click", ".page-link", function() {
 			var num = $(this).attr('id');
@@ -410,7 +422,11 @@
 						content += "<span class='sr-only'>Next</span></a></li>";
 					}
 					content += "</ul></nav></div>";
-					$('#paging').html(content);
+					if(totalCount != 0){
+						$('#paging').html(content);
+					}else{
+						$('#paging').html('');
+					}
 				},
 				error : function(xhr, st, error) {alert(error)}
 			});

@@ -67,6 +67,7 @@
 	window.onload = function() {
 		
 		var list = document.getElementById("list");
+		<%if(!session_user_id.equals("admin")){%>
 		var nav1 = document.getElementById("nav1");
 		var nav2 = document.getElementById("nav2");
 		var nav3 = document.getElementById("nav3");
@@ -74,6 +75,7 @@
 			nav2.style.display = "";
 			nav3.style.display = "";
 		};
+	<%}%>
 		list.onclick = function() {
 			location.href = "/apiMain.do";
 		};
@@ -245,7 +247,7 @@ display: block;
 											</div>
 										<%} %>
 										</div>
-										<%if(!mntninfodscrt.text().equals("&amp;nbsp;")&&!mntninfodscrt.text().equals("&nbsp;")&&!mntninfodscrt.text().equals("")) {%>
+										<%if(!mntninfodscrt.text().equals("&amp;nbsp;")&&!mntninfodscrt.text().equals("&nbsp;")&&!mntninfodscrt.text().equals("")&&!mntninfodscrt.text().equals("&amp;#160;")) {%>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -255,7 +257,7 @@ display: block;
 											</div>
 										</div>
 										<%} %>
-										<%if(!mntninfodtlinfocont.text().equals("&amp;nbsp;")&&!mntninfodtlinfocont.text().equals("&nbsp;")&&!mntninfodtlinfocont.text().equals("")) {%>
+										<%if(!mntninfodtlinfocont.text().equals("&amp;nbsp;")&&!mntninfodtlinfocont.text().equals("&nbsp;")&&!mntninfodtlinfocont.text().equals("")&&!mntninfodscrt.text().equals("&amp;#160;")) {%>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -265,7 +267,7 @@ display: block;
 											</div>
 										</div>
 										<%} %>
-										<%if(!crcmrsghtnginfodscrt.text().equals("&amp;nbsp;")&&!crcmrsghtnginfodscrt.text().equals("&nbsp;")&&!crcmrsghtnginfodscrt.text().equals("")) {%>
+										<%if(!crcmrsghtnginfodscrt.text().equals("&amp;nbsp;")&&!crcmrsghtnginfodscrt.text().equals("&nbsp;")&&!crcmrsghtnginfodscrt.text().equals("")&&!mntninfodscrt.text().equals("&amp;#160;")) {%>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -275,7 +277,7 @@ display: block;
 											</div>
 										</div>
 										<%} %>
-										<%if(!pbtrninfodscrt.text().equals("&amp;nbsp;")&&!pbtrninfodscrt.text().equals("&nbsp;")&&!pbtrninfodscrt.text().equals("")) {%>
+										<%if(!pbtrninfodscrt.text().equals("&amp;nbsp;")&&!pbtrninfodscrt.text().equals("&nbsp;")&&!pbtrninfodscrt.text().equals("")&&!mntninfodscrt.text().equals("&amp;#160;")) {%>
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
@@ -285,7 +287,7 @@ display: block;
 											</div>
 										</div>
 										<%} %>
-										<%if(!crcmrsghtnginfoetcdscrt.text().equals("&amp;nbsp;")&&!crcmrsghtnginfoetcdscrt.text().equals("&nbsp;")&&!crcmrsghtnginfoetcdscrt.text().equals("")) {%>
+										<%if(!crcmrsghtnginfoetcdscrt.text().equals("&amp;nbsp;")&&!crcmrsghtnginfoetcdscrt.text().equals("&nbsp;")&&!crcmrsghtnginfoetcdscrt.text().equals("")&&!mntninfodscrt.text().equals("&amp;#160;")) {%>
 											<div class="row">
 												<div class="col-md-6">
 													<div class="form-group">
