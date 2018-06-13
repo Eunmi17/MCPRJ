@@ -250,4 +250,11 @@
 		WHERE MONTH LIKE #{month}
 	</select>
 	
+	<!-- 테마 갯수 -->
+	<select id="getThemeNum" resultType="informationDTO">
+		SELECT COUNT(NO) DATA
+		FROM INFORMATION
+		WHERE THEME LIKE #{theme}
+	</select>
+	
 </mapper>

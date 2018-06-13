@@ -89,4 +89,6 @@ public interface UserMapper {
 
 	informationDTO getmonthNum(informationDTO iDTO) throws Exception;
 
+	informationDTO getThemeNum(informationDTO iDTO) throws Exception;
+
 }

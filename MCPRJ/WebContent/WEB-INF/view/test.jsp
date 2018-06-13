@@ -224,7 +224,7 @@ window.onload = function() {
 				var page = 1;
 				var countPage = 5;
 				var countList = 5;
-				var totalCount = data;
+				var totalCount = parseInt(data);
 				var totalPage =  parseInt(totalCount / countList);
 				
 				if(totalCount % countList > 0){
@@ -240,7 +240,7 @@ window.onload = function() {
 				if(endPage > totalPage) {
 					endPage = totalPage;
 				}
-				
+				console.log(totalPage);
 				console.log(startPage);
 				console.log(endPage);
 				console.log(page);
@@ -249,8 +249,9 @@ window.onload = function() {
 				content += "<nav aria-label='Page navigation example'>";
 				content += "<ul class='pagination justify-content-center'>";
 				if(startPage != 1) {
+					var pre = parseInt(startPage-5);
 					content += "<li class='page-item'>";
-					content += "<a class='page-linkm' id="+startPage-5+" value='"+month+"' aria-label='Previous'>";
+					content += "<a class='page-linkm' id="+pre+" value='"+month+"' aria-label='Previous'>";
 					content += "<span aria-hidden='true'>&laquo;</span>";
 					content += "<span class='sr-only'>Previous</span></a></li>";
 				}
@@ -262,8 +263,9 @@ window.onload = function() {
 					}
 				}
 				if(endPage != totalPage) {
+					var next = parseInt(startPage+5);
 					content += "<li class='page-item'>";
-					content += "<a class='page-linkm' id="+startPage+5+" value='"+month+"' aria-label='Next'>";
+					content += "<a class='page-linkm' id="+next+" value='"+month+"' aria-label='Next'>";
 					content += "<span aria-hidden='true'>&raquo;</span>";
 					content += "<span class='sr-only'>Next</span></a></li>";
 				}
@@ -410,18 +412,66 @@ window.onload = function() {
 				$('.table').html(contents);
 			}
 		});
-		/* 
+
 		$.ajax({
 			url : "/themeNum.do",
 			method : "post",
 			data : {'theme' : theme},
-			dataType : "int",
 			success : function(data) {
-				//페이징
+				console.log("data : " + data);
+				var page = 1;
+				var countPage = 5;
+				var countList = 5;
+				var totalCount = parseInt(data);
+				var totalPage =  parseInt(totalCount / countList);
+				
+				if(totalCount % countList > 0){
+					totalPage++;
+				}
+				if(totalPage < page){
+					page = totalPage;
+				}
+				
+				var startPage = 1;
+				var endPage = startPage + countPage - 1
+				
+				if(endPage > totalPage) {
+					endPage = totalPage;
+				}
+				console.log(totalPage);
+				console.log(startPage);
+				console.log(endPage);
+				console.log(page);
+				var content = "";
+				content += "<div id='paging'>";
+				content += "<nav aria-label='Page navigation example'>";
+				content += "<ul class='pagination justify-content-center'>";
+				if(startPage != 1) {
+					var pre = parseInt(startPage-5);
+					content += "<li class='page-item'>";
+					content += "<a class='page-linkt' id="+pre+" value='"+theme+"' aria-label='Previous'>";
+					content += "<span aria-hidden='true'>&laquo;</span>";
+					content += "<span class='sr-only'>Previous</span></a></li>";
+				}
+				for(var iCount = startPage; iCount <= endPage; iCount++){
+					if(iCount == page) {
+						content += "<li class='page-item'><a class='page-linkt'><b>("+iCount+")</b></a></li>";
+					}else{
+						content += "<li class='page-item'><a class='page-linkt' id='"+iCount+"' value='"+theme+"'>"+iCount+"</a></li>";
+					}
+				}
+				if(endPage != totalPage) {
+					var next = parseInt(startPage+5);
+					content += "<li class='page-item'>";
+					content += "<a class='page-linkt' id="+next+" value='"+theme+"' aria-label='Next'>";
+					content += "<span aria-hidden='true'>&raquo;</span>";
+					content += "<span class='sr-only'>Next</span></a></li>";
+				}
+				content += "</ul></nav></div>";
+				$('#paging').html(content);
 			},
 			error : function(error) {alert("theme : " + error)}
 		});
-		 */
 		
 	});
 	
@@ -681,11 +731,28 @@ window.onload = function() {
 				})
 				contents += "</tbody></table>";
 				$('.table').html(contents);
+			},
+			error : function(xhr, st, error) {alert(error)}
+		});
 				
+		$.ajax({
+			url : "/monthNum.do",
+			method : "post",
+			data : {'month' : month},
+			success : function(data) {
 				page = num;
+				var totalCount = parseInt(data);
+				var totalPage =  parseInt(totalCount / countList);
+				
+				if(totalCount % countList > 0){
+					totalPage++;
+				}
 				if(totalPage < page){
 					page = totalPage;
 				}
+				
+				console.log("totalPage : " + totalPage);
+				
 				if(page % 5 == 0) {
 					startPage = page - 4;
 				}else{
@@ -707,21 +774,114 @@ window.onload = function() {
 					console.log("?");
 					var pre = parseInt(startPage-5);
 					content += "<li class='page-item'>";
-					content += "<a class='page-link' id="+pre+" aria-label='Previous'>";
+					content += "<a class='page-linkm' id="+pre+" value='"+month+"' aria-label='Previous'>";
 					content += "<span aria-hidden='true'>&laquo;</span>";
 					content += "<span class='sr-only'>Previous</span></a></li>";
 				}
 				for(var iCount = startPage; iCount <= endPage; iCount++){
 					if(iCount == page) {
-						content += "<li class='page-item'><a class='page-link'><b>("+iCount+")</b></a></li>";
+						content += "<li class='page-item'><a class='page-linkm'><b>("+iCount+")</b></a></li>";
 					}else{
-						content += "<li class='page-item'><a class='page-link' id='"+iCount+"'>"+iCount+"</a></li>";
+						content += "<li class='page-item'><a class='page-linkm' id='"+iCount+"' value='"+month+"'>"+iCount+"</a></li>";
 					}
 				}
 				if(endPage != totalPage) {
 					var next = parseInt(startPage+5);
 					content += "<li class='page-item'>";
-					content += "<a class='page-link' id="+next+" aria-label='Next'>";
+					content += "<a class='page-linkm' id="+next+" value='"+month+"' aria-label='Next'>";
+					content += "<span aria-hidden='true'>&raquo;</span>";
+					content += "<span class='sr-only'>Next</span></a></li>";
+				}
+				content += "</ul></nav></div>";
+				$('#paging').html(content);
+			},
+			error : function(xhr, st, error) {alert(error)}
+		});
+	});
+	
+	$(document).on("click", ".page-linkt", function() {
+		var num = $(this).attr('id');
+		var theme = $(this).attr('value');
+		num = parseInt(num);
+		console.log("num : " + num);
+		console.log("theme : " + theme);
+		$.ajax({
+			url : "/themePaging.do",
+			method : "post",
+			data : {"num" : num, "theme" : theme},
+			dataType : "json",
+			success : function(data, st, xhr) {
+				console.log(data);
+				console.log(st);
+				console.log(xhr);
+				var contents = "";
+				contents += "<table class='table'><thead class=' text-primary'>";
+				contents += "<th><strong>No</strong></th><th><strong>산명</strong></th>";
+				contents += "<th></th></thead><tbody>";
+				$.each(data, function (key, value) {
+					contents += "<tr><td>"+value.no+"</td><td>"+value.name+"</td>";
+					contents += "<td><img class='detail' id="+value.no+" src='bootstrap/assets/img/loupe.png'></td></tr>";
+				})
+				contents += "</tbody></table>";
+				$('.table').html(contents);
+			},
+			error : function(xhr, st, error) {alert(error)}
+		});
+				
+		$.ajax({
+			url : "/themeNum.do",
+			method : "post",
+			data : {'theme' : theme},
+			success : function(data) {
+				page = num;
+				var totalCount = parseInt(data);
+				var totalPage =  parseInt(totalCount / countList);
+				
+				if(totalCount % countList > 0){
+					totalPage++;
+				}
+				if(totalPage < page){
+					page = totalPage;
+				}
+				
+				console.log("totalPage : " + totalPage);
+				
+				if(page % 5 == 0) {
+					startPage = page - 4;
+				}else{
+					startPage = parseInt(parseInt(page / 5) * 5) + 1;
+				}
+				endPage = startPage + countPage - 1
+				
+				if(endPage > totalPage) {
+					endPage = totalPage;
+				}
+				console.log(startPage);
+				console.log(endPage);
+				console.log(page);
+				content = "";
+				content += "<div id='paging'>";
+				content += "<nav aria-label='Page navigation example'>";
+				content += "<ul class='pagination justify-content-center'>";
+				if(startPage != 1) {
+					console.log("?");
+					var pre = parseInt(startPage-5);
+					content += "<li class='page-item'>";
+					content += "<a class='page-linkt' id="+pre+" value='"+theme+"' aria-label='Previous'>";
+					content += "<span aria-hidden='true'>&laquo;</span>";
+					content += "<span class='sr-only'>Previous</span></a></li>";
+				}
+				for(var iCount = startPage; iCount <= endPage; iCount++){
+					if(iCount == page) {
+						content += "<li class='page-item'><a class='page-linkt'><b>("+iCount+")</b></a></li>";
+					}else{
+						content += "<li class='page-item'><a class='page-linkt' id='"+iCount+"' value='"+theme+"'>"+iCount+"</a></li>";
+					}
+				}
+				if(endPage != totalPage) {
+					var next = parseInt(startPage+5);
+					content += "<li class='page-item'>";
+					content += "<a class='page-linkt' id="+next+" value='"+theme+"' aria-label='Next'>";
 					content += "<span aria-hidden='true'>&raquo;</span>";
 					content += "<span class='sr-only'>Next</span></a></li>";
 				}

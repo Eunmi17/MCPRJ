@@ -209,5 +209,10 @@ public class UserService implements IUserService {
 	public informationDTO getmonthNum(informationDTO iDTO) throws Exception {
 		return userMapper.getmonthNum(iDTO);
 	}
+
+	@Override
+	public informationDTO getThemeNum(informationDTO iDTO) throws Exception {
+		return userMapper.getThemeNum(iDTO);
+	}
 		
 }

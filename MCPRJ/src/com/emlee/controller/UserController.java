@@ -999,11 +999,47 @@ public class UserController {
 		
 		informationDTO iDTO = new informationDTO();
 		iDTO.setNum(num);
-		iDTO.setMonth(month);
+		iDTO.setMonth("%"+month+"%");
 		
 		List<informationDTO> iList = userService.getMonth(iDTO);
 		
 		log.info(getClass() + "monthPaging end!!!");
+		return iList;
+	}
+	
+	@RequestMapping(value="/themeNum")
+	public @ResponseBody int themeNum(@RequestParam(value="theme") String theme, Model model, HttpSession session) throws Exception {
+		log.info(getClass()  + "themeNum start!!!");
+		
+		log.info("theme : " + theme);
+		
+		informationDTO iDTO = new informationDTO();
+		
+		iDTO.setTheme("%"+theme+"%");
+		
+		iDTO = userService.getThemeNum(iDTO);
+		
+		int num = Integer.parseInt(iDTO.getData());
+		log.info("num : " + num);
+		
+		log.info(getClass() + "themeNum end!!!");
+		return num;
+	}
+	
+	@RequestMapping(value="/themePaging")
+	public @ResponseBody List<informationDTO> themePaging(@RequestParam(value="num") int num, @RequestParam(value="theme") String theme, HttpSession session) throws Exception {
+		log.info(getClass()  + "themePaging start!!!");
+		num = (num - 1) * 5;
+		log.info("num : " + num);
+		log.info("theme : " + theme);
+		
+		informationDTO iDTO = new informationDTO();
+		iDTO.setNum(num);
+		iDTO.setTheme("%"+theme+"%");
+		
+		List<informationDTO> iList = userService.getTheme(iDTO);
+		
+		log.info(getClass() + "themePaging end!!!");
 		return iList;
 	}
 
