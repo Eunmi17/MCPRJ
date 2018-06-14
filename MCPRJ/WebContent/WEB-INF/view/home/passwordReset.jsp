@@ -140,7 +140,7 @@ window.onload = function() {
 					$('#keyc').html('<p style="color:red;">인증번호를 입력해주세요.</p>');
 						$('#resetKey').focus();
 						keyCheck = false;
-				}else if ($.trim(data) != null) {
+				}else if ($.trim(data) != "null") {
 					$('#keyc').html('<p style="color:green;">인증되었습니다.</p>');
 						keyCheck = true;
 						key_btn.style.display= "none";

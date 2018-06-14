@@ -34,6 +34,7 @@
 	String session_user_no = CmmUtil.nvl((String) session.getAttribute("session_user_no"));
 	String session_team_name = CmmUtil.nvl((String) session.getAttribute("session_team_no"));
 	String session_user_name = CmmUtil.nvl((String) session.getAttribute("session_user_name"));
+	String team_name = CmmUtil.nvl((String)request.getAttribute("team_name"));
 %>
 <!-- 나중에 팀이름으로 바꾸기 -->
 
@@ -221,7 +222,7 @@
 															<img src="bootstrap/assets/img/reder.png">
 														<%} %>
 														<input type="text" class="form-control"
-															value="<%=CmmUtil.nvl(uDTO.getTeam_no())%>" readonly>
+															value="<%=team_name%>" readonly>
 												</div>
 											</div>
 										</div>

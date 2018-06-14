@@ -257,4 +257,10 @@
 		WHERE THEME LIKE #{theme}
 	</select>
 	
+	<!-- 팀명 불러오기 -->
+	<select id="getTeamName" parameterType="manageDTO" resultType="manageDTO">
+		SELECT TEAM_NAME FROM BOARD_MANAGE
+		WHERE TEAM_NO = #{team_no}
+	</select>
+	
 </mapper>

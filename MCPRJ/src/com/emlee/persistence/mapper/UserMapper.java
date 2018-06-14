@@ -91,4 +91,6 @@ public interface UserMapper {
 
 	informationDTO getThemeNum(informationDTO iDTO) throws Exception;
 
+	manageDTO getTeamName(manageDTO mDTO) throws Exception;
+
 }

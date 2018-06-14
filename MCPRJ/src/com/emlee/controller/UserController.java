@@ -447,7 +447,19 @@ public class UserController {
 		if (uDTO == null) {
 			uDTO = new userDTO();
 		}
+		String team_no = uDTO.getTeam_no();
+		String team_name = "";
+		if(team_no.equals("0")){
+			team_name = "미가입";
+		}else{
+			manageDTO mDTO = new manageDTO();
+			mDTO.setTeam_no(team_no);
+			mDTO = userService.getTeamName(mDTO);
+			team_name = mDTO.getTeam_name();
+		}
+		log.info("team_name : " + team_name);
 		model.addAttribute("uDTO", uDTO);
+		model.addAttribute("team_name", team_name);
 		log.info("uDTO : " + uDTO.getDay());
 		
 		log.info(getClass() + "userDetail end!!!");
@@ -469,6 +481,19 @@ public class UserController {
 		if (uDTO == null) {
 			uDTO = new userDTO();
 		}
+		String team_no = uDTO.getTeam_no();
+		String team_name = "";
+		if(team_no.equals("0")){
+			team_name = "미가입";
+		}else{
+			manageDTO mDTO = new manageDTO();
+			mDTO.setTeam_no(team_no);
+			mDTO = userService.getTeamName(mDTO);
+			team_name = mDTO.getTeam_name();
+		}
+		log.info("team_name : " + team_name);
+		model.addAttribute("uDTO", uDTO);
+		model.addAttribute("team_name", team_name);
 		model.addAttribute("uDTO", uDTO);
 		
 		log.info(getClass() + "userUpdate end!!!");

@@ -214,5 +214,10 @@ public class UserService implements IUserService {
 	public informationDTO getThemeNum(informationDTO iDTO) throws Exception {
 		return userMapper.getThemeNum(iDTO);
 	}
+
+	@Override
+	public manageDTO getTeamName(manageDTO mDTO) throws Exception {
+		return userMapper.getTeamName(mDTO);
+	}
 		
 }

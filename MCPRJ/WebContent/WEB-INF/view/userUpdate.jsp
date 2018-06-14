@@ -35,6 +35,8 @@
 	String session_team_name = CmmUtil.nvl((String) session.getAttribute("session_team_no"));
 	String session_auth = CmmUtil.nvl((String) session.getAttribute("session_auth"));
 	String session_user_name = CmmUtil.nvl((String)session.getAttribute("session_user_name"));
+	String team_name = CmmUtil.nvl((String)request.getAttribute("team_name"));
+	
 %>
 <!-- 나중에 팀이름으로 바꾸기 -->
 
@@ -256,7 +258,7 @@ function doSubmit(f) { //전송시 유효성 체크
 													<p style="color: red">동호회 정보는 리더만 수정 가능합니다.</p>
 													<%} %>
 													<input type="text" class="form-control"
-														value="<%=CmmUtil.nvl(uDTO.getTeam_no())%>" readonly>
+														value="<%=team_name%>" readonly>
 												</div>
 											</div>
 										</div>
