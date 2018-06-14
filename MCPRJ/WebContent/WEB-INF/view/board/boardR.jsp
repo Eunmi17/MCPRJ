@@ -312,7 +312,7 @@
 									<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
-													<textarea name="content" id="non" rows="5" cols="100%" readonly><%=CmmUtil.nvl(bDTO.getContent())%></textarea>
+													<textarea name="content" id="non" rows="15" cols="100%" readonly><%=CmmUtil.nvl(bDTO.getContent())%></textarea>
 												</div>
 											</div>
 										</div>

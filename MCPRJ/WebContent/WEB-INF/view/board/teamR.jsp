@@ -201,7 +201,7 @@
 											<div class="col-md-12">
 												<div class="form-group">
 													<label class="bmd-label-floating">동호회 인사</label><br>
-													<textarea name="content" rows="5" cols="100%"  id="non" readonly><%=CmmUtil.nvl(mDTO.getTeam_memo()) %></textarea>
+													<textarea name="content" rows="15" cols="100%"  id="non" readonly><%=CmmUtil.nvl(mDTO.getTeam_memo()) %></textarea>
 												</div>
 											</div>
 										</div>
