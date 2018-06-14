@@ -123,11 +123,8 @@ public class BoardController {
 		}else if(bcheck.equals("T")){
 			team_no = CmmUtil.nvl((String)session.getAttribute("session_team_no"));
 		}
-		String t = CmmUtil.nvl(req.getParameter("title"));
-		String title = TextUtil.exchangeEscapeNvl(t);
-		String c = CmmUtil.nvl(req.getParameter("content"));
-		String content = TextUtil.exchangeEscapeNvl(c);
-		content = content.replace("\r\n", "<br>");
+		String title = CmmUtil.nvl(req.getParameter("title"));
+		String content = CmmUtil.nvl(req.getParameter("content"));
 		String notice = CmmUtil.nvl(req.getParameter("notice"));
 		String check = CmmUtil.nvl(req.getParameter("check")); //1이면 파일 없음 2이면 파일있음
 		if (notice == "") {
@@ -393,11 +390,8 @@ public class BoardController {
 		String board_no = CmmUtil.nvl(req.getParameter("board_no"));
 		String team_no = CmmUtil.nvl(req.getParameter("team_no"));
 		String user_no = CmmUtil.nvl((String)session.getAttribute("session_user_no"));
-		String t = CmmUtil.nvl(req.getParameter("title"));
-		String title = TextUtil.exchangeEscapeNvl(t);
-		String c = CmmUtil.nvl(req.getParameter("content"));
-		String content = TextUtil.exchangeEscapeNvl(c);
-		content = content.replace("\r\n", "<br>");
+		String title = CmmUtil.nvl(req.getParameter("title"));
+		String content = CmmUtil.nvl(req.getParameter("content"));
 		String notice = CmmUtil.nvl(req.getParameter("notice"));
 		String check = CmmUtil.nvl(req.getParameter("check")); //1이면 파일 없음 2이면 파일있음
 		if (notice == "") {
