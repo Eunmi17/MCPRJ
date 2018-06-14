@@ -76,11 +76,17 @@
 						contents += "<th></th></thead><tbody>";
 						
 						$.each(data, function (key, value) {
+							var team_no = "";
+							if(value.team_no == null){
+								team_no = "미가입";
+							}else{
+								team_no = value.team_no;
+							}
 							content += "<tr>";
 								content += "<td>"+value.user_no+"</td>";
 								content += "<td>"+value.user_name+"</td>";
 								content += "<td>"+value.user_id+"</td>";
-								content += "<td>"+value.team_no+"</td>";
+								content += "<td>"+team_no+"</td>";
 								content += "<td>"+value.auth+"</td>";
 								content += "<td><img onclick='doDetail("+value.user_no+");'";
 								content += "src='bootstrap/assets/img/loupe.png'></td></tr>";
@@ -184,11 +190,17 @@
 					contents += "<th><strong>권한</strong></th>";
 					contents += "<th></th></thead><tbody>";
 					$.each(data, function(key, value) {
+						var team_no = "";
+						if(value.team_no == null){
+							team_no = "미가입";
+						}else{
+							team_no = value.team_no;
+						}
 						contents += "<tr>";
 						contents += "<td>"+value.user_no+"</td>";
 						contents += "<td>"+value.user_name+"</td>";
 						contents += "<td>"+value.user_id+"</td>";
-						contents += "<td>"+value.team_no+"</td>";
+						contents += "<td>"+team_no+"</td>";
 						contents += "<td>"+value.auth+"</td>";
 						contents += "<td><img onclick='doDetail("+value.user_no+");' src='bootstrap/assets/img/loupe.png'></td>";
 						contents += "</tr>";
@@ -316,11 +328,17 @@
 					contents += "<th><strong>권한</strong></th>";
 					contents += "<th></th></thead><tbody>";
 					$.each(data, function(key, value) {
+						var team_no = "";
+						if(value.team_no == null){
+							team_no = "미가입";
+						}else{
+							team_no = value.team_no;
+						}
 						contents += "<tr>";
 						contents += "<td>"+value.user_no+"</td>";
 						contents += "<td>"+value.user_name+"</td>";
 						contents += "<td>"+value.user_id+"</td>";
-						contents += "<td>"+value.team_no+"</td>";
+						contents += "<td>"+team_no+"</td>";
 						contents += "<td>"+value.auth+"</td>";
 						contents += "<td><img onclick='doDetail("+value.user_no+");' src='bootstrap/assets/img/loupe.png'></td>";
 						contents += "</tr>";
@@ -497,11 +515,19 @@
 											</thead>
 											<tbody>
 												<%for (userDTO uDTO : uList) {%>
+												<%
+													String name = "";
+													if(uDTO.getTeam_no() == null) {
+														name = "미가입";
+													}else{
+														name = uDTO.getTeam_no();
+													}
+												%>
 												<tr>
 													<td><%=uDTO.getUser_no() %></td>
 													<td><%=uDTO.getUser_name() %></td>
 													<td><%=uDTO.getUser_id() %></td>
-													<td><%=uDTO.getTeam_no() %></td>
+													<td><%=name%></td>
 													<td><%=uDTO.getAuth() %></td>
 													<td><img onclick="doDetail(<%=uDTO.getUser_no() %>);" src="bootstrap/assets/img/loupe.png"></td>
 												</tr>

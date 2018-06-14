@@ -171,8 +171,8 @@
 										<div class="row">
 											<div class="col-md-12">
 												<div class="form-group">
-													<label class="bmd-label-floating">동호회 인사</label>
-													<textarea name="team_memo" id="non" rows="5" cols="100%"><%=CmmUtil.nvl(mDTO.getTeam_memo()) %></textarea>
+													<label class="bmd-label-floating">동호회 인사</label><br>
+													<textarea name="team_memo" id="non" rows="15" cols="100%"><%=CmmUtil.nvl(mDTO.getTeam_memo())%></textarea>
 												</div>
 											</div>
 										</div>
