@@ -88,4 +88,6 @@ public interface IUserService {
 
 	informationDTO getThemeNum(informationDTO iDTO) throws Exception;
 
+	manageDTO getTeamName(manageDTO mDTO) throws Exception;
+
 }
