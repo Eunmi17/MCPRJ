@@ -749,9 +749,7 @@ public class UserController {
 	public String apiSearch(HttpServletRequest request, HttpServletResponse response, HttpSession session,
 					Model model) throws Exception {
 		log.info(getClass() + "apiSearch start!!!");
-		request.setCharacterEncoding("UTF-8");
 		String nm = CmmUtil.nvl(request.getParameter("nm"));
-		nm = URLDecoder.decode(nm, "UTF-8");
 		String no = CmmUtil.nvl(request.getParameter("no"));
 
 		if(no.equals("")){
