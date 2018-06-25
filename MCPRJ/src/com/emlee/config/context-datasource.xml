@@ -8,9 +8,9 @@
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="false">   
 	    <property name="driverClassName" value="com.mysql.jdbc.Driver" />
 	    <!-- <property name="url" value="jdbc:mysql://eunmidb.cskboxqiitvt.us-east-2.rds.amazonaws.com:3306/mcdb?characterEncoding=utf8" /> -->
-	    <property name="url" value="jdbc:mysql://mcdb.cj0gjttbvsch.ap-northeast-2.rds.amazonaws.com:3306/mcdb?characterEncoding=utf8" />
-	    <property name="username" value="eunmi" /> <!-- MySQL 계정 : 아이디 -->
-	    <property name="password" value="password1234" /> <!-- MySQL 계정 : 비밀번호 -->
+	    <property name="url" value="jdbc:mysql://192.168.170.92:3306/leeeunmi?useSSL=false&amp;allowMultiQueries=true&amp;serverTimezone=Asia/Seoul" />
+	    <property name="username" value="LEEEUNMI" /> <!-- MySQL 계정 : 아이디 -->
+	    <property name="password" value="1234" /> <!-- MySQL 계정 : 비밀번호 -->
 	</bean>
 	
 </beans>

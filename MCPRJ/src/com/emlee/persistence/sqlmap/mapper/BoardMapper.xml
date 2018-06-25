@@ -5,39 +5,39 @@
 
 	<!-- 글 리스트 -->
 	<select id="getBoardList" parameterType="String" resultType="boardDTO">
-		SELECT * FROM BOARD_INFO
+		SELECT * FROM leeeunmi.BOARD_INFO
 		WHERE TEAM_NO = #{team_no}
 		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC LIMIT 10
 	</select>
 	<!-- 글 등록 -->
 	<insert id="insertBoard" parameterType="boardDTO">
-		INSERT INTO BOARD_INFO ( BOARD_NO, TEAM_NO, REG_NAME, TITLE, CONTENT, CNT,
+		INSERT INTO leeeunmi.BOARD_INFO ( BOARD_NO, TEAM_NO, REG_NAME, TITLE, CONTENT, CNT,
 			NOTICE_CHECK, FILE_CHECK, REG_NO, REG_DT)
-		VALUES( (SELECT IFNULL(MAX(CAST(BI.BOARD_NO AS UNSIGNED)), 0)+1 FROM BOARD_INFO BI),
+		VALUES( (SELECT IFNULL(MAX(CAST(BI.BOARD_NO AS UNSIGNED)), 0)+1 FROM leeeunmi.BOARD_INFO BI),
 			#{team_no}, #{reg_name}, #{title}, #{content}, 0, #{notice_check},
 			#{file_check}, #{reg_no}, NOW())
 	</insert>
 	<!-- 글 번호 -->
 	<select id="getBoardNo" parameterType="boardDTO" resultType="boardDTO">
-		SELECT BOARD_NO FROM BOARD_INFO
+		SELECT BOARD_NO FROM leeeunmi.BOARD_INFO
 		WHERE TITLE = #{title} AND CONTENT = #{content} AND REG_NO = #{reg_no}
 	</select>
 	<!-- 파일 업로드 -->
 	<insert id="insertFile" parameterType="fileDTO">
-		INSERT INTO FILE_INFO ( FILE_NO, BOARD_NO, ORI_NAME, FILE_NAME, FILE_TYPE,
+		INSERT INTO leeeunmi.FILE_INFO ( FILE_NO, BOARD_NO, ORI_NAME, FILE_NAME, FILE_TYPE,
 			FILE_RENAME, FILE_PATH, FILE_SIZE, SAVE_PATH, REG_NO, REG_DT, TEAM_NO )
-		VALUES( (SELECT IFNULL(MAX(CAST(FI.FILE_NO AS UNSIGNED)), 0)+1 FROM FILE_INFO FI), #{board_no},
+		VALUES( (SELECT IFNULL(MAX(CAST(FI.FILE_NO AS UNSIGNED)), 0)+1 FROM leeeunmi.FILE_INFO FI), #{board_no},
 			#{ori_name}, #{file_name}, #{file_type},
 			#{file_rename}, #{file_path}, #{file_size}, #{save_path}, #{reg_no}, NOW(), #{team_no} )
 	</insert>
 	<!-- 글 상세 -->
 	<select id="getBoard" parameterType="boardDTO" resultType="boardDTO">
-		SELECT * FROM BOARD_INFO
+		SELECT * FROM leeeunmi.BOARD_INFO
 		WHERE BOARD_NO = #{board_no}
 	</select>
 	<!-- 조회수 증가 -->
 	<update id="updateCnt" parameterType="boardDTO">
-		UPDATE BOARD_INFO
+		UPDATE leeeunmi.BOARD_INFO
 		SET CNT = CNT + 1
 		WHERE BOARD_NO = #{board_no}
 	</update>
@@ -45,228 +45,228 @@
 	<select id="getFile" parameterType="fileDTO" resultType="fileDTO">
 		SELECT FILE_NO, BOARD_NO, ORI_NAME, FILE_PATH, FILE_RENAME,
 			ROUND(FILE_SIZE/1024,1) AS FILE_SIZE
-		FROM FILE_INFO
+		FROM leeeunmi.FILE_INFO
 		WHERE BOARD_NO = #{board_no}
 	</select>
 	<!-- 글 삭제 -->
 	<delete id="deleteBoard" parameterType="boardDTO">
-		DELETE FROM BOARD_INFO
+		DELETE FROM leeeunmi.BOARD_INFO
 		WHERE BOARD_NO = #{board_no}
 	</delete>
 	<!-- 파일 삭제 -->
 	<delete id="deleteFile" parameterType="fileDTO">
-		DELETE FROM FILE_INFO
+		DELETE FROM leeeunmi.FILE_INFO
 		WHERE BOARD_NO = #{board_no}
 	</delete>
 	<!-- 글 수정 -->
 	<update id="updateBoard" parameterType="boardDTO">
-		UPDATE BOARD_INFO
+		UPDATE leeeunmi.BOARD_INFO
 		SET TITLE = #{title}, CONTENT = #{content}, NOTICE_CHECK = #{notice_check},
 			FILE_CHECK = #{file_check}, CHG_NO = #{chg_no}, CHG_DT = NOW()
 		WHERE BOARD_NO = #{board_no}
 	</update>
 	<!-- 팀 리스트 -->
 	<select id="getTeamList" resultType="manageDTO">
-		SELECT * FROM BOARD_MANAGE
+		SELECT * FROM leeeunmi.BOARD_MANAGE
 		ORDER BY CAST(TEAM_NO AS UNSIGNED) ASC LIMIT 10
 	</select>
 	<!-- 팀 정보 -->
 	<select id="getTeam" resultType="manageDTO" parameterType="manageDTO">
-		SELECT * FROM BOARD_MANAGE WHERE TEAM_NO = #{team_no}
+		SELECT * FROM leeeunmi.BOARD_MANAGE WHERE TEAM_NO = #{team_no}
 	</select>
 	<!-- 팀이름 중복체크 -->
 	<select id="getTeamName" resultType="int" parameterType="manageDTO">
-		SELECT COUNT(*) FROM BOARD_MANAGE WHERE TEAM_NAME = #{team_name}
+		SELECT COUNT(*) FROM leeeunmi.BOARD_MANAGE WHERE TEAM_NAME = #{team_name}
 	</select>
 	<!-- 팀 개설 -->
 	<insert id="insertTeam" parameterType="manageDTO">
 		INSERT INTO
-		BOARD_MANAGE (TEAM_NO, LEADER_NO, LEADER_NAME, TEAM_NAME, JOIN_FORM, TEAM_MEMO, REG_NO, REG_DT, NUM)
+		leeeunmi.BOARD_MANAGE (TEAM_NO, LEADER_NO, LEADER_NAME, TEAM_NAME, JOIN_FORM, TEAM_MEMO, REG_NO, REG_DT, NUM)
 		VALUES(
-		(SELECT IFNULL(MAX(CAST(BM.TEAM_NO AS UNSIGNED)), 0)+1 FROM BOARD_MANAGE BM),
+		(SELECT IFNULL(MAX(CAST(BM.TEAM_NO AS UNSIGNED)), 0)+1 FROM leeeunmi.BOARD_MANAGE BM),
 		#{leader_no}, #{leader_name}, #{team_name}, #{join_form}, #{team_memo}, #{reg_no}, NOW(), 1)
 	</insert>
 	<!-- 회원 권한, 팀번호 수정 -->
 	<update id="updateUserTeam" parameterType="userDTO">
-		UPDATE USER_INFO
+		UPDATE leeeunmi.USER_INFO
 		SET AUTH = #{auth}, TEAM_NO = #{team_no}, CHG_NO = #{user_no}, CHG_DT = NOW()
 		WHERE USER_NO = #{user_no}
 	</update>
 	<!-- 팀번호 가져오기 -->
 	<select id="getTeamNo" parameterType="manageDTO" resultType="manageDTO">
-		SELECT TEAM_NO FROM BOARD_MANAGE
+		SELECT TEAM_NO FROM leeeunmi.BOARD_MANAGE
 		WHERE LEADER_NO = #{leader_no}
 	</select>
 	<!-- 팀 가입 -->
 	<insert id="insertJoin" parameterType="joinDTO">
 		INSERT INTO
-		JOIN_INFO (JOIN_NO, TEAM_NO, USER_NO, JOIN_MEMO, JOIN_CHECK, REG_NO, REG_DT)
+		leeeunmi.JOIN_INFO (JOIN_NO, TEAM_NO, USER_NO, JOIN_MEMO, JOIN_CHECK, REG_NO, REG_DT)
 		VALUES (
-		(SELECT IFNULL(MAX(JI.JOIN_NO), 0)+1 FROM JOIN_INFO JI),
+		(SELECT IFNULL(MAX(JI.JOIN_NO), 0)+1 FROM leeeunmi.JOIN_INFO JI),
 		#{team_no}, #{user_no}, #{join_memo}, #{join_check}, #{user_no}, NOW())
 	</insert>
 	<!-- 가입 취소 -->
 	<delete id="deleteJoin" parameterType="joinDTO">
-		DELETE FROM JOIN_INFO
+		DELETE FROM leeeunmi.JOIN_INFO
 		WHERE USER_NO = #{user_no}
 	</delete>
 	<!-- 팀 수정 -->
 	<update id="updateTeam" parameterType="manageDTO">
-		UPDATE BOARD_MANAGE
+		UPDATE leeeunmi.BOARD_MANAGE
 		SET JOIN_FORM = #{join_form}, TEAM_MEMO = #{team_memo}, CHG_NO = #{chg_no}, CHG_DT = NOW()
 		WHERE TEAM_NO = #{team_no}
 	</update>
 	<!-- 팀 삭제 -->
 	<delete id="deleteTeamDrop" parameterType="String">
-		DELETE FROM BOARD_MANAGE
+		DELETE FROM leeeunmi.BOARD_MANAGE
 		WHERE TEAM_NO = #{team_no}
 	</delete>
 	<!-- 팀삭제로 인한 회원 수정 -->
 	<update id="updateTeamDrop" parameterType="userDTO">
-		UPDATE USER_INFO
+		UPDATE leeeunmi.USER_INFO
 		SET AUTH = #{auth}, TEAM_NO = 0
 		WHERE TEAM_NO = #{team_no}
 	</update>
 	<!-- 팀삭제로 인한 글 삭제 -->
 	<delete id="deleteTeamBoard" parameterType="String">
-		DELETE FROM BOARD_INFO
+		DELETE FROM leeeunmi.BOARD_INFO
 		WHERE TEAM_NO = #{team_no}
 	</delete>
 	<!-- 팀삭제로 인한 파일 삭제 -->
 	<delete id="deleteTeamFile" parameterType="String">
-		DELETE FROM FILE_INFO
+		DELETE FROM leeeunmi.FILE_INFO
 		WHERE TEAM_NO = #{team_no}
 	</delete>
 	<!-- 리더 정보 -->
 	<select id="getUser" parameterType="String" resultType="userDTO">
-		SELECT * FROM USER_INFO
+		SELECT * FROM leeeunmi.USER_INFO
 		WHERE TEAM_NO = #{team_no} AND AUTH = "UA"
 	</select>
 	<!-- 팀원 리스트 -->
 	<select id="getUserList" parameterType="String" resultType="userDTO">
-		SELECT * FROM USER_INFO
+		SELECT * FROM leeeunmi.USER_INFO
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA"
 		ORDER BY AUTH ASC, CAST(USER_NO AS UNSIGNED) ASC LIMIT 10
 	</select>
 	<!-- 가입신청서 정보 -->
 	<select id="getJoinUser" parameterType="String" resultType="userDTO">
-		SELECT * FROM USER_INFO
+		SELECT * FROM leeeunmi.USER_INFO
 		WHERE USER_NO = #{user_no}
 	</select>
 	<!-- 가입신청 메모 -->
 	<select id="getJoin" parameterType="String" resultType="joinDTO">
-		SELECT * FROM JOIN_INFO
+		SELECT * FROM leeeunmi.JOIN_INFO
 		WHERE USER_NO = #{user_no}
 	</select>
 	<!-- 권한 수정 (UU로 수정)-->
 	<update id="updateAuth" parameterType="String">
-		UPDATE USER_INFO
+		UPDATE leeeunmi.USER_INFO
 		SET AUTH = "UU"
 		WHERE USER_NO = #{user_no}
 	</update>
 	<!-- 가입 확인 수정 (O로 수정)-->
 	<update id="updateJoinCheck" parameterType="String">
-		UPDATE JOIN_INFO
+		UPDATE leeeunmi.JOIN_INFO
 		SET JOIN_CHECK = "O"
 		WHERE USER_NO = #{user_no}
 	</update>
 	<!-- 팀원 수 +1 -->
 	<update id="updateTeamUp" parameterType="String">
-		UPDATE BOARD_MANAGE
+		UPDATE leeeunmi.BOARD_MANAGE
 		SET NUM = NUM+1
 		WHERE TEAM_NO = #{team_no}
 	</update>
 	<!-- 팀원 수 -1 -->
 	<update id="updateTeamDwon" parameterType="String">
-		UPDATE BOARD_MANAGE
+		UPDATE leeeunmi.BOARD_MANAGE
 		SET NUM = NUM-1
 		WHERE TEAM_NO = #{team_no}
 	</update>
 	<!-- 팀 검색 -->
 	<select id="getTeamSearch" parameterType="manageDTO" resultType="manageDTO">
-		SELECT * FROM BOARD_MANAGE
+		SELECT * FROM leeeunmi.BOARD_MANAGE
 		WHERE TEAM_NAME LIKE #{search} OR LEADER_NAME LIKE #{search}
 		ORDER BY CAST(TEAM_NO AS UNSIGNED) ASC LIMIT 10
 	</select>
 	<!-- 팀원 검색 -->
 	<select id="getTeamUserSearch" parameterType="userDTO" resultType="userDTO">
-		SELECT * FROM USER_INFO
+		SELECT * FROM leeeunmi.USER_INFO
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA" AND (USER_NAME LIKE #{search} OR USER_ID LIKE #{search})
 		ORDER BY AUTH ASC, CAST(USER_NO AS UNSIGNED) ASC LIMIT 10
 	</select>
 	<!-- 글 검색 -->
 	<select id="getboardSearch" parameterType="boardDTO" resultType="boardDTO">
-		SELECT * FROM BOARD_INFO
+		SELECT * FROM leeeunmi.BOARD_INFO
 		WHERE TEAM_NO = #{team_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
 		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC LIMIT 10
 	</select>
 	<!-- 팀원수 -->
 	<select id="getUserNum" parameterType="String" resultType="userDTO">
 		SELECT COUNT(USER_NO) DATA
-		FROM USER_INFO
+		FROM leeeunmi.USER_INFO
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA"
 	</select>
 	<!-- 팀원검색결과수 -->
 	<select id="getUserTeamSearchNum" resultType="userDTO">
-		SELECT COUNT(USER_NO) DATA FROM USER_INFO
+		SELECT COUNT(USER_NO) DATA FROM leeeunmi.USER_INFO
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA" AND (USER_NAME LIKE #{search} OR USER_ID LIKE #{search})
 	</select>
 	<!-- 팀원검색페이징 -->
 	<select id="getUserTeamSearchPage" resultType="userDTO">
-		SELECT * FROM USER_INFO
+		SELECT * FROM leeeunmi.USER_INFO
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA" AND (USER_NAME LIKE #{search} OR USER_ID LIKE #{search})
 		ORDER BY AUTH ASC, CAST(USER_NO AS UNSIGNED) ASC LIMIT 10 OFFSET #{num}
 	</select>
 	<!-- 팀원리스트페이징 -->
 	<select id="getUserTeamPaging" resultType="userDTO">
-		SELECT * FROM USER_INFO
+		SELECT * FROM leeeunmi.USER_INFO
 		WHERE TEAM_NO = #{team_no} AND NOT AUTH = "UA"
 		ORDER BY AUTH ASC, CAST(USER_NO AS UNSIGNED) ASC LIMIT 10 OFFSET #{num}
 	</select>
 	<!-- 게시글 수 -->
 	<select id="getBoardNum" parameterType="String" resultType="boardDTO">
 		SELECT COUNT(BOARD_NO) DATA
-		FROM BOARD_INFO
+		FROM leeeunmi.BOARD_INFO
 		WHERE TEAM_NO = #{team_no}
 	</select>
 	<!-- 게시글검색 결과수 -->
 	<select id="getboardSearchNum" resultType="boardDTO">
 		SELECT COUNT(BOARD_NO) DATA
-		FROM BOARD_INFO
+		FROM leeeunmi.BOARD_INFO
 		WHERE TEAM_NO = #{team_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
 	</select>
 	<!-- 게시글 검색 페이징 -->
 	<select id="getboardSearchPage" resultType="boardDTO">
-		SELECT * FROM BOARD_INFO
+		SELECT * FROM leeeunmi.BOARD_INFO
 		WHERE TEAM_NO = #{team_no} AND (TITLE LIKE #{search} OR CONTENT LIKE #{search})
 		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC LIMIT 10 OFFSET #{num}
 	</select>
 	<!-- 게시글 페이징 -->
 	<select id="getboardPaging" resultType="boardDTO">
-		SELECT * FROM BOARD_INFO
+		SELECT * FROM leeeunmi.BOARD_INFO
 		WHERE TEAM_NO = #{team_no}
 		ORDER BY NOTICE_CHECK DESC, CAST(BOARD_NO AS UNSIGNED) DESC LIMIT 10 OFFSET #{num}
 	</select>
 	<!-- 동호회 수 -->
 	<select id="getTeamNum" resultType="manageDTO">
 		SELECT COUNT(TEAM_NO) DATA1
-		FROM BOARD_MANAGE
+		FROM leeeunmi.BOARD_MANAGE
 	</select>
 	<!-- 동호회 검색 결과수 -->
 	<select id="getTeamSearchNum" resultType="manageDTO">
 		SELECT COUNT(TEAM_NO) DATA1
-		FROM BOARD_MANAGE
+		FROM leeeunmi.BOARD_MANAGE
 		WHERE TEAM_NAME LIKE #{search} OR LEADER_NAME LIKE #{search}
 	</select>
 	<!-- 동호회 검색 페이징 -->
 	<select id="getTeamSearchPage" resultType="manageDTO">
-		SELECT * FROM BOARD_MANAGE
+		SELECT * FROM leeeunmi.BOARD_MANAGE
 		WHERE TEAM_NAME LIKE #{search} OR LEADER_NAME LIKE #{search}
 		ORDER BY CAST(TEAM_NO AS UNSIGNED) ASC LIMIT 10 OFFSET #{data}
 	</select>
 	<!-- 동호회 페이징 -->
 	<select id="getTeamPaging" resultType="manageDTO">
-		SELECT * FROM BOARD_MANAGE
+		SELECT * FROM leeeunmi.BOARD_MANAGE
 		ORDER BY CAST(TEAM_NO AS UNSIGNED) ASC LIMIT 10 OFFSET #{data}
 	</select>
 </mapper>

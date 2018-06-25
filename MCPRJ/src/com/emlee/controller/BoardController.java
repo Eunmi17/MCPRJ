@@ -198,7 +198,7 @@ public class BoardController {
 	      String strDate = dayTime.format(new Date(time));
 
 	      // 파일 저장 경로
-	      String savePath = req.getSession().getServletContext().getRealPath("file");
+	      String savePath = "/home/LEEEUNMI/tomcat/webapps/file";
 
 	      String originalFileName = file.getOriginalFilename();
 	      String onlyFileName = originalFileName.substring(0, originalFileName.indexOf(".")); // fileName
